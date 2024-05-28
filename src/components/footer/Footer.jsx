@@ -1,10 +1,11 @@
+import { Container } from '@mui/material';
 import React from 'react';
 
 const Footer = () => {
     return (
-        <div>
+        <Container  maxWidth="lg">
             <h1>Футер</h1>
-        </div>
+        </Container>
     );
 }
 
