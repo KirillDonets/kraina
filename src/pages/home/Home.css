@@ -1,0 +1,24 @@
+.MuiCard-root.card {
+    height: 550px;
+    width: 300px;
+    background-color: rgb(27, 27, 37);
+    margin: 8px;
+    color: aqua;
+}
+
+.card-content {
+    flex-grow: 1;
+}
+
+.card-button-container {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.card-button {
+    width: calc(100% - 16px);
+    margin: 8px;
+    
+}
+
