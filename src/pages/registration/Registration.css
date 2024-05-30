@@ -60,6 +60,16 @@
     color: white;
 }
 
+.registration form .inputs .error{
+    margin-bottom: 20px;
+    color: red;
+}
+
+.registration form .error{
+    margin-bottom: 20px;
+    color: red;
+}
+
 .registration form .inputs input::placeholder{
     color: var(--text-accent);
 }
