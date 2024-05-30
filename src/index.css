@@ -1,3 +1,16 @@
-body{
+body {
     margin: 0;
+}
+
+:root{
+    --highlight-ui-color: #6FEDFF;
+    --element-ui-color: #1D2733;
+    --text-accent: white;
+
+}
+
+@font-face {
+    font-family: "Inter";
+
+    src: url('fonts/Inter.ttf');
 }
