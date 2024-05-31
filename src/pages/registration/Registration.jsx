@@ -1,67 +1,23 @@
-import { Container } from '@mui/material';
-import React, { useState } from 'react';
-import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
+import {Container} from "@mui/material";
 
 import './Registration.css'
-import apple from './images/apple.svg'
-import facebook from './images/facebook.svg'
-import google from './images/google.svg'
+import {Link} from "react-router-dom";
+import apple from "../login/images/apple.svg";
+import google from "../login/images/google.svg";
+import facebook from "../login/images/facebook.svg";
+import React, {useState} from "react";
 
 const Registration = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const [authError, setAuthError] = useState('');
-    const navigate = useNavigate();
-
-    const validateForm = () => {
-        const errors = {};
-
-        if (!username) {
-            errors.username = "Поле 'Адреса електронної пошти або номер телефону' обов'язкове.";
-        }
-
-        if (!password) {
-            errors.password = "Поле 'Пароль' обов'язкове.";
-        } else if (password.length < 6) {
-            errors.password = "Пароль повинен містити мінімум 6 символів.";
-        }
-
-        return errors;
-    };
-
-    const loginSubmit = (e) => {
-        e.preventDefault();
-
-        const formErrors = validateForm();
-        if (Object.keys(formErrors).length > 0) {
-            setErrors(formErrors);
-            return;
-        }
-
-        axios.post("http://localhost:8080/api/auth/login", {
-            username: username,
-            password: password,
-        }).then(resp => {
-            localStorage.setItem("token", resp.data);
-            setAuthError('');  // Clear any previous authentication error
-            navigate('/')
-        }).catch(error => {
-            if (error.response && error.response.status === 403) {
-                setAuthError("Неправильний логін або пароль");
-            } else {
-                setAuthError("Виникла помилка. Будь ласка, спробуйте пізніше.");
-            }
-        });
-    };
 
     return (
         <Container maxWidth="lg" className="registration">
-            <h1 className="title"><span className="highlight">УВІЙТИ</span> АБО ЗАРЕЄСТРУВАТИСЬ</h1>
+            <h1 className="title">ЗАРЕЄСТРУВАТИСЬ</h1>
 
             <div className="form-container">
-                <form onSubmit={loginSubmit}>
+                <form onSubmit={()=>{}}>
                     <div className="inputs">
                         <input
                             id="username"
@@ -83,19 +39,13 @@ const Registration = () => {
                         {errors.password && <div className="error">{errors.password}</div>}
                     </div>
 
-                    {authError && <div className="error">{authError}</div>}
 
                     <div className="actions">
-                        <button to="#" type="submit" className="login_button">Увійти</button>
-                        <p>або</p>
-                        <Link to="#" className="signin_button">Зареєструватись</Link>
-                        <Link to="#" className="forgot_password">Забули пароль?</Link>
+                        <button to="#" type="submit" className="login_button">Зареєструватись</button>
+                        <Link to="/login" className="login_in_account">Увiйти в акаунт</Link>
                     </div>
 
-                    <div className="checkbox_container">
-                        <input id="remember_me" type="checkbox" />
-                        <label htmlFor="remember_me">Запам’ятати мене</label>
-                    </div>
+
 
                     <div className="social_container">
                         <div className="social_list">

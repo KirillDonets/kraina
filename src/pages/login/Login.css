@@ -1,4 +1,4 @@
-.registration{
+.login{
     font-family: 'Inter';
     font-size: 15px;
 
@@ -8,12 +8,12 @@
     padding-bottom: 64px;
 }
 
-.registration a{
+.login a{
     text-decoration: none;
     color: inherit;
 }
 
-.registration .title{
+.login .title{
     color: var(--text-accent);
 
     .highlight{
@@ -21,10 +21,10 @@
     }
 }
 
-.registration .form-container{
+.login .form-container{
     display: flex; justify-content: center;
 }
-.registration .form-container form{
+.login .form-container form{
     background: #27313D;
     box-shadow: 12px 4px 70.3px 0px #00000040;
 
@@ -37,12 +37,12 @@
     border-radius: 15px;
 }
 
-.registration form .inputs{
+.login form .inputs{
     display: flex;
     flex-direction: column;
 
 }
-.registration form .inputs input{
+.login form .inputs input{
     margin-bottom: 20px;
 
     height: 45px;
@@ -60,21 +60,21 @@
     color: white;
 }
 
-.registration form .inputs .error{
+.login form .inputs .error{
     margin-bottom: 20px;
     color: red;
 }
 
-.registration form .error{
+.login form .error{
     margin-bottom: 20px;
     color: red;
 }
 
-.registration form .inputs input::placeholder{
+.login form .inputs input::placeholder{
     color: var(--text-accent);
 }
 
-.registration form .actions{
+.login form .actions{
     display: flex;
     flex-direction: column;
 
@@ -83,7 +83,7 @@
 
 }
 
-.registration form .actions .login_button{
+.login form .actions .login_button{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,14 +101,14 @@
     cursor: pointer;
 }
 
-.registration form .actions p{
+.login form .actions p{
     margin-top: 6px;
     margin-bottom: 6px;
 
     color: var(--text-accent);
 }
 
-.registration form .actions .signin_button{
+.login form .actions .signin_button{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -125,7 +125,7 @@
 
 }
 
-.registration form .actions .forgot_password{
+.login form .actions .forgot_password{
     color: var(--text-accent);
     cursor: pointer;
 
@@ -133,14 +133,7 @@
     margin-bottom: 20px;
 }
 
-.registration form .actions .login_in_account{
-    margin-top: 20px;
-    margin-bottom: 20px;
-
-    color: var(--text-accent);
-}
-
-.registration form .checkbox_container{
+.login form .checkbox_container{
     display: flex;
     align-items: center;
 
@@ -148,7 +141,7 @@
     color: var(--text-accent);
 }
 
-.registration form .checkbox_container input{
+.login form .checkbox_container input{
     width: 20px;
     height: 20px;
     margin-right: 20px;
@@ -156,17 +149,17 @@
     cursor: pointer;
 }
 
-.registration form .checkbox_container input[type=checkbox]:not(old) + label{
+.login form .checkbox_container input[type=checkbox]:not(old) + label{
     cursor: pointer;
 }
 
-.registration form .checkbox_container input:checked{
+.login form .checkbox_container input:checked{
     background: var(--highlight-ui-color);
 }
 
 
 
-.registration form .social_list ul{
+.login form .social_list ul{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -176,7 +169,7 @@
     padding: 0;
 }
 
-.registration form .social_list ul li{
+.login form .social_list ul li{
     width: 40px;
     height: 40px;
 
@@ -184,11 +177,11 @@
     border-radius: 999px;
 }
 
-.registration form .social_list ul li:not(:last-child){
+.login form .social_list ul li:not(:last-child){
     margin-right: 20px;
 }
 
-.registration form .social_list ul li a{
+.login form .social_list ul li a{
     width: 100%;
     height: 100%;
 
@@ -197,11 +190,11 @@
     justify-content: center;
 }
 
-.registration form .social_list ul li a img{
+.login form .social_list ul li a img{
 
 }
 
-.registration form .social_container::after{
+.login form .social_container::after{
     content: '';
     display: block;
     width: 100%;
@@ -209,7 +202,7 @@
     height: 1px;
 }
 
-.registration .all_answers{
+.login .all_answers{
     color: var(--highlight-ui-color);
     display: flex;
     justify-content: center;
