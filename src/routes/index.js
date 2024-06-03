@@ -3,10 +3,10 @@ import App from "../App";
 import Home from "../pages/home/Home";
 import Faq from "../pages/faq/Faq";
 import Registration from "../pages/registration/Registration";
-import AnimatedSeries from "../pages/animatedSeries/animatedSeries";
-import Cartoons from "../pages/cartoons/cartoons";
-import Movies from "../pages/movies/movies";
-import Series from "../pages/series/series";
+import AnimatedSeries from "../pages/animatedSeries/AnimatedSeries";
+import Cartoons from "../pages/cartoons/Cartoons";
+import Movies from "../pages/movies/Movies";
+import Series from "../pages/series/Series";
 
 export const router = createBrowserRouter([
     {
