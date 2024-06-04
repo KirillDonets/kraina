@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Grid, Card, CardContent, Typography, Button } from '@mui/material';
-import './Home.css'; // Импортируем CSS файл
+import './Home.css';
 
 const Home = () => {
     return (

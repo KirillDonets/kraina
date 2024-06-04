@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardContent, Typography, CardMedia, TextField, Button } from '@mui/material';
+import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination} from '@mui/material';
+import './Movies.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
 const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
@@ -10,6 +11,7 @@ const Movies = () => {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [genre, setGenre] = useState('');
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -21,8 +23,9 @@ const Movies = () => {
                     }
                 });
                 const data = await response.json();
-                console.log(data);  // Отладка
+                console.log(data);
                 setMovies(data.results);
+                setTotalPages(data.total_pages);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching movies:', error);
@@ -33,8 +36,8 @@ const Movies = () => {
         fetchMovies();
     }, [page, genre]);
 
-    const handlePageChange = (event) => {
-        setPage(event.target.value);
+    const handlePageChange = (event, value) => {
+        setPage(value);
     };
 
     const handleGenreChange = (event) => {
@@ -60,13 +63,6 @@ const Movies = () => {
             <h1>Фільми</h1>
             <div style={{ marginBottom: '20px' }}>
                 <TextField
-                    label="Кількість сторінок"
-                    type="number"
-                    value={page}
-                    onChange={handlePageChange}
-                    style={{ marginRight: '10px' }}
-                />
-                <TextField
                     label="Жанр"
                     type="text"
                     value={genre}
@@ -87,18 +83,17 @@ const Movies = () => {
                                 image={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
                                 alt={movie.title}
                             />
-                            <CardContent>
-                                <Typography variant="h5" component="div">
-                                    {movie.title}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {movie.overview}
-                                </Typography>
-                            </CardContent>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
+            <Pagination
+                count={totalPages}
+                page={page}
+                onChange={handlePageChange}
+                color="primary"
+                style={{ marginTop: '20px' }}
+            />
         </Container>
     );
 }

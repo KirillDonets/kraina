@@ -1,15 +1,8 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import {  AppBar,  Box,  Button,  Container,  IconButton,  Toolbar,  Typography,} from "@mui/material";
 import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
+import './Header.css';
 const Header = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
