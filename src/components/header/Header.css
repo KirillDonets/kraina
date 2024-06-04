@@ -1,0 +1,15 @@
+.menu-item{
+    color: #fff;
+    display: inline-block;
+    padding: 0 5px;
+}
+
+.menu-item-mobile{
+    color: #000;
+    display: block;
+    padding: 10px;
+}
+
+.menu-item:hover{
+    color: #FFC700;
+}
