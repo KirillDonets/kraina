@@ -1,0 +1,31 @@
+#faq{
+    min-height: 80vh;
+}
+
+#faq .accordion-block{
+    margin-bottom: 40px;
+}
+
+#faq .even {
+    background: #303D4D;
+}
+
+#faq .odd {
+    background: #27313D;
+}
+
+#faq h1 {
+    margin-bottom: 20px;
+}
+
+#faq h1 span{
+    color: var(--highlight-ui-color);
+}
+
+#faq .MuiAccordion-root {
+    margin-bottom: 10px;
+    border-radius: 8px;
+
+    box-shadow: 0px 4px 4px 0px #00000040;
+
+}

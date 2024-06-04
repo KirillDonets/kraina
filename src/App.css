@@ -1,5 +1,15 @@
-body
-{
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+body{
+    margin: 0;
     background-color: #27313D;
-    color: antiquewhite;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
 }
+body a{
+    color: inherit;
+    text-decoration: none;
+}
+img{
+    max-width: 100%;
+}
+*{box-sizing: border-box;}
