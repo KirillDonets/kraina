@@ -1,0 +1,54 @@
+.navigationContainer {
+  display: flex;
+}
+
+.drawerBox {
+  flex-shrink: 0;
+}
+
+.menuButton {
+  margin-right: 2;
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .menuButton {
+    display: block;
+  }
+}
+
+.drawerPaper {
+  width: 240px;
+}
+
+.drawerContent {
+  padding: 20px;
+}
+
+.drawerTitle {
+  margin-bottom: 10px;
+}
+
+.resultsBox {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.resultsTitle {
+  margin-bottom: 20px;
+}
+
+.moviesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.movieItem {
+  width: 200px;
+}
+
+.movieItem img {
+  width: 100%;
+  height: auto;
+}

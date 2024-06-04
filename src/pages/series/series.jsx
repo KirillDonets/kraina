@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination} from '@mui/material';
+import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination } from '@mui/material';
 import './Series.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
@@ -24,7 +24,11 @@ const Series = () => {
                 });
                 const data = await response.json();
                 console.log(data);
-                setSeries(data.results);
+
+                // Фильтрация сериалов, исключая мультсериалы
+                const filteredSeries = data.results.filter(tv => !tv.genre_ids.includes(16));
+
+                setSeries(filteredSeries);
                 setTotalPages(data.total_pages);
                 setLoading(false);
             } catch (error) {
@@ -61,18 +65,6 @@ const Series = () => {
     return (
         <Container maxWidth="lg">
             <h1>Серіали</h1>
-            <div style={{ marginBottom: '20px' }}>
-                <TextField
-                    label="Жанр"
-                    type="text"
-                    value={genre}
-                    onChange={handleGenreChange}
-                    style={{ marginRight: '10px' }}
-                />
-                <Button variant="contained" color="primary" onClick={handleSearch}>
-                    Пошук
-                </Button>
-            </div>
             <Grid container spacing={4}>
                 {series.map(tv => (
                     <Grid item key={tv.id} xs={12} sm={6} md={4}>

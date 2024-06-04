@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination} from '@mui/material';
-import './Movies.css';
+import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination } from '@mui/material';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
 const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
@@ -23,8 +22,12 @@ const Movies = () => {
                     }
                 });
                 const data = await response.json();
-                console.log(data);
-                setMovies(data.results);
+                console.log(data);  // Отладка
+
+                // Фильтрация фильмов, исключая мультфильмы
+                const filteredMovies = data.results.filter(movie => !movie.genre_ids.includes(16));
+
+                setMovies(filteredMovies);
                 setTotalPages(data.total_pages);
                 setLoading(false);
             } catch (error) {
@@ -61,18 +64,6 @@ const Movies = () => {
     return (
         <Container maxWidth="lg">
             <h1>Фільми</h1>
-            <div style={{ marginBottom: '20px' }}>
-                <TextField
-                    label="Жанр"
-                    type="text"
-                    value={genre}
-                    onChange={handleGenreChange}
-                    style={{ marginRight: '10px' }}
-                />
-                <Button variant="contained" color="primary" onClick={handleSearch}>
-                    Пошук
-                </Button>
-            </div>
             <Grid container spacing={4}>
                 {movies.map(movie => (
                     <Grid item key={movie.id} xs={12} sm={6} md={4}>
