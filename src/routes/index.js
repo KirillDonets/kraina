@@ -8,6 +8,7 @@ import Cartoons from "../pages/cartoons/Cartoons";
 import Movies from "../pages/movies/Movies";
 import Series from "../pages/series/Series";
 import Navigation from "../pages/navigation/Navigation";
+import MovieDetails from "../pages/movieDetails/MovieDetails";
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +23,8 @@ export const router = createBrowserRouter([
       { path: '/cartoons', element: <Cartoons /> },
       { path: '/movies', element: <Movies /> },
       { path: '/series', element: <Series /> },
-      { path: '/navigation', element: <Navigation /> }
+      { path: '/navigation', element: <Navigation /> },
+      { path: '/movies/:id', element: <MovieDetails /> } // Исправлено на '/movies/:id'
     ]
   },
 ]);
