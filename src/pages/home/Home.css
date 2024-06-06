@@ -1,24 +1,37 @@
-.MuiCard-root.card {
-    height: 550px;
-    width: 300px;
-    background-color: rgb(27, 27, 37);
-    margin: 8px;
-    color: aqua;
+.card {
+    margin: 20px;
 }
 
 .card-content {
-    flex-grow: 1;
+    text-align: center;
 }
 
 .card-button-container {
     display: flex;
     justify-content: center;
-    
+    margin-bottom: 20px;
 }
 
 .card-button {
-    width: calc(100% - 16px);
-    margin: 8px;
-    
+    width: 80%;
 }
 
+.movie-card {
+    padding: 10px;
+}
+
+.slick-prev, .slick-next {
+    z-index: 1;
+}
+
+.slick-prev:before, .slick-next:before {
+    color: black;
+}
+
+.slick-dots li button:before {
+    color: black;
+}
+
+.slick-dots li.slick-active button:before {
+    color: black;
+}
