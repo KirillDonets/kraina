@@ -1,37 +1,41 @@
-.card {
-    margin: 20px;
-}
-
-.card-content {
-    text-align: center;
+.carousel-card {
+    margin: 20px auto;
+    max-height: 100;
 }
 
 .card-button-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .card-button {
-    width: 80%;
+    width: 100%;
 }
 
-.movie-card {
-    padding: 10px;
+.welcome-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
-.slick-prev, .slick-next {
-    z-index: 1;
+.welcome-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
 }
 
-.slick-prev:before, .slick-next:before {
-    color: black;
+.welcome-buttons .MuiButton-root {
+    margin-bottom: 10px;
 }
 
-.slick-dots li button:before {
-    color: black;
-}
+@media (min-width: 600px) {
+    .welcome-buttons {
+        flex-direction: row;
+    }
 
-.slick-dots li.slick-active button:before {
-    color: black;
+    .welcome-buttons .MuiButton-root {
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
 }

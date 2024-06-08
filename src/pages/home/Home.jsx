@@ -5,69 +5,69 @@ import './Home.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
-const baseUrl = 'https://api.themoviedb.org/3';
-
 const Home = () => {
-    const [newReleases, setNewReleases] = useState([]);
+    const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        const fetchNewReleases = async () => {
+        const fetchMovies = async () => {
             try {
-                const response = await fetch(`${baseUrl}/movie/now_playing?api_key=${apiKey}&language=uk-UA&page=1`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json;charset=utf-8'
-                    }
-                });
+                const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=6354d9421b6c9d2510d1a693d1dc40b4&language=uk-UA&page=1');
                 const data = await response.json();
-                setNewReleases(data.results.slice(0, 20));
+                setMovies(data.results.slice(0, 20)); // Top 20 новинок
             } catch (error) {
-                console.error('Ошибка при загрузке новинок:', error);
+                console.error('Error fetching movies:', error);
             }
         };
 
-        fetchNewReleases();
+        fetchMovies();
     }, []);
 
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
+        slidesToShow: 1,
+        slidesToScroll: 1
     };
 
     return (
         <Container maxWidth="lg">
-            <h1>Home</h1>
-            <Grid container>
+            <Grid container spacing={3}>
+                <Grid item xs={12} sm={4}>
+                    <Box display="flex" flexDirection="column" justifyContent="center" height="100%">
+                        <Typography variant="h4" component="h1" gutterBottom>
+                            Ласкаво просимо<br />
+                        </Typography>
+                        <Typography variant="h6" component="p">
+                            на сайт<br /> Kraina HD<br /> Дивіться тисячі фільмів та телешоу у HD-якості.<br /> Насолоджуйтесь кінематографічними враженнями,<br /> не виходячи із власного дома, з Kraina HD.
+                        </Typography>
+                        <Box mt={2} display="flex" flexDirection={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
+                            <Button variant="contained" color="primary" style={{ marginBottom: '10px' }}>
+                                Спробувати на 7 днiв
+                            </Button>
+                            <Button variant="contained" color="secondary">
+                                Переглянути всі плани
+                            </Button>
+                        </Box>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                    <Slider {...settings}>
+                        {movies.map((movie) => (
+                            <Card key={movie.id} className="carousel-card">
+                                <CardMedia
+                                    component="img"
+                                    alt={movie.title}
+                                    height="500"
+                                    image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                    title={movie.title}
+                                />
+                            </Card>
+                        ))}
+                    </Slider>
+                </Grid>
+            </Grid>
+            <Grid container spacing={3} mt={5}>
                 <Grid item xs={12} sm={6} md={4}>
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">
@@ -75,7 +75,7 @@ const Home = () => {
                                 Базовий
                             </Typography>
                             <Typography variant="body2">
-                                120 ₴ в месяц <br />
+                                120 ₴ в месяц <br />
                                 • Якість відео та звуку <br />
                                 Нормальна <br /> <hr />
                                 • Роздільна здатність <br />
@@ -106,7 +106,7 @@ const Home = () => {
                                 Стандарт
                             </Typography>
                             <Typography variant="body2">
-                                120 ₴ в месяц <br />
+                                120 ₴ в месяц <br />
                                 • Якість відео та звуку <br />
                                 Нормальна <br /> <hr />
                                 • Роздільна здатність <br />
@@ -137,7 +137,7 @@ const Home = () => {
                                 Преміум
                             </Typography>
                             <Typography variant="body2">
-                                120 ₴ в месяц <br />
+                                120 ₴ в месяц <br />
                                 • Якість відео та звуку <br />
                                 Чудова <br /> <hr />
                                 • Роздільна здатність <br />
@@ -156,7 +156,7 @@ const Home = () => {
                         </CardContent>
                         <div className="card-button-container">
                             <Button className="card-button" variant="contained" color="primary">
-                                Отримати Преміум
+                                Отримати Премиум
                             </Button>
                         </div>
                     </Card>
@@ -167,26 +167,6 @@ const Home = () => {
                     </div>
                 </Grid>
             </Grid>
-            <Box mt={5}>
-                <Typography variant="h4" gutterBottom>Топ-20 новинок</Typography>
-                <Slider {...settings}>
-                    {newReleases.map((movie) => (
-                        <div key={movie.id}>
-                            <Card className="movie-card">
-                                <CardContent>
-                                    <CardMedia
-                                        component="img"
-                                        height="300"
-                                        image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                        title={movie.title}
-                                    />
-                                    <Typography variant="h6">{movie.title}</Typography>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    ))}
-                </Slider>
-            </Box>
         </Container>
     );
 }
