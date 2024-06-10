@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Card, CardContent, Typography, Button, Box, CardMedia } from '@mui/material';
 import Slider from 'react-slick';
+import logo from './logo.svg';
 import './Home.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -90,23 +91,24 @@ const Home = () => {
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">
                             <Typography variant="h5" component="div">
+                            <img src={logo} alt="Логотип" className="logo1" /> <br />
                                 Базовий
                             </Typography>
                             <Typography variant="body2">
                                 120 ₴ в месяц <br />
-                                • Якість відео та звуку <br />
+                                <span className="premaritalСolor">• Якість відео та звуку</span> <br />
                                 Нормальна <br /> <hr />
-                                • Роздільна здатність <br />
+                                <span className="premaritalСolor">• Роздільна здатність</span> <br />
                                 1080p (Full HD) <br /> <hr />
-                                • Просторовий звук (Об'ємний звук) <br />
+                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span> <br />
                                 - <br /> <hr />
-                                • Підтримувані пристрої <br />
+                                <span className="premaritalСolor">• Підтримувані пристрої</span> <br />
                                 Телевізор, Комп'ютер, Телефон, Планшет <br /> <hr />
-                                • Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї <br />
+                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span> <br />
                                 2 <br /> <hr />
-                                • Завантажити пристрої <br />
+                                <span className="premaritalСolor">• Завантажити пристрої</span> <br />
                                 2 <br /> <hr />
-                                • Реклама
+                                <span className="premaritalСolor">• Реклама</span> <br />
                                 Кілька рекламних пауз <br />
                             </Typography>
                         </CardContent>
@@ -121,23 +123,24 @@ const Home = () => {
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">
                             <Typography variant="h5" component="div">
+                            <img src={logo} alt="Логотип" className="logo1" /> <br />
                                 Стандарт
                             </Typography>
                             <Typography variant="body2">
                                 120 ₴ в месяц <br />
-                                • Якість відео та звуку <br />
+                                <span className="premaritalСolor">• Якість відео та звуку</span> <br />
                                 Нормальна <br /> <hr />
-                                • Роздільна здатність <br />
+                                <span className="premaritalСolor">• Роздільна здатність</span> <br />
                                 1080p (Full HD) <br /> <hr />
-                                • Просторовий звук (Об'ємний звук) <br />
+                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span> <br />
                                 - <br /> <hr />
-                                • Підтримувані пристрої <br />
+                                <span className="premaritalСolor">• Підтримувані пристрої</span> <br />
                                 Телевізор, Комп'ютер, Телефон, Планшет <br /> <hr />
-                                • Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї <br />
+                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span> <br />
                                 2 <br /> <hr />
-                                • Завантажити пристрої <br />
+                                <span className="premaritalСolor">• Завантажити пристрої</span> <br />
                                 2 <br /> <hr />
-                                • Реклама
+                                <span className="premaritalСolor">• Реклама</span> <br />
                                 Без реклами <br />
                             </Typography>
                         </CardContent>
@@ -152,23 +155,24 @@ const Home = () => {
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">
                             <Typography variant="h5" component="div">
+                            <img src={logo} alt="Логотип" className="logo1" /> <br />
                                 Преміум
                             </Typography>
                             <Typography variant="body2">
                                 120 ₴ в месяц <br />
-                                • Якість відео та звуку <br />
+                                <span className="premaritalСolor">• Якість відео та звуку</span> <br />
                                 Чудова <br /> <hr />
-                                • Роздільна здатність <br />
+                                <span className="premaritalСolor">• Роздільна здатність</span> <br />
                                 4К (Ultra HD) + HDR <br /> <hr />
-                                • Просторовий звук (Об'ємний звук) <br />
+                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span> <br />
                                 Увімкнено <br /> <hr />
-                                • Підтримувані пристрої <br />
+                                <span className="premaritalСolor">• Підтримувані пристрої</span> <br />
                                 Телевізор, Комп'ютер, Телефон, Планшет <br /> <hr />
-                                • Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї <br />
+                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span> <br />
                                 4 <br /> <hr />
-                                • Завантажити пристрої <br />
+                                <span className="premaritalСolor">• Завантажити пристрої</span> <br />
                                 6 <br /> <hr />
-                                • Реклама
+                                <span className="premaritalСolor">• Реклама</span> <br />
                                 Без реклами <br />
                             </Typography>
                         </CardContent>

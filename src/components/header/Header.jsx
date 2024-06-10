@@ -45,7 +45,7 @@ const Header = () => {
         <Container maxWidth="lg">
           <Toolbar style={{padding: 0}}>
             <NavLink to="/">
-                <img src={logo} alt="Логотип" />
+                <img src={logo} alt="Логотип" className="logo" />
             </NavLink>
 
             {/* Mobile menu */}
