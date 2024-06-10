@@ -27,7 +27,16 @@ const Home = () => {
         infinite: true,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 5000,
+    };
+
+    const scrollToPlans = () => {
+        const element = document.getElementById("plans");
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     return (
@@ -39,13 +48,15 @@ const Home = () => {
                             Ласкаво просимо<br />
                         </Typography>
                         <Typography variant="h6" component="p">
-                            на сайт<br /> Kraina HD<br /> Дивіться тисячі фільмів та телешоу у HD-якості.<br /> Насолоджуйтесь кінематографічними враженнями,<br /> не виходячи із власного дома, з Kraina HD.
+                            на сайт Kraina HD <br /> Дивіться тисячі фільмів та телешоу у HD-якості.<br />
+                            Насолоджуйтесь кінематографічними враженнями,<br />
+                            не виходячи із власного дома, з Kraina HD.
                         </Typography>
-                        <Box mt={2} display="flex" flexDirection={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
+                        <Box mt={2} display="flex" flexDirection="column">
                             <Button variant="contained" color="primary" style={{ marginBottom: '10px' }}>
                                 Спробувати на 7 днiв
                             </Button>
-                            <Button variant="contained" color="secondary">
+                            <Button variant="contained" color="secondary" onClick={scrollToPlans}>
                                 Переглянути всі плани
                             </Button>
                         </Box>
@@ -55,19 +66,26 @@ const Home = () => {
                     <Slider {...settings}>
                         {movies.map((movie) => (
                             <Card key={movie.id} className="carousel-card">
-                                <CardMedia
-                                    component="img"
-                                    alt={movie.title}
-                                    height="500"
-                                    image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                    title={movie.title}
-                                />
+                                <Box className="poster-container">
+                                    <CardMedia
+                                        component="img"
+                                        alt={movie.title}
+                                        height="500"
+                                        image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                                        title={movie.title}
+                                        className="poster-image"
+                                    />
+                                    <Box className="poster-overlay">
+                                        <Typography className="rating">{movie.vote_average} (IMDb)</Typography>
+                                        <Typography className="title">{movie.title}</Typography>
+                                    </Box>
+                                </Box>
                             </Card>
                         ))}
                     </Slider>
                 </Grid>
             </Grid>
-            <Grid container spacing={3} mt={5}>
+            <Grid container spacing={3} mt={5} id="plans">
                 <Grid item xs={12} sm={6} md={4}>
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">

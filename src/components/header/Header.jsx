@@ -15,8 +15,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
 import HeaderIcons from "./HeaderIcons";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import logo from './logo.svg';
 import "./Header.css";
+
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
 
 const Header = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -42,18 +45,7 @@ const Header = () => {
         <Container maxWidth="lg">
           <Toolbar style={{padding: 0}}>
             <NavLink to="/">
-              <Typography
-                variant="h6"
-                noWrap
-                sx={{
-                  mr: 2,
-                  textDecoration: "none",
-                  color: "#FFC700",
-                  fontSize: "25px",
-                }}
-              >
-                Kraina HD
-              </Typography>
+                <img src={logo} alt="Логотип" />
             </NavLink>
 
             {/* Mobile menu */}
@@ -104,6 +96,9 @@ const Header = () => {
                 <NavLink to="/animatedSeries" className="menu-item-mobile">
                   Мультсеріали
                 </NavLink>
+                <NavLink to="/navigation" className="menu-item-mobile">
+                  Навігація
+                </NavLink>
                 <NavLink to="/faq" className="menu-item-mobile">
                   FAQ
                 </NavLink>
@@ -117,7 +112,6 @@ const Header = () => {
               sx={{
                 flexGrow: 0,
                 marginLeft: "auto",
-                gap: "10px",
                 alignItems: "center",
                 display: { xs: "none", md: "flex" },
               }}
@@ -134,6 +128,9 @@ const Header = () => {
               <NavLink to="/animatedSeries" className="menu-item">
                 Мультсеріали
               </NavLink>
+              <NavLink to="/navigation" className="menu-item">
+                Навігація
+              </NavLink>
               <NavLink to="/faq" className="menu-item">
                 FAQ
               </NavLink>
@@ -147,7 +144,7 @@ const Header = () => {
                 sx={{
                   mr: 1,
                   color: "#FFC700",
-                  fontSize: "20px",
+                  fontSize: "30px",
                 }}
               >
                 |
