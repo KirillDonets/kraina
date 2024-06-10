@@ -111,7 +111,7 @@ const Home = () => {
                             </Typography>
                         </CardContent>
                         <div className="card-button-container">
-                            <Button className="card-button" variant="contained" color="primary">
+                            <Button className="card-button btnBase" variant="contained">
                                 Отримати Базовий
                             </Button>
                         </div>
@@ -142,7 +142,7 @@ const Home = () => {
                             </Typography>
                         </CardContent>
                         <div className="card-button-container">
-                            <Button className="card-button" variant="contained" color="primary">
+                            <Button className="card-button btnStandart" variant="contained" color="primary">
                                 Отримати Стандарт
                             </Button>
                         </div>
@@ -173,12 +173,12 @@ const Home = () => {
                             </Typography>
                         </CardContent>
                         <div className="card-button-container">
-                            <Button className="card-button" variant="contained" color="primary">
+                            <Button className="card-button btnPrem" variant="contained" color="primary">
                                 Отримати Премиум
                             </Button>
                         </div>
                     </Card>
-                    <div>
+                    <div >
                         Є питання.<br />
                         Відповідаемо<br />
                         Ще більше інформації можна знайти
