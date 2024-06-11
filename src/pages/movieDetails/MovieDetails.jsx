@@ -57,15 +57,18 @@ const MovieDetails = () => {
 
     return (
         <Container maxWidth="lg">
+            
             <Box display="flex" alignItems="flex-start" mb={2}>
                 {movie?.poster_path && (
                     <CardMedia
                         component="img"
                         height="500"
                         image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                        
                         title={movie.title}
                     />
                 )}
+                
                 <Box ml={2}>
                     {movie?.title && <Typography variant="h4" gutterBottom>{movie.title}</Typography>}
                     {movie?.original_title && <Typography variant="h6" gutterBottom>{movie.original_title}</Typography>}
@@ -81,6 +84,24 @@ const MovieDetails = () => {
             </Box>
             <Box mt={2} position="relative" paddingBottom="56.25%" height="0" overflow="hidden">
                 {movie?.videos?.results.length > 0 && (
+                    <CardMedia
+                        component="iframe"
+                        src={`https://www.youtube.com/embed/${movie.videos.results[0].key}`}
+                        title="Трейлер фільму"
+                        allow="fullscreen"
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '300px',
+                            height: '200px'
+                        }}
+                    />
+                )}
+            </Box>
+            <Box mt={2} position="relative" paddingBottom="56.25%" height="0" overflow="hidden">
+                {movie?.videos?.results.length > 0 && (
+                    
                     <CardMedia
                         component="iframe"
                         src={`https://www.youtube.com/embed/${movie.videos.results[0].key}`}

@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {  List,  ListItem,  ListItemText,  Typography,  Box,  Container,  Grid,  Card,  CardMedia,  CircularProgress,  Select,  MenuItem,  FormControl,  InputLabel,  TextField} from '@mui/material';
+import {
+  Typography,
+  Box,
+  Container,
+  Grid,
+  Card,
+  CardMedia,
+  CircularProgress,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  TextField
+} from '@mui/material';
 import './Navigation.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
@@ -33,9 +46,7 @@ const Navigation = () => {
           },
         });
         const data = await response.json();
-        // Убираем мультфильмы из списка жанров
-        const filteredGenres = data.genres.filter((genre) => genre.name.toLowerCase() !== 'мультфільм');
-        setGenres(filteredGenres);
+        setGenres(data.genres);
       } catch (error) {
         console.error('Error fetching genres:', error);
       }
@@ -71,8 +82,8 @@ const Navigation = () => {
     fetchMovies();
   }, [selectedCategory, selectedGenres, sortedBy, yearFrom, yearTo, director]);
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
+  const handleCategorySelect = (event) => {
+    setSelectedCategory(event.target.value);
   };
 
   const handleGenreSelect = (event) => {
@@ -98,41 +109,43 @@ const Navigation = () => {
   return (
     <Container maxWidth="lg" className="navigationContainer">
       <Box className="filterSortBox">
-        <Typography variant="h6" className="drawerTitle">Категорії</Typography>
-        <List>
-          {categories.map((category) => (
-            <ListItem
-              button
-              key={category.id}
-              selected={selectedCategory === category.id}
-              onClick={() => handleCategorySelect(category.id)}
-            >
-              <ListItemText primary={category.name} />
-            </ListItem>
-          ))}
-        </List>
-        <Typography variant="h6" className="drawerTitle">Фільтри і сортування</Typography>
-        <FormControl fullWidth className="formControl">
+        <FormControl className="formControl">
+          <InputLabel id="category-label">Категорії</InputLabel>
+          <Select
+            labelId="category-label"
+            value={selectedCategory}
+            onChange={handleCategorySelect}
+            className="MuiSelect-root"
+          >
+            {categories.map((category) => (
+              <MenuItem key={category.id} value={category.id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl className="formControl">
           <InputLabel id="sort-by-label">Сортувати за</InputLabel>
           <Select
             labelId="sort-by-label"
             value={sortedBy}
             onChange={handleSortByChange}
+            className="MuiSelect-root"
           >
             <MenuItem value="popularity.desc">По популярності</MenuItem>
             <MenuItem value="vote_average.desc">По рейтингу</MenuItem>
             <MenuItem value="release_date.desc">По року випуску</MenuItem>
           </Select>
         </FormControl>
-        <Typography variant="h6" className="drawerTitle">Вибір жанру</Typography>
-        <FormControl fullWidth className="formControl">
+        <FormControl className="formControl">
           <InputLabel id="genre-label">Жанри</InputLabel>
           <Select
             labelId="genre-label"
             multiple
             value={selectedGenres}
             onChange={handleGenreSelect}
-            renderValue={(selected) => selected.map(id => genres.find(genre => genre.id === id).name).join(', ')}
+            renderValue={(selected) => selected.map(id => genres.find(genre => genre.id === id)?.name).join(', ')}
+            className="MuiSelect-root"
           >
             {genres.map((genre) => (
               <MenuItem key={genre.id} value={genre.id}>
@@ -141,30 +154,28 @@ const Navigation = () => {
             ))}
           </Select>
         </FormControl>
-        <Typography variant="h6" className="drawerTitle">Вибір року випуску</Typography>
         <TextField
           label="Від"
           type="number"
           value={yearFrom}
           onChange={handleYearFromChange}
-          fullWidth
-          className="formControl"
+          className="formControl yearInput"
         />
         <TextField
           label="До"
           type="number"
           value={yearTo}
           onChange={handleYearToChange}
-          fullWidth
-          className="formControl"
+          className="formControl yearInput"
         />
-        <Typography variant="h6" className="drawerTitle">Вибір режисера</Typography>
         <TextField
           label="Режисер"
           value={director}
           onChange={handleDirectorChange}
-          fullWidth
           className="formControl"
+          inputProps={{
+            style: { color: 'white' }
+          }}
         />
       </Box>
       <Box className="resultsBox">
@@ -173,7 +184,7 @@ const Navigation = () => {
           <CircularProgress />
         ) : (
           <Grid container spacing={4}>
-            {movies.map((movie) => (
+            {movies && movies.map((movie) => (
               <Grid item key={movie.id} xs={12} sm={6} md={4}>
                 <Card>
                   <CardMedia

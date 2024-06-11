@@ -110,7 +110,6 @@
 .card-button {
     width: 100%;
     padding: 10px;
-    border-radius: 15px !important;
     color: black !important;
 }
 .btnBase {
@@ -125,4 +124,8 @@
 }
 .logo1 {
     max-height: 15px;
+}
+button {
+
+    border-radius: 15px !important;
 }

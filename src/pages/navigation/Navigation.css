@@ -1,20 +1,24 @@
 .navigationContainer {
   display: flex;
+  flex-direction: column;
   margin-top: 20px;
 }
 
 .filterSortBox {
-  width: 300px;
-  flex-shrink: 0;
-  margin-right: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px; /* Добавим отступ между элементами */
+}
+
+.formControl {
+  min-width: 150px;
+  margin-bottom: 20px;
 }
 
 .drawerTitle {
   margin-bottom: 10px;
-}
-
-.formControl {
-  margin-bottom: 20px;
 }
 
 .resultsBox {
@@ -26,17 +30,40 @@
   margin-bottom: 20px;
 }
 
-.moviesList {
+.buttonRow {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
+  margin-left: auto; /* Чтобы кнопки были справа */
 }
 
-.movieItem {
-  width: 200px;
+.buttonRow button {
+  border-radius: 15px;
 }
 
-.movieItem img {
-  width: 100%;
-  height: auto;
+/* Добавляем стили для выпадающих списков на темном фоне */
+.MuiSelect-root {
+  background-color: #27313D;
+  color: white;
+  min-width: 100px;
+}
+
+.MuiList-root {
+  background-color: #27313D;
+}
+
+.MuiMenuItem-root {
+  color: white;
+}
+
+.MuiInputBase-root {
+  color: white;
+}
+
+.MuiInputLabel-root {
+  color: white;
+}
+
+/* Ограничиваем ширину поля для ввода года */
+.yearInput {
+  max-width: 90px; /* Примерная ширина для 4 цифр */
 }

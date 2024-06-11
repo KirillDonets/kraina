@@ -60,14 +60,14 @@ const Movies = () => {
     return (
         <Container maxWidth="lg">
             <h1>Фільми</h1>
-            <Grid container spacing={4}>
+            <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {movies.map(movie => (
-                    <Grid item key={movie.id} xs={12} sm={6} md={4}>
+                    <Grid item key={movie.id} xs={12} sm={6} md={4} lg={2}>
                         <Link to={`/movies/${movie.id}`}>
                             <Card>
                                 <CardMedia
                                     component="img"
-                                    height="500"
+                                    height="300"
                                     image={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
                                     alt={movie.title}
                                 />

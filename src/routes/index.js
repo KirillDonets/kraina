@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
       { path: '/movies', element: <Movies /> },
       { path: '/series', element: <Series /> },
       { path: '/navigation', element: <Navigation /> },
-      { path: '/movies/:id', element: <MovieDetails /> } // Исправлено на '/movies/:id'
+      { path: '/movies/:id', element: <MovieDetails /> }
     ]
   },
 ]);

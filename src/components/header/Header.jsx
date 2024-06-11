@@ -97,7 +97,7 @@ const Header = () => {
                   Мультсеріали
                 </NavLink>
                 <NavLink to="/navigation" className="menu-item-mobile">
-                  Навігація
+                  Фільтри
                 </NavLink>
                 <NavLink to="/faq" className="menu-item-mobile">
                   FAQ
@@ -129,7 +129,7 @@ const Header = () => {
                 Мультсеріали
               </NavLink>
               <NavLink to="/navigation" className="menu-item">
-                Навігація
+              Фільтри
               </NavLink>
               <NavLink to="/faq" className="menu-item">
                 FAQ
