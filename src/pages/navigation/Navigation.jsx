@@ -46,7 +46,7 @@ const Navigation = () => {
           },
         });
         const data = await response.json();
-        setGenres(data.genres);
+        setGenres(data.genres || []);
       } catch (error) {
         console.error('Error fetching genres:', error);
       }
@@ -72,7 +72,7 @@ const Navigation = () => {
           }
         );
         const data = await response.json();
-        setMovies(data.results);
+        setMovies(data.results || []);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching movies:', error);
@@ -184,7 +184,7 @@ const Navigation = () => {
           <CircularProgress />
         ) : (
           <Grid container spacing={4}>
-            {movies && movies.map((movie) => (
+            {movies.map((movie) => (
               <Grid item key={movie.id} xs={12} sm={6} md={4}>
                 <Card>
                   <CardMedia
