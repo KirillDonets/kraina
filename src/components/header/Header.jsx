@@ -1,7 +1,6 @@
 import {
   AppBar,
   Box,
-  Button,
   Container,
   IconButton,
   Menu,
@@ -15,7 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
 import HeaderIcons from "./HeaderIcons";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import logo from './logo.svg';
+import krainaHD from './krainaHD.svg';
 import "./Header.css";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -45,7 +44,7 @@ const Header = () => {
         <Container maxWidth="lg">
           <Toolbar style={{padding: 0}}>
             <NavLink to="/">
-                <img src={logo} alt="Логотип" className="logo" />
+                <img src={krainaHD} alt="Логотип" className="krainaHD1" />
             </NavLink>
 
             {/* Mobile menu */}
