@@ -131,7 +131,7 @@ const Home = () => {
                                 Стандарт
                             </Typography>
                             <Typography variant="body2">
-                                120 ₴ в месяц <br />
+                                150 ₴ в месяц <br />
                                 <span className="premaritalСolor">• Якість відео та звуку</span> <br />
                                 Нормальна <br /> <hr />
                                 <span className="premaritalСolor">• Роздільна здатність</span> <br />
@@ -163,7 +163,7 @@ const Home = () => {
                                 Преміум
                             </Typography>
                             <Typography variant="body2">
-                                120 ₴ в месяц <br />
+                                200 ₴ в месяц <br />
                                 <span className="premaritalСolor">• Якість відео та звуку</span> <br />
                                 Чудова <br /> <hr />
                                 <span className="premaritalСolor">• Роздільна здатність</span> <br />

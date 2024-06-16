@@ -23,8 +23,6 @@ const Navigation = () => {
   const [categories, setCategories] = useState([
     { id: 'movie', name: 'Фільм' },
     { id: 'tv', name: 'Серіал' },
-    { id: 'cartoon', name: 'Мультфільм' },
-    { id: 'animated_series', name: 'Мультсеріал' },
   ]);
   const [selectedCategory, setSelectedCategory] = useState('movie');
   const [genres, setGenres] = useState([]);
