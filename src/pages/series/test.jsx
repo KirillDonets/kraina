@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination } from '@mui/material';
-import './Cartoons.css';
+import './Series.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
 const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
 const baseUrl = 'https://api.themoviedb.org/3';
 
-const Cartoons = () => {
-    const [cartoons, setCartoons] = useState([]);
+const Series = () => {
+    const [series, setSeries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
+    const [genre, setGenre] = useState('');
     const [totalPages, setTotalPages] = useState(1);
-
+// Series
     useEffect(() => {
-        const fetchCartoons = async () => {
+        const fetchSeries = async () => {
             try {
-                const response = await fetch(`${baseUrl}/discover/movie?api_key=${apiKey}&language=uk-UA&page=${page}&with_genres=16`, {
+                const response = await fetch(`${baseUrl}/tv/popular?api_key=${apiKey}&language=uk-UA&page=${page}&with_genres=${genre}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json;charset=utf-8'
@@ -24,21 +25,33 @@ const Cartoons = () => {
                 const data = await response.json();
                 console.log(data);
 
-                // Обновление состояния с данными мультфильмов
-                setCartoons(data.results);
+                // Фильтрация сериалов, исключая мультсериалы
+                const filteredSeries = data.results.filter(tv => !tv.genre_ids.includes(16));
+
+                setSeries(filteredSeries);
                 setTotalPages(data.total_pages);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching cartoons:', error);
+                console.error('Error fetching series:', error);
                 setLoading(false);
             }
         };
 
-        fetchCartoons();
-    }, [page]);
+        fetchSeries();
+    }, [page, genre]);
 
     const handlePageChange = (event, value) => {
         setPage(value);
+    };
+
+    const handleGenreChange = (event) => {
+        setGenre(event.target.value);
+    };
+
+    const handleSearch = () => {
+        setLoading(true);
+        setPage(1);
+        setGenre(genre);
     };
 
     if (loading) {
@@ -51,16 +64,16 @@ const Cartoons = () => {
 
     return (
         <Container maxWidth="lg">
-            <h1>Мультфільми</h1>
+            <h1>Серіали</h1>
             <Grid container spacing={4}>
-                {cartoons.map(cartoon => (
-                    <Grid item key={cartoon.id} xs={12} sm={6} md={4}>
+                {series.map(tv => (
+                    <Grid item key={tv.id} xs={12} sm={6} md={4}>
                         <Card>
                             <CardMedia
                                 component="img"
                                 height="500"
-                                image={cartoon.poster_path ? `https://image.tmdb.org/t/p/w500${cartoon.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
-                                alt={cartoon.title}
+                                image={tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
+                                alt={tv.title}
                             />
                         </Card>
                     </Grid>
@@ -77,4 +90,4 @@ const Cartoons = () => {
     );
 }
 
-export default Cartoons;
+export default Series;

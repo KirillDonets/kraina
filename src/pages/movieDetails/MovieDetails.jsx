@@ -78,7 +78,6 @@ const MovieDetails = () => {
                         title={movie.title}
                     />
                 )}
-                {/* AnimatedSeries */}
                 <Box ml={2} color="#FFFFFF">
                     {movie?.title && <Typography variant="h4" gutterBottom>{movie.title}</Typography>}
                     {movie?.original_title && <Typography variant="h6" gutterBottom>{movie.original_title}</Typography>}
