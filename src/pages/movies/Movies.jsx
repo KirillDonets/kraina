@@ -13,7 +13,6 @@ const Movies = () => {
     const [page, setPage] = useState(1);
     const [genre, setGenre] = useState('');
     const [totalPages, setTotalPages] = useState(1);
-// Movies
     useEffect(() => {
         const fetchMovies = async () => {
             try {

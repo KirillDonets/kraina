@@ -12,7 +12,6 @@ const Series = () => {
     const [page, setPage] = useState(1);
     const [genre, setGenre] = useState('');
     const [totalPages, setTotalPages] = useState(1);
-// Series
     useEffect(() => {
         const fetchSeries = async () => {
             try {
