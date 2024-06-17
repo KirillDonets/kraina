@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import logoIMDB from './logoIMDB.png';
+import imdb from './imdb.svg';
 import { Container, CircularProgress, Typography, CardMedia, Box, Grid, Button } from '@mui/material';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
@@ -78,11 +78,12 @@ const MovieDetails = () => {
                         title={movie.title}
                     />
                 )}
+                {/* AnimatedSeries */}
                 <Box ml={2} color="#FFFFFF">
                     {movie?.title && <Typography variant="h4" gutterBottom>{movie.title}</Typography>}
                     {movie?.original_title && <Typography variant="h6" gutterBottom>{movie.original_title}</Typography>}
                     {movie?.overview && <Typography variant="body1" gutterBottom>{movie.overview}</Typography>}
-                    {movie?.vote_average && <Typography variant="body2">Рейтинги: {movie.vote_average} <img src={logoIMDB} alt="IMDB Logo"/></Typography>}
+                    {movie?.vote_average && <Typography variant="body2">Рейтинги: {movie.vote_average} <img src={imdb} alt="IMDB Logo" style={{ width: '50px', height: 'auto' }}/></Typography>}
                     {movie?.release_date && <Typography variant="body2">Дата виходу: {movie.release_date}</Typography>}
                     {movie?.production_countries.length > 0 && <Typography variant="body2">Країна: {movie.production_countries.map(country => country.name).join(', ')}</Typography>}
                     {movie?.adult !== undefined && <Typography variant="body2">Вік: {movie.adult ? '18+' : 'Всі віки'}</Typography>}
@@ -99,6 +100,7 @@ const MovieDetails = () => {
                         style={{
                             width: '300px',
                             height: '200px'
+                            
                         }}
                     />
                 )}
@@ -115,7 +117,7 @@ const MovieDetails = () => {
                                         height="150"
                                         image={person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
                                         title={person.name}
-                                        style={{ borderRadius: '8px' }}
+                                        style={{ borderRadius: '100px' }}
                                     />
                                     <Typography variant="body2" align="center">{person.name}</Typography>
                                 </Box>
@@ -136,7 +138,7 @@ const MovieDetails = () => {
                                         height="150"
                                         image={actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
                                         title={actor.name}
-                                        style={{ borderRadius: '8px' }}
+                                        style={{ borderRadius: '70%' }}
                                     />
                                     <Typography variant="body2" align="center">{actor.name}</Typography>
                                 </Box>

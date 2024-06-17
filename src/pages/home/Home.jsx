@@ -116,9 +116,6 @@ const Home = () => {
                                 </Box>
                             </Card>
                         ))}
-                        <Card className="carousel-card logo-card">
-                            <img src={krainaHD} alt="Kraina HD Logo" className="carousel-logo" />
-                        </Card>
                     </Slider>
                 </Grid>
             </Grid>
