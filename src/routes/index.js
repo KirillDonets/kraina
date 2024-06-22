@@ -11,6 +11,7 @@ import Navigation from "../pages/navigation/Navigation";
 import MovieDetails from "../pages/movieDetails/MovieDetails";
 import Filmography from '../pages/filmography/Filmography';
 import SearchResults from '../pages/searchResults/SearchResults';
+import Profile from "../pages/profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +31,9 @@ export const router = createBrowserRouter([
 
       { path: '/movieDetails/:id', element: <MovieDetails /> },
       { path: '/movies/:id', element: <MovieDetails /> },
-      { path: '/person/:id', element: <Filmography /> }
+      { path: '/person/:id', element: <Filmography /> },
+
+      { path: '/profile', element: <Profile /> }
 
     ]
   },
