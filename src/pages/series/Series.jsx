@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination } from '@mui/material';
+import { Link } from 'react-router-dom';
 import './Series.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
@@ -66,15 +67,17 @@ const Series = () => {
             <h1>Серіали</h1>
             <Grid container spacing={4}>
                 {series.map(tv => (
-                    <Grid item key={tv.id} xs={12} sm={6} md={4}>
-                        <Card>
-                            <CardMedia
-                                component="img"
-                                height="500"
-                                image={tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
-                                alt={tv.title}
-                            />
-                        </Card>
+                    <Grid item key={tv.id} xs={12} sm={6} md={4} lg={2}>
+                        <Link to={`/series/${tv.id}`}>
+                            <Card>
+                                <CardMedia
+                                    component="img"
+                                    height="300"
+                                    image={tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
+                                    alt={tv.title}
+                                />
+                            </Card>
+                        </Link> 
                     </Grid>
                 ))}
             </Grid>

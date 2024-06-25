@@ -1,7 +1,7 @@
-// Movies.js
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, Pagination } from '@mui/material';
+import { Container, CircularProgress, Grid, Card, CardMedia, Pagination, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
+import './Movies.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
 const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
@@ -59,6 +59,7 @@ const Movies = () => {
     return (
         <Container maxWidth="lg">
             <h1>Фільми</h1>
+            <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {movies.map(movie => (
                     <Grid item key={movie.id} xs={12} sm={6} md={4} lg={2}>
@@ -82,7 +83,9 @@ const Movies = () => {
                 color="primary"
                 style={{ marginTop: '20px' }}
             />
+          <Box className="divider"></Box>  
         </Container>
+        
     );
 }
 

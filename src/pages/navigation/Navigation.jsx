@@ -1,43 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  Box,
-  Container,
-  Grid,
-  Card,
-  CardMedia,
-  CircularProgress,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  TextField
-} from '@mui/material';
+import { Typography, Box, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText, TextField, Button } from '@mui/material';
 import './Navigation.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
 const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
 const baseUrl = 'https://api.themoviedb.org/3';
 
-const Navigation = () => {
-  const [categories, setCategories] = useState([
-    { id: 'movie', name: 'Фільм' },
-    { id: 'tv', name: 'Серіал' },
-  ]);
-  const [selectedCategory, setSelectedCategory] = useState('movie');
+const Navigation = ({ onFilterChange }) => {
   const [genres, setGenres] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedCountries, setSelectedCountries] = useState([]);
   const [sortedBy, setSortedBy] = useState('popularity.desc');
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [yearFrom, setYearFrom] = useState('');
   const [yearTo, setYearTo] = useState('');
-  const [director, setDirector] = useState('');
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await fetch(`${baseUrl}/genre/${selectedCategory}/list?api_key=${apiKey}&language=uk-UA`, {
+        const response = await fetch(`${baseUrl}/genre/movie/list?api_key=${apiKey}&language=uk-UA`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json;charset=utf-8',
@@ -49,43 +30,32 @@ const Navigation = () => {
         console.error('Error fetching genres:', error);
       }
     };
-    fetchGenres();
-  }, [selectedCategory]);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
+    const fetchCountries = async () => {
       try {
-        setLoading(true);
-        const genreParams = selectedGenres.join(',');
-        const yearParams = (yearFrom && yearTo) ? `&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31` : '';
-        const directorParams = director ? `&with_crew=${director}` : '';
-
-        const response = await fetch(
-          `${baseUrl}/discover/${selectedCategory}?api_key=${apiKey}&language=uk-UA&sort_by=${sortedBy}&with_genres=${genreParams}${yearParams}${directorParams}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json;charset=utf-8',
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/configuration/countries?api_key=${apiKey}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json;charset=utf-8',
+          },
+        });
         const data = await response.json();
-        setMovies(data.results || []);
-        setLoading(false);
+        setCountries(data || []);
       } catch (error) {
-        console.error('Error fetching movies:', error);
-        setLoading(false);
+        console.error('Error fetching countries:', error);
       }
     };
-    fetchMovies();
-  }, [selectedCategory, selectedGenres, sortedBy, yearFrom, yearTo, director]);
 
-  const handleCategorySelect = (event) => {
-    setSelectedCategory(event.target.value);
-  };
+    fetchGenres();
+    fetchCountries();
+  }, []);
 
   const handleGenreSelect = (event) => {
     setSelectedGenres(event.target.value);
+  };
+
+  const handleCountrySelect = (event) => {
+    setSelectedCountries(event.target.value);
   };
 
   const handleSortByChange = (event) => {
@@ -100,104 +70,100 @@ const Navigation = () => {
     setYearTo(event.target.value);
   };
 
-  const handleDirectorChange = (event) => {
-    setDirector(event.target.value);
+  const handleResetFilters = () => {
+    setSelectedGenres([]);
+    setSelectedCountries([]);
+    setSortedBy('popularity.desc');
+    setYearFrom('');
+    setYearTo('');
+    onFilterChange({
+      selectedGenres: [],
+      selectedCountries: [],
+      sortedBy: 'popularity.desc',
+      yearFrom: '',
+      yearTo: ''
+    });
   };
 
+  useEffect(() => {
+    onFilterChange({
+      selectedGenres,
+      selectedCountries,
+      sortedBy,
+      yearFrom,
+      yearTo
+    });
+  }, [selectedGenres, selectedCountries, sortedBy, yearFrom, yearTo, onFilterChange]);
+
   return (
-    <Container maxWidth="lg" className="navigationContainer">
-      <Box className="filterSortBox">
-        <FormControl className="formControl">
-          <InputLabel id="category-label">Категорії</InputLabel>
-          <Select
-            labelId="category-label"
-            value={selectedCategory}
-            onChange={handleCategorySelect}
-            className="MuiSelect-root"
-          >
-            {categories.map((category) => (
-              <MenuItem key={category.id} value={category.id}>
-                {category.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl className="formControl">
-          <InputLabel id="sort-by-label">Сортувати за</InputLabel>
-          <Select
-            labelId="sort-by-label"
-            value={sortedBy}
-            onChange={handleSortByChange}
-            className="MuiSelect-root"
-          >
-            <MenuItem value="popularity.desc">По популярності</MenuItem>
-            <MenuItem value="vote_average.desc">По рейтингу</MenuItem>
-            <MenuItem value="release_date.desc">По року випуску</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl className="formControl">
-          <InputLabel id="genre-label">Жанри</InputLabel>
-          <Select
-            labelId="genre-label"
-            multiple
-            value={selectedGenres}
-            onChange={handleGenreSelect}
-            renderValue={(selected) => selected.map(id => genres.find(genre => genre.id === id)?.name).join(', ')}
-            className="MuiSelect-root"
-          >
-            {genres.map((genre) => (
-              <MenuItem key={genre.id} value={genre.id}>
-                {genre.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <TextField
-          label="Від"
-          type="number"
-          value={yearFrom}
-          onChange={handleYearFromChange}
-          className="formControl yearInput"
-        />
-        <TextField
-          label="До"
-          type="number"
-          value={yearTo}
-          onChange={handleYearToChange}
-          className="formControl yearInput"
-        />
-        <TextField
-          label="Режисер"
-          value={director}
-          onChange={handleDirectorChange}
-          className="formControl"
-          inputProps={{
-            style: { color: 'white' }
-          }}
-        />
-      </Box>
-      <Box className="resultsBox">
-        <Typography variant="h5" className="resultsTitle">Результати:</Typography>
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Grid container spacing={4}>
-            {movies.map((movie) => (
-              <Grid item key={movie.id} xs={12} sm={6} md={4}>
-                <Card>
-                  <CardMedia
-                    component="img"
-                    height="500"
-                    image={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
-                    alt={movie.title}
-                  />
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Box>
-    </Container>
+    <Box className="navigationContainer" sx={{ marginTop: '20px' }}>
+      <FormControl className="formControl">
+        <InputLabel id="sort-by-label">Сортувати за</InputLabel>
+        <Select
+          labelId="sort-by-label"
+          value={sortedBy}
+          onChange={handleSortByChange}
+          className="MuiSelect-root"
+        >
+          <MenuItem value="popularity.desc">По популярності</MenuItem>
+          <MenuItem value="vote_average.desc">По рейтингу</MenuItem>
+          <MenuItem value="release_date.desc">По року випуску</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl className="formControl">
+        <InputLabel id="genre-label">Жанри</InputLabel>
+        <Select
+          labelId="genre-label"
+          multiple
+          value={selectedGenres}
+          onChange={handleGenreSelect}
+          renderValue={(selected) => selected.map(id => genres.find(genre => genre.id === id)?.name).join(', ')}
+          className="MuiSelect-root"
+        >
+          {genres.map((genre) => (
+            <MenuItem key={genre.id} value={genre.id}>
+              <Checkbox checked={selectedGenres.indexOf(genre.id) > -1} />
+              <ListItemText primary={genre.name} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl className="formControl">
+        <InputLabel id="country-label">Країна</InputLabel>
+        <Select
+          labelId="country-label"
+          multiple
+          value={selectedCountries}
+          onChange={handleCountrySelect}
+          renderValue={(selected) => selected.map(code => countries.find(country => country.iso_3166_1 === code)?.english_name).join(', ')}
+          className="MuiSelect-root"
+        >
+          {countries.map((country) => (
+            <MenuItem key={country.iso_3166_1} value={country.iso_3166_1}>
+              <Checkbox checked={selectedCountries.indexOf(country.iso_3166_1) > -1} />
+              <ListItemText primary={country.english_name} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <TextField
+        label="Від"
+        type="number"
+        value={yearFrom}
+        onChange={handleYearFromChange}
+        className="formControl yearInput"
+      />
+      <TextField
+        label="До"
+        type="number"
+        value={yearTo}
+        onChange={handleYearToChange}
+        className="formControl yearInput"
+      />
+      <Button variant="contained" onClick={handleResetFilters} sx={{ borderRadius: '15px', backgroundColor: '#D9D9D9', marginTop: '10px' }}>
+        Скинути всі фільтри
+      </Button>
+    </Box>
   );
 };
 
