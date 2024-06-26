@@ -8,11 +8,11 @@ import gift from './images/gift.svg';
 import { Link } from 'react-router-dom';
 
 const navItems = [
-    { img: settings, title: 'Особисті дані', link: '#' },
-    { img: card, title: 'Карточка', link: '#' },
-    { img: pc, title: 'ПК', link: '#' },
-    { img: book, title: 'Книга', link: '#' },
-    { img: gift, title: 'Подарунок', link: '#' }
+    { img: settings, title: 'Особисті дані', link: '/profile' },
+    { img: card, title: 'Оплата', link: '/profile/payment' },
+    { img: pc, title: 'Мої пристрої', link: '#' },
+    { img: book, title: 'Тарифи', link: '#' },
+    { img: gift, title: 'Промокоди', link: '#' }
 ];
 
 export default function ProfileNavbar({ active }) {
