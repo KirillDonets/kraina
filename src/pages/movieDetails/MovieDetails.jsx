@@ -94,6 +94,7 @@ const MovieDetails = () => {
                         <CardMedia
                             component="img"
                             height="300px"
+                            
                             image={similarMovie.poster_path ? `https://image.tmdb.org/t/p/w185${similarMovie.poster_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
                             title={similarMovie.title}
                         />
@@ -122,21 +123,24 @@ const MovieDetails = () => {
                     />
                 ) : (
                     <Box position="relative" display="flex" alignItems="center" justifyContent="center">
-                        <CardMedia
-                            component="iframe"
-                            src={`https://www.youtube.com/embed/${videos[0].key}?autoplay=1&mute=1&loop=1&playlist=${videos[0].key}`}
-                            title="Трейлер фільму"
-                            allow="fullscreen"
-                            style={{ width: '100%', height: '501px', border: 'none' }}
-                        />
-                        <CardMedia
-                            component="img"
-                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                            title={movie.title}
-                            className="poster-overlay"
-                        />
+                        {videos.length > 0 ? (
+                            <CardMedia
+                                component="iframe"
+                                src={`https://www.youtube.com/embed/${videos[0].key}?autoplay=1&mute=1&loop=1&playlist=${videos[0].key}`}
+                                title="Трейлер фільму"
+                                allow="fullscreen"
+                                style={{ width: '100%', height: '501px', border: 'none' }}
+                            />
+                        ) : (
+                            <CardMedia
+                                component="img"
+                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                title={movie.title}
+                                className="poster-overlay"
+                            />
+                        )}
                         <Box className="trailer-buttons">
-                        <Button color="secondary" style={{ marginBottom: '10px' }} onClick={() => setPlayMovie(true)}>
+                            <Button color="secondary" style={{ marginBottom: '10px' }} onClick={() => setPlayMovie(true)}>
                                 Дивитись
                             </Button>
                             <Box textAlign="center" color="#FFFFFF">
@@ -171,7 +175,7 @@ const MovieDetails = () => {
                     </Box>
                 </Box>
                 <Box flex={1} color="#FFFFFF">
-                    <Typography variant="h5" gutterBottom>Команда:</Typography>
+                    <Typography variant="h5" gutterBottom>Режисери:</Typography>
                     <Grid container spacing={2}>
                         {director.map(person => (
                             <Grid item key={person.id} xs={6} sm={4} md={3} lg={2}>
@@ -234,6 +238,7 @@ const MovieDetails = () => {
                     </Box>
                 )}
             </Box>
+            <Box className="divider"></Box>
             <IconButton
                 color="primary"
                 onClick={scrollToTop}

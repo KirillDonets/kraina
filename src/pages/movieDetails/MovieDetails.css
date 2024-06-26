@@ -19,7 +19,6 @@ body, html {
     z-index: 2;
     border-radius: 10px;
 }
-/* width: '100%', height: 'auto', maxHeight: '500px' */
 .trailer-buttons {
     position: absolute;
     top: 50%;

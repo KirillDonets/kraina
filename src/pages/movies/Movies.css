@@ -1,0 +1,9 @@
+.divider {
+  height: 45px;
+  background-color: #151E27;
+  margin: 20px 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
