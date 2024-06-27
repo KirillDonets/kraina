@@ -1,0 +1,13 @@
+.poster{
+    max-width: 100%;
+    width: auto !important;
+    margin: auto;
+    border-radius: 5px;
+  }
+  .movie-title{
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: 20px;
+  }

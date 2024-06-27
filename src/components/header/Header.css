@@ -19,3 +19,8 @@
 .premaritalСolor {
     color: #A9A9A9;
 }
+
+.search-box{
+    transform: scaleX(0);
+    transform-origin: 100% 0;
+}

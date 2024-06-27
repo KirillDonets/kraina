@@ -7,3 +7,7 @@
   left: 50%;
   transform: translateX(-50%);
 }
+
+.MuiPagination-ul{
+  justify-content: center;
+}

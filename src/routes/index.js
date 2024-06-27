@@ -9,6 +9,7 @@ import Movies from "../pages/movies/Movies";
 import Series from "../pages/series/Series";
 import Navigation from "../pages/navigation/Navigation";
 import MovieDetails from "../pages/movieDetails/MovieDetails";
+import TvDetails from "../pages/movieDetails/TvDetails";
 import Filmography from '../pages/filmography/Filmography';
 import SearchResults from '../pages/searchResults/SearchResults';
 
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
       { path: '/navigation', element: <Navigation /> },
       { path: '/movieDetails/:id', element: <MovieDetails /> },
       { path: '/movies/:id', element: <MovieDetails /> },
+      { path: '/tv/:id', element: <TvDetails /> },
       { path: '/series/:id', element: <MovieDetails /> },
       { path: '/person/:id', element: <Filmography /> }
     ]

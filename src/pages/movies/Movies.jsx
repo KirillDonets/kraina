@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, Pagination, Box } from '@mui/material';
+import { Container, CircularProgress, Grid, Card, CardMedia, Pagination, Box, CardContent, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import './Movies.css';
-
-const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
-const baseUrl = 'https://api.themoviedb.org/3';
+import Movie from '../../components/movie/Movie';
+import {apiKey, token, baseUrl} from '../../app/http';
+import Navigation from '../../components/navigation/Navigation';
 
 const Movies = () => {
     const [movies, setMovies] = useState([]);
@@ -55,25 +54,42 @@ const Movies = () => {
             </Container>
         );
     }
+    const onFilterChange = (dataFilter)=>{
+        console.log(dataFilter);
+        // const fetchMovies = async () => {
+        //     try {
+        //         const response = await fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&language=uk-UA&page=${page}&with_genres=${genre}`, {
+        //             headers: {
+        //                 Authorization: `Bearer ${token}`,
+        //                 'Content-Type': 'application/json;charset=utf-8'
+        //             }
+        //         });
+        //         const data = await response.json();
+        //         console.log(data);  // Отладка
+
+        //         // Фильтрация фильмов, исключая мультфильмы
+        //         const filteredMovies = data.results.filter(movie => !movie.genre_ids.includes(16));
+
+        //         setMovies(filteredMovies);
+        //         setTotalPages(data.total_pages);
+        //         setLoading(false);
+        //     } catch (error) {
+        //         console.error('Error fetching movies:', error);
+        //         setLoading(false);
+        //     }
+        // };
+
+        // fetchMovies();
+    }
 
     return (
         <Container maxWidth="lg">
             <h1>Фільми</h1>
+            <Navigation onFilterChange={onFilterChange}></Navigation>
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {movies.map(movie => (
-                    <Grid item key={movie.id} xs={12} sm={6} md={4} lg={2}>
-                        <Link to={`/movies/${movie.id}`}>
-                            <Card>
-                                <CardMedia
-                                    component="img"
-                                    height="300"
-                                    image={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
-                                    alt={movie.title}
-                                />
-                            </Card>
-                        </Link>
-                    </Grid>
+                    <Movie movie={movie} key={movie.id} />
                 ))}
             </Grid>
             <Pagination
@@ -81,11 +97,11 @@ const Movies = () => {
                 page={page}
                 onChange={handlePageChange}
                 color="primary"
-                style={{ marginTop: '20px' }}
+                style={{ marginTop: '40px', marginLeft:"auto" }}
             />
-          <Box className="divider"></Box>  
+            <Box className="divider"></Box>
         </Container>
-        
+
     );
 }
 

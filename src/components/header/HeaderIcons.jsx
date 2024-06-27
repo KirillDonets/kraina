@@ -74,10 +74,11 @@ const HeaderIcons = () => {
           <Box
             component="form"
             onKeyPress={handleSearchSubmit}
+            className="searchBox"
             sx={{
               position: 'absolute',
               top: 0,
-              left: '100%',
+              right: '140%',
               ml: 2,
               backgroundColor: '#333',
               borderRadius: 1,

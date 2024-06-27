@@ -1,7 +1,25 @@
 import React from 'react';
-import { Box, Button, TextField, Select, MenuItem } from '@mui/material';
+import { Box, Button, TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, ListItemText, OutlinedInput } from '@mui/material';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const years = [];
+for(let i = 1960; i< new Date().getFullYear(); i++){
+  years.push(i)
+}
+
 
 const Navigation = ({ onFilterChange }) => {
+  const [yearsForm, setYearsForm] = React.useState([]);
   const [localFilter, setLocalFilter] = React.useState({
     selectedGenres: [],
     selectedCountries: [],
@@ -9,7 +27,15 @@ const Navigation = ({ onFilterChange }) => {
     yearFrom: '',
     yearTo: ''
   });
-
+  const handleChangeYear = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setYearsForm(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
   const handleChange = (event) => {
     const { name, value } = event.target;
     setLocalFilter((prevFilter) => ({
@@ -24,15 +50,33 @@ const Navigation = ({ onFilterChange }) => {
 
   return (
     <Box sx={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-      <TextField
-        label="From Year"
-        name="yearFrom"
-        type="number"
-        value={localFilter.yearFrom}
-        onChange={handleChange}
-        variant="outlined"
-        size="small"
-      />
+     
+     <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="demo-multiple-checkbox-label">Year</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={yearsForm}
+          onChange={handleChangeYear}
+          input={<OutlinedInput label="Tag" />}
+          renderValue={(selected) => selected.join(', ')}
+          MenuProps={MenuProps}
+        >
+          {years.map((year) => (
+            <MenuItem key={year} value={year}>
+              <Checkbox checked={yearsForm.indexOf(year) > -1} />
+              <ListItemText primary={year} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+
+
+
+
+
       <TextField
         label="To Year"
         name="yearTo"

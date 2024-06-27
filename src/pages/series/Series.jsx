@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination } from '@mui/material';
 import { Link } from 'react-router-dom';
 import './Series.css';
-
-const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
-const baseUrl = 'https://api.themoviedb.org/3';
+import {apiKey, token, baseUrl} from '../../app/http';
+import Movie from '../../components/movie/Movie';
 
 const Series = () => {
     const [series, setSeries] = useState([]);
@@ -67,18 +65,8 @@ const Series = () => {
             <h1>Серіали</h1>
             <Grid container spacing={4}>
                 {series.map(tv => (
-                    <Grid item key={tv.id} xs={12} sm={6} md={4} lg={2}>
-                        <Link to={`/series/${tv.id}`}>
-                            <Card>
-                                <CardMedia
-                                    component="img"
-                                    height="300"
-                                    image={tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
-                                    alt={tv.title}
-                                />
-                            </Card>
-                        </Link> 
-                    </Grid>
+                    <Movie movie={tv} key={tv.id} />
+                    
                 ))}
             </Grid>
             <Pagination
