@@ -85,7 +85,7 @@ const Movies = () => {
     return (
         <Container maxWidth="lg">
             <h1>Фільми</h1>
-            <Navigation onFilterChange={onFilterChange}></Navigation>
+            <Navigation onFilterChange={onFilterChange}/>
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {movies.map(movie => (

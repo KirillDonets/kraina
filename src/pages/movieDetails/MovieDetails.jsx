@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import imdb from './imdb.svg';
 import testVideo from './test-video.mp4';
-import { Container, CircularProgress, Typography, CardMedia, Box, Grid, Button, IconButton } from '@mui/material';
+import { Container, CircularProgress, Typography, CardMedia, Box, Grid, Button, IconButton, Avatar } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -181,13 +181,11 @@ const MovieDetails = () => {
                             <Grid item key={person.id} xs={6} sm={4} md={3} lg={2}>
                                 <Link to={`/person/${person.id}`} className="person-link">
                                     <Box display="flex" flexDirection="column" alignItems="center">
-                                        <CardMedia
-                                            component="img"
-                                            height="100"
-                                            width="100"
-                                            image={person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
-                                            title={person.name}
+                                    <Avatar
+                                            src={person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
+                                            alt={person.name}
                                             className="person-image"
+                                            sx={{ width: 85, height: 85 }}
                                         />
                                         <Typography variant="body2" align="center">{person.name}</Typography>
                                     </Box>
@@ -195,19 +193,19 @@ const MovieDetails = () => {
                             </Grid>
                         ))}
                     </Grid>
+
                     <Typography variant="h5" gutterBottom>У ролях:</Typography>
                     <Grid container spacing={2}>
                         {sortedCast.slice(0, showAllCast ? sortedCast.length : 4).map(actor => (
                             <Grid item key={actor.cast_id} xs={6} sm={4} md={3} lg={2}>
                                 <Link to={`/person/${actor.id}`} className="person-link">
                                     <Box display="flex" flexDirection="column" alignItems="center">
-                                        <CardMedia
-                                            component="img"
-                                            height="100"
-                                            width="100"
-                                            image={actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
-                                            title={actor.name}
+                                        
+                                        <Avatar
+                                            src={actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
+                                            alt={actor.name}
                                             className="person-image"
+                                            sx={{ width: 85, height: 85 }}
                                         />
                                         <Typography variant="body2" align="center">{actor.name}</Typography>
                                     </Box>

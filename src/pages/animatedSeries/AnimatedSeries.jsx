@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination } from '@mui/material';
+import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination, Box } from '@mui/material';
 import './AnimatedSeries.css';
 import Movie from '../../components/movie/Movie';
 import {apiKey, token, baseUrl} from '../../app/http';
+import Navigation from '../../components/navigation/Navigation';
 
 
 const AnimatedSeries = () => {
@@ -47,11 +48,15 @@ const AnimatedSeries = () => {
             </Container>
         );
     }
-
+    const onFilterChange = (dataFilter)=>{
+        console.log(dataFilter);
+    }
     return (
         <Container maxWidth="lg">
             <h1>Мультсеріали</h1>
-            <Grid container spacing={4}>
+            <Navigation onFilterChange={onFilterChange}/>
+            <Box className="divider"></Box>
+            <Grid container spacing={4} sx={{ rowGap: '50px' }}>
                 {series.map(tv => (
                     <Movie movie={tv} key={tv.id} />
                    
@@ -64,6 +69,7 @@ const AnimatedSeries = () => {
                 color="primary"
                 style={{ marginTop: '20px' }}
             />
+            <Box className="divider"></Box>
         </Container>
     );
 }

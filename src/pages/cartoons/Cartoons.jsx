@@ -3,6 +3,7 @@ import { Container, CircularProgress, Grid, Pagination, Box } from '@mui/materia
 import './Cartoons.css';
 import Movie from '../../components/movie/Movie';
 import {apiKey, token, baseUrl} from '../../app/http';
+import Navigation from '../../components/navigation/Navigation';
 
 const Cartoons = () => {
     const [cartoons, setCartoons] = useState([]);
@@ -43,12 +44,16 @@ const Cartoons = () => {
             <Container maxWidth="lg">
                 <CircularProgress />
             </Container>
-        );
+        );        
     }
-
+    const onFilterChange = (dataFilter)=>{
+        console.log(dataFilter);
+    }
+    
     return (
         <Container maxWidth="lg">
             <h1>Мультфільми</h1>
+            <Navigation onFilterChange={onFilterChange}/>
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {cartoons.map(cartoon => (
