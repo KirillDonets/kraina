@@ -12,6 +12,8 @@ import MovieDetails from "../pages/movieDetails/MovieDetails";
 import TvDetails from "../pages/movieDetails/TvDetails";
 import Filmography from '../pages/filmography/Filmography';
 import SearchResults from '../pages/searchResults/SearchResults';
+import Profile from "../pages/profile/Profile";
+import ProfilePayment from "../pages/profile/ProfilePayment";
 
 export const router = createBrowserRouter([
   {
@@ -28,9 +30,9 @@ export const router = createBrowserRouter([
       { path: '/series', element: <Series /> },
       { path: '/search', element: <SearchResults /> },
       { path: '/navigation', element: <Navigation /> },
+
       { path: '/movieDetails/:id', element: <MovieDetails /> },
       { path: '/movies/:id', element: <MovieDetails /> },
-      { path: '/tv/:id', element: <TvDetails /> },
       { path: '/series/:id', element: <MovieDetails /> },
       { path: '/person/:id', element: <Filmography /> }
     ]

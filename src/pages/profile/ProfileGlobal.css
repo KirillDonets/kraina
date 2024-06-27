@@ -1,0 +1,8 @@
+.profile-settings{
+    min-height: 80vh;
+}
+
+.profile-settings h1{
+    color: white;
+    text-transform: uppercase;
+}

@@ -1,0 +1,99 @@
+.payment{
+
+}
+
+.payment .main{
+    margin-top: 32px;
+}
+
+.payment .main h2{
+    color:var(--text-accent);
+    font-size: 14px;
+}
+
+.payment .main .info{
+    display: flex;
+    width: 100%;
+    font-size: 15px;
+}
+
+.payment .main .info-card h3{
+    color:var(--text-accent);
+    font-weight: 400;
+}
+.payment .main .info-card p{
+    color: var(--highlight-ui-color);
+}
+
+.payment .main .info-card:last-child{
+    margin-left: 30%;
+}
+
+.payment .main .actions{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment .main .actions .button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 44px;
+    color: var(--text-accent);
+    background-color: var(--element-ui-color);
+    text-align: center;
+
+    border-radius: 15px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+
+}
+
+.payment .main .actions .button_highlighted{
+    background-color: var(--highlight-ui-color);
+    color: var(--element-ui-color);
+}
+
+.small-elem{
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.small-elem img{
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .large-elem{
+        display: flex;
+    }
+
+    .payment .main .actions .button{
+        width: 33%;
+    }
+}
+
+@media (max-width: 480px) {
+    .small-elem{
+        display: flex;
+    }
+
+    .large-elem{
+        display: none;
+    }
+
+    .payment .main .actions .button{
+        width: 30%;
+        font-size: 12px;
+    }
+
+    .payment .main .info{
+        justify-content: space-between;
+    }
+
+    .payment .main .info-card:last-child{
+        margin-left: 0;
+    }
+}

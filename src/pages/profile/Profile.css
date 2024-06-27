@@ -1,0 +1,88 @@
+.profile {
+
+}
+
+.profile h1 {
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.profile .profile-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile .profile-content .user {
+
+}
+
+.profile .profile-card {
+    border-radius: 15px;
+    padding: 20px 20px;
+    background: #1D2733;
+    box-shadow: 12px 4px 70.3px 0px #00000040;
+}
+
+.profile .profile-card h2 {
+    margin: 0;
+}
+
+.profile-nav {
+
+}
+
+.profile-nav ul {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px; /* Выравниваем отступы */
+}
+
+.profile-nav ul .card {
+    width: 175px;
+    height: 125px;
+    box-sizing: border-box;
+    margin: 10px; /* Отступы вокруг каждой карточки */
+    flex: 0 0 auto; /* Фиксированная ширина */
+}
+
+.profile-nav ul .card:not(.active):hover {
+    box-shadow: 0px 0px 13.8px -2px #6FEDFF;
+}
+
+.profile-nav ul .card-content {
+    width: 100%;
+    height: 100%;
+    color: white;
+    background: #151E27;
+    box-sizing: border-box;
+}
+
+.profile-nav ul .card-content * {
+    font-size: 14px;
+}
+
+.profile-nav ul .card-content a{
+    color: var(--highlight-ui-color);
+}
+
+.profile-nav .card.active {
+    box-shadow: 0px 0px 13.8px 0px #6FEDFF;
+}
+
+/* Медиазапросы для адаптивности */
+@media (max-width: 768px) {
+    .profile-nav ul .card {
+        width: 150px; /* Уменьшенная ширина на мобильных устройствах */
+        height: 100px; /* Уменьшенная высота на мобильных устройствах */
+        margin: 8px; /* Уменьшенные отступы на мобильных устройствах */
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-nav ul .card {
+        width: 30%; /* Еще меньше для маленьких экранов */
+        height: 120px;
+        margin: 6px;
+    }
+}
