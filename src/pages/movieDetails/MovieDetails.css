@@ -21,14 +21,19 @@ body, html {
 }
 .trailer-buttons {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    bottom: 20px;
+    left: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1;
     gap: 10px;
+}
+.bg-dark{
+    background-color: #000;
+}
+.bg-dark img{
+    opacity: 0.3;
 }
 .imdb-logo {
     width: 50px;

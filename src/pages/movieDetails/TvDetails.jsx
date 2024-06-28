@@ -119,7 +119,7 @@ const MovieDetails = () => {
                         style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
                     />
                 ) : (
-                    <Box position="relative" display="flex" alignItems="center" justifyContent="center">
+                   <div  className="bg-dark"> <Box position="relative" display="flex" alignItems="center" justifyContent="center">
                         {videos.length > 0 ? (
                             <CardMedia
                                 component="iframe"
@@ -131,9 +131,9 @@ const MovieDetails = () => {
                         ) : (
                             <CardMedia
                                 component="img"
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
                                 title={movie.title}
-                                className="poster-overlay"
+                                className="poster"
                             />
                         )}
                         <Box className="trailer-buttons">
@@ -154,6 +154,7 @@ const MovieDetails = () => {
                             </Box>
                         </Box>
                     </Box>
+                    </div>
                 )}
             </Box>
             <Box className="divider"></Box>

@@ -55,31 +55,7 @@ const Movies = () => {
         );
     }
     const onFilterChange = (dataFilter)=>{
-        console.log(dataFilter);
-        // const fetchMovies = async () => {
-        //     try {
-        //         const response = await fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&language=uk-UA&page=${page}&with_genres=${genre}`, {
-        //             headers: {
-        //                 Authorization: `Bearer ${token}`,
-        //                 'Content-Type': 'application/json;charset=utf-8'
-        //             }
-        //         });
-        //         const data = await response.json();
-        //         console.log(data);  // Отладка
-
-        //         // Фильтрация фильмов, исключая мультфильмы
-        //         const filteredMovies = data.results.filter(movie => !movie.genre_ids.includes(16));
-
-        //         setMovies(filteredMovies);
-        //         setTotalPages(data.total_pages);
-        //         setLoading(false);
-        //     } catch (error) {
-        //         console.error('Error fetching movies:', error);
-        //         setLoading(false);
-        //     }
-        // };
-
-        // fetchMovies();
+        setMovies(dataFilter)
     }
 
     return (
