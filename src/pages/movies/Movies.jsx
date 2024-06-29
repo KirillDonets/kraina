@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, Pagination, Box, CardContent, Typography } from '@mui/material';
+import { Container, CircularProgress, Grid, Card, CardMedia, Pagination, Box, CardContent, Typography, IconButton } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Link } from 'react-router-dom';
 import './Movies.css';
 import Movie from '../../components/movie/Movie';
@@ -57,10 +58,12 @@ const Movies = () => {
     const onFilterChange = (dataFilter)=>{
         setMovies(dataFilter)
     }
-
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     return (
         <Container maxWidth="lg">
-            <h1>Фільми</h1>
+            <h1 className='textwhite'>Фільми</h1>
             <Navigation onFilterChange={onFilterChange}/>
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
@@ -76,6 +79,13 @@ const Movies = () => {
                 style={{ marginTop: '40px', marginLeft:"auto" }}
             />
             <Box className="divider"></Box>
+            <IconButton
+                color="primary"
+                onClick={scrollToTop}
+                style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
+            >
+            <ArrowUpwardIcon />
+            </IconButton>
         </Container>
 
     );

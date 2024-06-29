@@ -95,9 +95,9 @@ const Header = () => {
                 <NavLink to="/animatedSeries" className="menu-item-mobile">
                   Мультсеріали
                 </NavLink>
-                <NavLink to="/navigation" className="menu-item-mobile">
+                {/* <NavLink to="/navigation" className="menu-item-mobile">
                   Фільтри
-                </NavLink>
+                </NavLink> */}
                 <NavLink to="/faq" className="menu-item-mobile">
                   FAQ
                 </NavLink>
@@ -127,9 +127,9 @@ const Header = () => {
               <NavLink to="/animatedSeries" className="menu-item">
                 Мультсеріали
               </NavLink>
-              <NavLink to="/navigation" className="menu-item">
+              {/* <NavLink to="/navigation" className="menu-item">
               Фільтри
-              </NavLink>
+              </NavLink> */}
               <NavLink to="/faq" className="menu-item">
                 FAQ
               </NavLink>

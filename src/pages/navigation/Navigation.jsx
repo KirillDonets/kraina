@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Box, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText, TextField, Button } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './Navigation.css';
 
 const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
@@ -95,6 +96,9 @@ const Navigation = ({ onFilterChange }) => {
     });
   }, [selectedGenres, selectedCountries, sortedBy, yearFrom, yearTo, onFilterChange]);
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
   return (
     <Box className="navigationContainer" sx={{ marginTop: '20px' }}>
       <FormControl className="formControl">

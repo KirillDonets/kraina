@@ -134,7 +134,7 @@ console.log(data);
     <Box sx={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
      
      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">Year</InputLabel>
+        <InputLabel id="demo-multiple-checkbox-label">Рік</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -185,8 +185,7 @@ console.log(data);
           onChange={handleChangeCountry}
           input={<OutlinedInput label="Tag" />}
           renderValue={(selected) =>selected.map(g=>g.english_name).join(', ')}
-          MenuProps={MenuProps}
-        >
+          MenuProps={MenuProps}>
           {countries.map((country) => (
             <MenuItem key={country.iso_639_1} value={country}>
               <Checkbox checked={selectedCountries.some(g=>g.iso_639_1==country.iso_639_1)}  />
@@ -194,15 +193,18 @@ console.log(data);
             </MenuItem>
           ))}
         </Select>
+        
       </FormControl>
+      <Button variant="contained" onClick={handleClearFilters}>
+        Очистити
+      </Button>
 
 
 
 
 
 
-
-      <Select
+      {/* <Select
         name="sortedBy"
         value={localFilter.sortedBy}
         onChange={handleChange}
@@ -212,10 +214,8 @@ console.log(data);
         <MenuItem value="popularity.desc">Popularity</MenuItem>
         <MenuItem value="release_date.desc">Release Date</MenuItem>
         <MenuItem value="vote_average.desc">Vote Average</MenuItem>
-      </Select>
-      <Button variant="contained" onClick={handleClearFilters}>
-        Очистити
-      </Button>
+      </Select> */}
+      
       
     </Box>
   );

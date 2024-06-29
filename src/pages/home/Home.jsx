@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Card, CardContent, Typography, Button, Box, CardMedia } from '@mui/material';
+import { Container, Grid, Card, CardContent, Typography, Button, Box, CardMedia, IconButton } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import Slider from 'react-slick';
 import { useNavigate } from 'react-router-dom';
 import krainaHD from './krainaHD.svg';
@@ -67,7 +68,9 @@ const Home = () => {
     const handleCardClick = (id) => {
         navigate(`/movies/${id}`);
     };
-
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     return (
         <Container maxWidth="lg">
             <Grid container spacing={3}>
@@ -238,6 +241,13 @@ const Home = () => {
                     <h2>Є питання?</h2>
                     <h6>Відповідаемо<br /><br /> Ще більше інформації можна знайти</h6>
                 </Typography>
+                <IconButton
+                color="primary"
+                onClick={scrollToTop}
+                style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
+            >
+            <ArrowUpwardIcon />
+            </IconButton>
         </Container>
     );
 }

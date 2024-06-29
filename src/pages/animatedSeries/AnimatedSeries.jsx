@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination, Box } from '@mui/material';
+import { Container, CircularProgress, Grid, Card, CardMedia, TextField, Button, Pagination, Box, IconButton } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './AnimatedSeries.css';
 import Movie from '../../components/movie/Movie';
 import {apiKey, token, baseUrl} from '../../app/http';
@@ -51,9 +52,12 @@ const AnimatedSeries = () => {
     const onFilterChange = (dataFilter)=>{
         console.log(dataFilter);
     }
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     return (
         <Container maxWidth="lg">
-            <h1>Мультсеріали</h1>
+            <h1 className='textwhite'>Мультсеріали</h1>
             <Navigation onFilterChange={onFilterChange}/>
             <Box className="divider"></Box>
             <Grid container spacing={4} sx={{ rowGap: '50px' }}>
@@ -70,6 +74,13 @@ const AnimatedSeries = () => {
                 style={{ marginTop: '20px' }}
             />
             <Box className="divider"></Box>
+            <IconButton
+                color="primary"
+                onClick={scrollToTop}
+                style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
+            >
+            <ArrowUpwardIcon />
+            </IconButton>
         </Container>
     );
 }

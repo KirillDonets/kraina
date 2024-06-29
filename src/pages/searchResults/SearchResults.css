@@ -1,0 +1,28 @@
+.divider {
+    height: 45px;
+    background-color: #151E27;
+    margin: 20px 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .poster{
+    max-width: 100%;
+    width: auto !important;
+    margin: auto;
+    border-radius: 5px;
+  }
+  .movie-title{
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: 20px;
+  }
+  .MuiPagination-ul{
+    justify-content: center;
+  }
+  .textwhite{
+    color: #FFFFFF;
+  }

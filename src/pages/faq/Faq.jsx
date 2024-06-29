@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Accordion, AccordionSummary, AccordionDetails, Typography } from "@mui/material";
+import { Container, Accordion, AccordionSummary, AccordionDetails, Typography, IconButton } from "@mui/material";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './Faq.css';
 
@@ -15,7 +16,9 @@ const Faq = () => {
     { question: "Question 4", answer: "Answer to question 4" },
     { question: "Question 4", answer: "Answer to question 4" },
   ];
-
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
   return (
       <Container maxWidth="lg" id="faq">
         <h1><span>ПИТАНЯ</span> ТА ВІДПОВІДІ</h1>
@@ -35,6 +38,13 @@ const Faq = () => {
               </Accordion>
           ))}
         </div>
+        <IconButton
+                color="primary"
+                onClick={scrollToTop}
+                style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
+            >
+            <ArrowUpwardIcon />
+            </IconButton>
       </Container>
   );
 };
