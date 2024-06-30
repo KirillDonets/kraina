@@ -195,7 +195,7 @@ console.log(data);
         </Select>
         
       </FormControl>
-      <Button variant="contained" onClick={handleClearFilters}>
+      <Button className='btnClear' variant="contained" onClick={handleClearFilters}>
         Очистити
       </Button>
 
