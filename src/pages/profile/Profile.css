@@ -31,6 +31,7 @@
     align-items: center;
     font-size: 14px;
 }
+<<<<<<< HEAD
 
 .profile .forms {
     margin-top: 32px;
@@ -64,6 +65,41 @@
     justify-content: space-between;
 }
 
+=======
+
+.profile .forms {
+    margin-top: 32px;
+}
+
+.profile form .input_handler {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile form .input_handler:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.profile form .input_handler label {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.profile form .input_handler input {
+    height: 45px;
+    border-radius: 15px;
+    background: #303D4D;
+    border: none;
+    padding: 20px;
+    color: white;
+}
+
+.profile form .input_handler .birthhandler {
+    display: flex;
+    justify-content: space-between;
+}
+
+>>>>>>> d4b53996e9bd0658d16f21f71f228a8ac1ccb9fa
 .profile form .input_handler .birthhandler input {
     width: 30%;
 }
@@ -118,6 +154,7 @@
     margin-top: 20px;
     margin-bottom: 40px;
 }
+<<<<<<< HEAD
 
 .profile .user-tarif .devices-available p {
     font-size: 10px;
@@ -184,6 +221,74 @@
     text-transform: uppercase;
 }
 
+=======
+
+.profile .user-tarif .devices-available p {
+    font-size: 10px;
+}
+
+.profile .user-tarif .button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--highlight-ui-color);
+    height: 45px;
+    border-radius: 15px;
+    color: #1D2733;
+}
+
+.profile .balance-parent-control {
+    width: 35%;
+}
+
+.profile .your-balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 110px;
+}
+
+.profile .your-balance .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--highlight-ui-color);
+    height: 45px;
+    width: 140px;
+    padding: 8px;
+    border-radius: 15px;
+    color: #1D2733;
+}
+
+.profile .parent-control {
+    position: relative;
+    height: 150px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.profile .parent-control .button {
+    position: absolute;
+    bottom: 10px;
+    right: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--highlight-ui-color);
+    height: 45px;
+    width: 140px;
+    padding: 8px;
+    border-radius: 15px;
+    color: #1D2733;
+}
+
+.profile .user-films h2 {
+    color: white;
+    text-transform: uppercase;
+}
+
+>>>>>>> d4b53996e9bd0658d16f21f71f228a8ac1ccb9fa
 .profile .user-film-list {
     display: flex;
     flex-wrap: wrap;
@@ -274,4 +379,8 @@
     .profile-nav ul{
         justify-content: center;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d4b53996e9bd0658d16f21f71f228a8ac1ccb9fa

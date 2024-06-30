@@ -8,7 +8,7 @@ import apple from './images/apple.svg'
 import facebook from './images/facebook.svg'
 import google from './images/google.svg'
 
-const Registration = () => {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
@@ -24,8 +24,8 @@ const Registration = () => {
 
         if (!password) {
             errors.password = "Поле 'Пароль' обов'язкове.";
-        } else if (password.length < 6) {
-            errors.password = "Пароль повинен містити мінімум 6 символів.";
+        } else if (password.length < 5) {
+            errors.password = "Пароль повинен містити мінімум 5 символів.";
         }
 
         return errors;
@@ -40,11 +40,11 @@ const Registration = () => {
             return;
         }
 
-        axios.post("http://localhost:8080/api/auth/login", {
+        axios.post("http://localhost:8080/login", {
             username: username,
             password: password,
         }).then(resp => {
-            localStorage.setItem("token", resp.data);
+            localStorage.setItem("Auth", btoa(`${username}:${password}`));
             setAuthError('');  // Clear any previous authentication error
             navigate('/')
         }).catch(error => {
@@ -116,4 +116,4 @@ const Registration = () => {
     );
 }
 
-export default Registration;
+export default Login;

@@ -1,17 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Grid, Card, CardContent, Typography, Button, Box, CardMedia, IconButton } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {Container, Grid, Card, CardContent, Typography, Button, Box, CardMedia, IconButton} from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import Slider from 'react-slick';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import krainaHD from './krainaHD.svg';
 import './Home.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import axios from "axios";
+import MessageModal from "../../components/messageModal/MessageModal";
+
 
 const Home = () => {
     const [movies, setMovies] = useState([]);
     const [movieLogos, setMovieLogos] = useState({});
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
+    const [openSuccessful, setOpenSuccessful] = useState(false);
+    const tokenAuth = localStorage.getItem('Auth'); // Auth token
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleCloseSuccessful = () => {
+        setOpen(false);
+    };
+
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -61,7 +80,7 @@ const Home = () => {
     const scrollToPlans = () => {
         const element = document.getElementById("plans");
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            element.scrollIntoView({behavior: 'smooth'});
         }
     };
 
@@ -69,24 +88,55 @@ const Home = () => {
         navigate(`/movies/${id}`);
     };
     const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({top: 0, behavior: 'smooth'});
     };
+
+    function sevenDaysFree() {
+        axios.get("http://localhost:8080/api/user/get", {
+            headers: {'Authorization': `Basic ${tokenAuth}`}
+        })
+            .then(resp => {
+                    if (resp.request.responseURL === 'http://localhost:8080/api/user/get') {
+                        console.log(resp.data)
+                        axios.post("http://localhost:8080/api/user/getFreeSevenDaySubscribe", {}, {
+                            headers: {'Authorization': `Basic ${tokenAuth}`}
+                        })
+                        setOpenSuccessful(true)
+                        setTimeout(() => setOpenSuccessful(false), 5000);
+                    } else {
+                        setOpen(true)
+                    }
+
+                }
+            )
+            .catch(reason => {
+
+            })
+    }
+
     return (
         <Container maxWidth="lg">
+            <MessageModal message={"Зареєструйтесь щоб отримати"} onClose={handleClose}
+                          open={open}></MessageModal>
+            <MessageModal message={"Підписка додана на ваш аккаунт"} onClose={handleCloseSuccessful}
+                          open={openSuccessful}></MessageModal>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={4}>
-                    <Box display="flex" flexDirection="column" color="#FFFFFF" justifyContent="center" height="100%">
+                    <Box display="flex" flexDirection="column" color="#FFFFFF" justifyContent="center"
+                         height="100%">
                         <Typography variant="h4" component="h2" gutterBottom>
-                            Ласкаво просимо<br />
-                            на сайт Kraina HD <br />
+                            Ласкаво просимо<br/>
+                            на сайт Kraina HD <br/>
                         </Typography>
                         <Typography variant="h7" component="p">
-                            Дивіться тисячі фільмів та телешоу у HD-якості.<br />
-                            Насолоджуйтесь кінематографічними враженнями,<br />
+                            Дивіться тисячі фільмів та телешоу у HD-якості.<br/>
+                            Насолоджуйтесь кінематографічними враженнями,<br/>
                             не виходячи із власного дома, з Kraina HD.
                         </Typography>
                         <Box mt={2} display="flex" flexDirection="column">
-                            <Button variant="contained" color="secondary" style={{ marginBottom: '10px' }}>
+
+                            <Button variant="contained" color="secondary" onClick={sevenDaysFree}
+                                    style={{marginBottom: '10px'}}>
                                 Спробувати на 7 днiв
                             </Button>
                             <Button variant="contained" color="primary" onClick={scrollToPlans}>
@@ -98,7 +148,8 @@ const Home = () => {
                 <Grid item xs={12} sm={8}>
                     <Slider {...settings}>
                         {movies.map((movie) => (
-                            <Card key={movie.id} className="carousel-card" onClick={() => handleCardClick(movie.id)}>
+                            <Card key={movie.id} className="carousel-card"
+                                  onClick={() => handleCardClick(movie.id)}>
                                 <Box className="poster-container">
                                     <CardMedia
                                         component="img"
@@ -110,11 +161,13 @@ const Home = () => {
                                     />
                                     <Box className="poster-overlay">
                                         {movieLogos[movie.id] ? (
-                                            <img src={movieLogos[movie.id]} alt={movie.title} className="movie-logo" />
+                                            <img src={movieLogos[movie.id]} alt={movie.title}
+                                                 className="movie-logo"/>
                                         ) : (
                                             <Typography className="title">{movie.title}</Typography>
                                         )}
-                                        <Typography className="rating">{movie.vote_average} (IMDb)</Typography>
+                                        <Typography
+                                            className="rating">{movie.vote_average} (IMDb)</Typography>
                                     </Box>
                                 </Box>
                             </Card>
@@ -124,44 +177,68 @@ const Home = () => {
             </Grid>
             <Typography color="#FFFFFF" textAlign="center" marginTop="100px">
                 <h2>Платформа кіно та мультиплікації Кraina HD</h2>
-                Кrainа HD — це онлайн кінотеатр з легальним контентом від українських та міжнародних студій в Full HD та Ultra HD якості. З широким ассортиментом фільмів,<br />
-                серіалів, мультфільмів та мультсеріалів!<br />
-                Платформа Краiна HD обов'язково задовольнить смаки всіх членів твоєї сім'ї та дозволить насолодитися улюбленим контентом на будь-якому пристрої.<br />
-                Наша команда впроваджує найкращі практики на ринку, щоб створити найкращий досвід для користувачів.<br />
+                Кrainа HD — це онлайн кінотеатр з легальним контентом від українських та міжнародних студій
+                в Full HD та
+                Ultra HD якості. З широким ассортиментом фільмів,<br/>
+                серіалів, мультфільмів та мультсеріалів!<br/>
+                Платформа Краiна HD обов'язково задовольнить смаки всіх членів твоєї сім'ї та дозволить
+                насолодитися
+                улюбленим контентом на будь-якому пристрої.<br/>
+                Наша команда впроваджує найкращі практики на ринку, щоб створити найкращий досвід для
+                користувачів.<br/>
                 <h2>Фільми</h2>
-                На Кrаinа HD ти знайдеш фільми на будь-який смак: від популярних блокбастерів до сімейних мелодрам. Платформа пропонує як новинки, так і класичні фільми, а також ексклюзивні прем'єри.<br />
+                На Кrаinа HD ти знайдеш фільми на будь-який смак: від популярних блокбастерів до сімейних
+                мелодрам.
+                Платформа пропонує як новинки, так і класичні фільми, а також ексклюзивні прем'єри.<br/>
                 <h2>Серіали</h2>
-                Кrаinа HD — це справжній рай для любителів серіалів. На платформі представлені як популярні американські шоу, так і українські новинки.<br />
-                Смотри серіали в прямому ефірі або в записі, а також скачивай їх для перегляду в офлайн-режимі на мобільному пристрої.<br />
+                Кrаinа HD — це справжній рай для любителів серіалів. На платформі представлені як популярні
+                американські
+                шоу, так і українські новинки.<br/>
+                Смотри серіали в прямому ефірі або в записі, а також скачивай їх для перегляду в
+                офлайн-режимі на
+                мобільному пристрої.<br/>
                 <h2>Мультфільми</h2>
-                В каталоге Кrаinа HD батьки знайдуть найкращі мультфільми для дітей різного віку. Пізнавальні розповіді для малюків, захоплюючі пригодидля старших дітей та атмосферні історії для перегляду всією сім'єю.<br />
+                В каталоге Кrаinа HD батьки знайдуть найкращі мультфільми для дітей різного віку.
+                Пізнавальні розповіді
+                для малюків, захоплюючі пригодидля старших дітей та атмосферні історії для перегляду всією
+                сім'єю.<br/>
                 <h2>Доступні плани під будь-які потреби</h2>
-                Дивіться фільми  скільки завгодно на телефоні, смарт-телевізорі та іншихпристроях. Просто оберіть підписку. Оплата різними способами. Скасувати підписку можна в будь-який момент.<br />
+                Дивіться фільми скільки завгодно на телефоні, смарт-телевізорі та іншихпристроях. Просто
+                оберіть
+                підписку. Оплата різними способами. Скасувати підписку можна в будь-який момент.<br/>
             </Typography>
             <Grid container spacing={3} mt={5} id="plans">
                 <Grid item xs={12} sm={6} md={4}>
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">
                             <Typography variant="h5" component="div">
-                                <img src={krainaHD} alt="Логотип" className="krainaHD" /> <br />
+                                <img src={krainaHD} alt="Логотип" className="krainaHD"/> <br/>
                                 Базовий
                             </Typography>
                             <Typography variant="body2">
-                                120 ₴ в месяц <br />
-                                <span className="premaritalСolor">• Якість відео та звуку</span> <br />
-                                Нормальна <br /> <hr />
-                                <span className="premaritalСolor">• Роздільна здатність</span> <br />
-                                1080p (Full HD) <br /> < hr />
-                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span> <br />
-                                - <br /> < hr />
-                                <span className="premaritalСolor">• Підтримувані пристрої</span> <br />
-                                Телевізор, Комп'ютер, Телефон, Планшет <br /> < hr />
-                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span> <br />
-                                2 <br /> < hr />
-                                <span className="premaritalСolor">• Завантажити пристрої</span> <br />
-                                2 <br /> < hr />
-                                <span className="premaritalСolor">• Реклама</span> <br />
-                                Кілька рекламних пауз <br />
+                                120 ₴ в месяц <br/>
+                                <span className="premaritalСolor">• Якість відео та звуку</span> <br/>
+                                Нормальна <br/>
+                                <hr/>
+                                <span className="premaritalСolor">• Роздільна здатність</span> <br/>
+                                1080p (Full HD) <br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span>
+                                <br/>
+                                - <br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Підтримувані пристрої</span> <br/>
+                                Телевізор, Комп'ютер, Телефон, Планшет <br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span>
+                                <br/>
+                                2 <br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Завантажити пристрої</span> <br/>
+                                2 <br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Реклама</span> <br/>
+                                Кілька рекламних пауз <br/>
                             </Typography>
                         </CardContent>
                         <div className="card-button-container">
@@ -175,25 +252,33 @@ const Home = () => {
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">
                             <Typography variant="h5" component="div">
-                                <img src={krainaHD} alt="Логотип" className="krainaHD" /> <br />
+                                <img src={krainaHD} alt="Логотип" className="krainaHD"/> <br/>
                                 Стандарт
                             </Typography>
                             <Typography variant="body2">
-                                150 ₴ в месяц <br />
-                                <span className="premaritalСolor">• Якість відео та звуку</span> <br />
-                                Нормальна <br /> < hr />
-                                <span className="premaritalСolor">• Роздільна здатність</span> < br />
-                                1080p (Full HD) < br /> < hr />
-                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span> < br />
-                                - < br /> < hr />
-                                <span className="premaritalСolor">• Підтримувані пристрої</span> < br />
-                                Телевізор, Комп'ютер, Телефон, Планшет < br /> < hr />
-                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span> < br />
-                                2 < br /> < hr />
-                                <span className="premaritalСolor">• Завантажити пристрої</span> < br />
-                                2 < br /> < hr />
-                                <span className="premaritalСolor">• Реклама</span> < br />
-                                Без реклами < br />
+                                150 ₴ в месяц <br/>
+                                <span className="premaritalСolor">• Якість відео та звуку</span> <br/>
+                                Нормальна <br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Роздільна здатність</span> < br/>
+                                1080p (Full HD) < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span>
+                                < br/>
+                                - < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Підтримувані пристрої</span> < br/>
+                                Телевізор, Комп'ютер, Телефон, Планшет < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span>
+                                < br/>
+                                2 < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Завантажити пристрої</span> < br/>
+                                2 < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Реклама</span> < br/>
+                                Без реклами < br/>
                             </Typography>
                         </CardContent>
                         <div className="card-button-container">
@@ -207,25 +292,33 @@ const Home = () => {
                     <Card className="MuiCard-root card">
                         <CardContent className="card-content">
                             <Typography variant="h5" component="div">
-                                <img src={krainaHD} alt="Логотип" className="krainaHD" /> <br />
+                                <img src={krainaHD} alt="Логотип" className="krainaHD"/> <br/>
                                 Преміум
                             </Typography>
                             <Typography variant="body2">
-                                200 ₴ в месяц <br />
-                                <span className="premaritalСolor">• Якість відео та звуку</span> < br />
-                                Чудова < br /> < hr />
-                                <span className="premaritalСolor">• Роздільна здатність</span> < br />
-                                4К (Ultra HD) + HDR < br /> < hr />
-                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span> < br />
-                                Увімкнено < br /> < hr />
-                                <span className="premaritalСolor">• Підтримувані пристрої</span> < br />
-                                Телевізор, Комп'ютер, Телефон, Планшет < br /> < hr />
-                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span> < br />
-                                4 < br /> < hr />
-                                <span className="premaritalСolor">• Завантажити пристрої</span> < br />
-                                6 < br /> < hr />
-                                <span className="premaritalСolor">• Реклама</span> < br />
-                                Без реклами < br />
+                                200 ₴ в месяц <br/>
+                                <span className="premaritalСolor">• Якість відео та звуку</span> < br/>
+                                Чудова < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Роздільна здатність</span> < br/>
+                                4К (Ultra HD) + HDR < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Просторовий звук (Об'ємний звук)</span>
+                                < br/>
+                                Увімкнено < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Підтримувані пристрої</span> < br/>
+                                Телевізор, Комп'ютер, Телефон, Планшет < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span>
+                                < br/>
+                                4 < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Завантажити пристрої</span> < br/>
+                                6 < br/>
+                                < hr/>
+                                <span className="premaritalСolor">• Реклама</span> < br/>
+                                Без реклами < br/>
                             </Typography>
                         </CardContent>
                         <div className="card-button-container">
@@ -233,20 +326,20 @@ const Home = () => {
                                 Отримати Премиум
                             </Button>
                         </div>
-                    </Card>                    
+                    </Card>
                 </Grid>
-                
+
             </Grid>
-                <Typography color="#FFFFFF" textAlign="center">
-                    <h2>Є питання?</h2>
-                    <h6>Відповідаемо<br /><br /> Ще більше інформації можна знайти</h6>
-                </Typography>
-                <IconButton
+            <Typography color="#FFFFFF" textAlign="center">
+                <h2>Є питання?</h2>
+                <h6>Відповідаемо<br/><br/> Ще більше інформації можна знайти</h6>
+            </Typography>
+            <IconButton
                 color="primary"
                 onClick={scrollToTop}
-                style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
+                style={{position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF'}}
             >
-            <ArrowUpwardIcon />
+                <ArrowUpwardIcon/>
             </IconButton>
         </Container>
     );
