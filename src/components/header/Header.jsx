@@ -184,7 +184,7 @@ const Header = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <NavLink to={setting.link}><Typography textAlign="center" color={'#000'}>{setting.name}</Typography></NavLink>
+                      <NavLink to={setting.link}><Typography textAlign="center" color={'#FFFFF'}>{setting.name}</Typography></NavLink>
                   </MenuItem>
                 ))}
               </Menu>

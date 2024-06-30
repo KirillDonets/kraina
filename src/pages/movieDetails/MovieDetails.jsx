@@ -227,7 +227,7 @@ const MovieDetails = () => {
                         </Box>
                     </Box>
                 )}
-            </Box>
+            </Box>            
             <Box className="divider"></Box>
             <Box display="flex" flexDirection={{xs: 'column', md: 'row'}} mt={2}>
                 <Box flex={1} color="#FFFFFF" pr={{md: 2}}>

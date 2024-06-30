@@ -99,7 +99,7 @@
     justify-content: space-between;
 }
 
->>>>>>> d4b53996e9bd0658d16f21f71f228a8ac1ccb9fa
+
 .profile form .input_handler .birthhandler input {
     width: 30%;
 }
@@ -379,8 +379,5 @@
     .profile-nav ul{
         justify-content: center;
     }
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> d4b53996e9bd0658d16f21f71f228a8ac1ccb9fa
