@@ -17,7 +17,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import krainaHD from './krainaHD.svg';
 import "./Header.css";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [{name: "Профiль", link: "/profile"},];
 
 
 const Header = () => {
@@ -184,7 +184,7 @@ const Header = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center" color={'#000'}>{setting}</Typography>
+                      <NavLink to={setting.link}><Typography textAlign="center" color={'#000'}>{setting.name}</Typography></NavLink>
                   </MenuItem>
                 ))}
               </Menu>
