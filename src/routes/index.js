@@ -33,7 +33,10 @@ export const router = createBrowserRouter([
       { path: '/movieDetails/:id', element: <MovieDetails /> },
       { path: '/movies/:id', element: <MovieDetails /> },
       { path: '/tv/:id', element: <TvDetails /> },
-      { path: '/person/:id', element: <Filmography /> }
+      { path: '/person/:id', element: <Filmography /> },
+
+      {path: '/profile', element: <Profile /> },
+      {path: '/profile/payment', element: <ProfilePayment /> },
     ]
   },
 ]);
