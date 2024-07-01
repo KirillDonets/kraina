@@ -14,6 +14,10 @@ import Filmography from '../pages/filmography/Filmography';
 import SearchResults from '../pages/searchResults/SearchResults';
 import Profile from "../pages/profile/Profile";
 import ProfilePayment from "../pages/profile/ProfilePayment";
+import AdminPanel from "../pages/admin/AdminPanel";
+import AdminNavbar from "../pages/admin/AdminNavbar"; // Убедитесь, что путь правильный
+import UserManagement from "../pages/admin/UserManagement"; // Убедитесь, что путь правильный
+import MovieManagement from "../pages/admin/MovieManagement"; // Убедитесь, что путь правильный
 
 export const router = createBrowserRouter([
   {
@@ -30,13 +34,17 @@ export const router = createBrowserRouter([
       { path: '/series', element: <Series /> },
       { path: '/search', element: <SearchResults /> },
       { path: '/navigation', element: <Navigation /> },
+      { path: '/admin', element: <AdminPanel /> },
+      { path: '/admin/navbar', element: <AdminNavbar /> },
+      { path: '/admin/user-management', element: <UserManagement /> },
+      { path: '/admin/movie-management', element: <MovieManagement /> },
       { path: '/movieDetails/:id', element: <MovieDetails /> },
       { path: '/movies/:id', element: <MovieDetails /> },
       { path: '/tv/:id', element: <TvDetails /> },
       { path: '/person/:id', element: <Filmography /> },
-
-      {path: '/profile', element: <Profile /> },
-      {path: '/profile/payment', element: <ProfilePayment /> },
+      { path: '/profile', element: <Profile /> },
+      { path: '/profile/payment', element: <ProfilePayment /> },
     ]
   },
 ]);
+

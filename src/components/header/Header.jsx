@@ -1,14 +1,4 @@
-import {
-  AppBar,
-  Box,
-  Container,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import {  AppBar,  Box,  Container,  IconButton,  Menu,  MenuItem,  Toolbar,  Tooltip,  Typography,} from "@mui/material";
 import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
@@ -95,6 +85,9 @@ const Header = () => {
                 <NavLink to="/animatedSeries" className="menu-item-mobile">
                   Мультсеріали
                 </NavLink>
+                <NavLink to="/admin" className="menu-item-mobile">
+                  Admin
+                </NavLink>
                 {/* <NavLink to="/navigation" className="menu-item-mobile">
                   Фільтри
                 </NavLink> */}
@@ -126,6 +119,9 @@ const Header = () => {
               </NavLink>
               <NavLink to="/animatedSeries" className="menu-item">
                 Мультсеріали
+              </NavLink>
+              <NavLink to="/admin" className="menu-item">
+                Admin
               </NavLink>
               {/* <NavLink to="/navigation" className="menu-item">
               Фільтри
