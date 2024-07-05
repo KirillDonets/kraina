@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import './AdminPanel.css';
-import { DataGrid } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+import {DataGrid} from '@mui/x-data-grid';
+import {Button, Container} from '@mui/material';
+import AdminNavbar from "./AdminNavbar";
 
 export default function UserManagement() {
     const [users, setUsers] = useState([]);
@@ -22,10 +23,10 @@ export default function UserManagement() {
     }
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
-        { field: 'name', headerName: 'Имя', width: 150 },
-        { field: 'email', headerName: 'Email', width: 150 },
-        { field: 'role', headerName: 'Роль', width: 130 },
+        {field: 'id', headerName: 'ID', width: 90},
+        {field: 'name', headerName: 'Имя', width: 150},
+        {field: 'email', headerName: 'Email', width: 150},
+        {field: 'role', headerName: 'Роль', width: 130},
         {
             field: 'actions',
             headerName: 'Действия',
@@ -40,11 +41,19 @@ export default function UserManagement() {
     ];
 
     return (
-        <div className="user-management">
-            <h2>Управление Пользователями</h2>
-            <div style={{ height: 400, width: '100%' }}>
-                <DataGrid rows={users} columns={columns} pageSize={5} />
+        <Container maxWidth={"lg"}>
+            <div className="admin-panel">
+                <h1>Управление Пользователями</h1>
+                <nav>
+                    <AdminNavbar active={0}></AdminNavbar>
+                </nav>
+                <div className="user-management">
+
+                    <div style={{height: 400, width: '100%'}}>
+                        <DataGrid rows={users} columns={columns} pageSize={5}/>
+                    </div>
+                </div>
             </div>
-        </div>
+        </Container>
     );
 }

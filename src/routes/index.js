@@ -44,6 +44,9 @@ export const router = createBrowserRouter([
       { path: '/person/:id', element: <Filmography /> },
       { path: '/profile', element: <Profile /> },
       { path: '/profile/payment', element: <ProfilePayment /> },
+
+      {path: "/admin/films", element: <MovieManagement/>},
+      {path: "/admin/users", element: <UserManagement/>}
     ]
   },
 ]);
