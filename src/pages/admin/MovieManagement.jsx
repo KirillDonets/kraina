@@ -35,8 +35,8 @@ export default function MovieManagement() {
             flex: 0.3,
             renderCell: (params) => (
                 <div>
-                    <Button variant="contained" color="primary" size="small">Редагувати</Button>
-                    <Button variant="contained" color="secondary" size="small">Видалити</Button>
+                    <Button variant="contained" color="primary" size="small" style={{marginRight:"10px"}}>Edit</Button>
+                    <Button variant="contained" color="secondary" size="small">Delete</Button>
                 </div>
             )
         },
