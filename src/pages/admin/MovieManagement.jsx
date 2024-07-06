@@ -45,7 +45,7 @@ export default function MovieManagement() {
     return (
         <Container maxWidth={"lg"}>
             <div className={"admin-panel"}>
-                <h1>Управление Фильмами</h1>
+                <h1>Управління фільмами</h1>
                 <nav>
                     <AdminNavbar active={1}></AdminNavbar>
                 </nav>

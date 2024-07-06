@@ -7,7 +7,7 @@ const navItems = [
     { title: 'Управління користувачами', link: '/admin/users' },
     { title: 'Управління фільмами', link: '/admin/films' },
     { title: 'Додавання користувача', link: '/admin/user/add' },
-    { title: 'Додавання фільму', link: '/admin/film/add' },
+    { title: 'Додавання фільму', link: '/admin/filmsAdd' },
     { title: '-', link: '#' }
 ];
 

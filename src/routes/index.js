@@ -18,6 +18,7 @@ import AdminPanel from "../pages/admin/AdminPanel";
 import AdminNavbar from "../pages/admin/AdminNavbar"; // Убедитесь, что путь правильный
 import UserManagement from "../pages/admin/UserManagement"; // Убедитесь, что путь правильный
 import MovieManagement from "../pages/admin/MovieManagement"; // Убедитесь, что путь правильный
+import AddMovieManagement from "../pages/admin/AddMovieManagement";
 
 export const router = createBrowserRouter([
   {
@@ -46,7 +47,8 @@ export const router = createBrowserRouter([
       { path: '/profile/payment', element: <ProfilePayment /> },
 
       {path: "/admin/films", element: <MovieManagement/>},
-      {path: "/admin/users", element: <UserManagement/>}
+      {path: "/admin/users", element: <UserManagement/>},
+      {path: "/admin/filmsAdd", element: <AddMovieManagement/>},
     ]
   },
 ]);

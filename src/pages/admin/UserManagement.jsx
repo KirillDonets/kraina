@@ -43,7 +43,7 @@ export default function UserManagement() {
     return (
         <Container maxWidth={"lg"}>
             <div className="admin-panel">
-                <h1>Управление Пользователями</h1>
+                <h1>Управління користувачами</h1>
                 <nav>
                     <AdminNavbar active={0}></AdminNavbar>
                 </nav>
