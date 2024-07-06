@@ -7,6 +7,11 @@
     color: #ffffff;
 }
 
+.admin-panel nav{
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
 .admin-content {
     display: flex;
     flex-wrap: wrap;

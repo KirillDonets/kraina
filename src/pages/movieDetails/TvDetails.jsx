@@ -136,7 +136,11 @@ const MovieDetails = () => {
                                 className="poster"
                             />
                         )}
-                        <Box className="trailer-buttons">
+                    </Box>
+                    </div>
+                )}
+            </Box>
+            <Box className="trailer-buttons">
                             <Button color="secondary" style={{ marginBottom: '10px' }} onClick={() => setPlayMovie(true)}>
                                 Дивитись
                             </Button>
@@ -153,10 +157,6 @@ const MovieDetails = () => {
                                 <Typography variant="body2">👎 30</Typography>
                             </Box>
                         </Box>
-                    </Box>
-                    </div>
-                )}
-            </Box>
             <Box className="divider"></Box>
             <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} mt={2}>
                 <Box flex={1} color="#FFFFFF" pr={{ md: 2 }}>

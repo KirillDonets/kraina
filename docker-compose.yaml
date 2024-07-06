@@ -1,0 +1,25 @@
+services:
+  webapp:
+    image: hdrezka-java
+    networks:
+      - backend
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://db:5432/hdrezka
+    ports:
+      - "8080:8080"
+  db:
+    image: postgres:13.3
+    networks:
+      - backend
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: hdrezka
+      POSTGRES_USER: hdrezka
+      POSTGRES_PASSWORD: hdrezka
+
+networks:
+  backend:
+    driver: bridge

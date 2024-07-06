@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from '@mui/material';
-import AdminNavbar from './AdminNavbar';
+import AdminNavbar from './AdminNavbar.jsx';
 import UserManagement from './UserManagement';
 import MovieManagement from './MovieManagement';
 import './AdminPanel.css';
@@ -12,8 +12,7 @@ export default function AdminPanel() {
                 <h1>Административная Панель</h1>
                 <AdminNavbar />
                 <div className="admin-content">
-                    <UserManagement />
-                    <MovieManagement />
+
                 </div>
             </Container>
         </div>

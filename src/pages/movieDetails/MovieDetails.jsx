@@ -206,29 +206,30 @@ const MovieDetails = () => {
                                 className="poster-overlay"
                             />
                         )}
-                        <Box className="trailer-buttons">
-                            <Button color="secondary" style={{marginBottom: '10px'}}
-                                    onClick={() => handleWatchClicked()}>
-                                Дивитись
-                            </Button>
-                            <Box textAlign="center" color="#FFFFFF" onClick={handleClick} style={{cursor: 'pointer'}}>
-                                {isBookmarked ? <BookmarkAdded fontSize="large"/> :
-                                    <BookmarkBorderIcon fontSize="large"/>}
-                                <Typography variant="body2">Обране</Typography>
-                            </Box>
-                            <Box textAlign="center" color="#FFFFFF">
-                                <ThumbUpIcon fontSize="large"/>
-                                <Typography variant="body2">👍 120</Typography>
-                            </Box>
-                            <Box textAlign="center" color="#FFFFFF">
-                                <ThumbDownIcon fontSize="large"/>
-                                <Typography variant="body2">👎 30</Typography>
-                            </Box>
-                        </Box>
                     </Box>
                 )}
-            </Box>            
-            <Box className="divider"></Box>
+            </Box>
+            <Box className="trailer-buttons">
+                <Button color="secondary" style={{marginBottom: '10px'}}
+                                        onClick={() => handleWatchClicked()}>
+                                    Дивитись
+                                </Button>
+                                <Box textAlign="center" color="#FFFFFF" onClick={handleClick} style={{cursor: 'pointer'}}>
+                                    {isBookmarked ? <BookmarkAdded fontSize="large"/> :
+                                        <BookmarkBorderIcon fontSize="large"/>}
+                                    <Typography variant="body2">Обране</Typography>
+                                </Box>
+                                <Box textAlign="center" color="#FFFFFF">
+                                    <ThumbUpIcon fontSize="large"/>
+                                    <Typography variant="body2">👍 120</Typography>
+                                </Box>
+                                <Box textAlign="center" color="#FFFFFF">
+                                    <ThumbDownIcon fontSize="large"/>
+                                    <Typography variant="body2">👎 30</Typography>
+                                </Box> 
+            </Box>
+                                 
+            <Box className="divider"></Box>            
             <Box display="flex" flexDirection={{xs: 'column', md: 'row'}} mt={2}>
                 <Box flex={1} color="#FFFFFF" pr={{md: 2}}>
                     <Typography variant="h4" gutterBottom>{movie.title}</Typography>

@@ -62,10 +62,11 @@ const Filmography = () => {
                     </Box>
                 </Box>
             )}
+            <Box className="divider"></Box>
             {movies && (
                 <Box>
                     <Typography variant="h5" color='#FFFFFF' gutterBottom>Фільмографія:</Typography>
-                    <Box className="divider"></Box>
+                    
                    <Grid container spacing={2}>
                         {movies.cast.map(movie => (
                             <Grid item key={movie.id} xs={6} sm={6} md={3} lg={2}>
