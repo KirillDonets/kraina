@@ -19,6 +19,7 @@ import AdminNavbar from "../pages/admin/AdminNavbar"; // Убедитесь, ч�
 import UserManagement from "../pages/admin/UserManagement"; // Убедитесь, что путь правильный
 import MovieManagement from "../pages/admin/MovieManagement"; // Убедитесь, что путь правильный
 import AddMovieManagement from "../pages/admin/AddMovieManagement";
+import HomePage from "../pages/homePage/HomePage";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: '/faq', element: <Faq /> },
+      {path: "/homePage", element: <HomePage/>},
       { path: '/registration', element: <Registration /> },
       { path: '/animatedSeries', element: <AnimatedSeries /> },
       { path: '/cartoons', element: <Cartoons /> },

@@ -73,6 +73,12 @@ const Header = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
+                <NavLink to="/admin" className="menu-item-mobile">
+                  Admin
+                </NavLink>
+                <NavLink to="/homePage" className="menu-item-mobile">
+                  Головна
+                </NavLink>
                 <NavLink to="/movies" className="menu-item-mobile">
                   Фільми
                 </NavLink>
@@ -85,9 +91,7 @@ const Header = () => {
                 <NavLink to="/animatedSeries" className="menu-item-mobile">
                   Мультсеріали
                 </NavLink>
-                <NavLink to="/admin" className="menu-item-mobile">
-                  Admin
-                </NavLink>
+                
                 {/* <NavLink to="/navigation" className="menu-item-mobile">
                   Фільтри
                 </NavLink> */}
@@ -108,6 +112,12 @@ const Header = () => {
                 display: { xs: "none", md: "flex" },
               }}
             >
+              <NavLink to="/admin" className="menu-item">
+                Admin
+              </NavLink>
+              <NavLink to="/homePage" className="menu-item">
+                  Головна
+                </NavLink>
               <NavLink to="/movies" className="menu-item">
                 Фільми
               </NavLink>
@@ -120,9 +130,7 @@ const Header = () => {
               <NavLink to="/animatedSeries" className="menu-item">
                 Мультсеріали
               </NavLink>
-              <NavLink to="/admin" className="menu-item">
-                Admin
-              </NavLink>
+              
               {/* <NavLink to="/navigation" className="menu-item">
               Фільтри
               </NavLink> */}
