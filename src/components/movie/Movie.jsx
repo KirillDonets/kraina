@@ -2,8 +2,9 @@ import { Card, CardMedia, Grid } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "./Movie.css"
+
 const Movie = ({ movie }) => {
-    const isTv = movie.title ? 'movies': 'tv';
+    const isTv = movie.title ? 'movies' : 'tv';
     return (
         <Grid item key={movie.id} xs={6} sm={6} md={3} lg={2}>
             <Link to={`/${isTv}/${movie.id}`}>

@@ -3,9 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Container, CircularProgress, Typography, Card, CardMedia, Grid, Box, IconButton } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './Filmography.css';
-const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
-const baseUrl = 'https://api.themoviedb.org/3';
+import {apiKey, token, baseUrl} from '../../app/http';
 
 const Filmography = () => {
     const { id } = useParams();

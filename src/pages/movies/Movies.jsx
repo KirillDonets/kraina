@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Card, CardMedia, Pagination, Box, CardContent, Typography, IconButton } from '@mui/material';
+import { Container, CircularProgress, Grid, Pagination, Box, IconButton } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Link } from 'react-router-dom';
 import './Movies.css';
 import Movie from '../../components/movie/Movie';
-import {apiKey, token, baseUrl} from '../../app/http';
+import { apiKey, token, baseUrl } from '../../app/http';
 import Navigation from '../../components/navigation/Navigation';
 
 const Movies = () => {
@@ -13,9 +13,15 @@ const Movies = () => {
     const [page, setPage] = useState(1);
     const [genre, setGenre] = useState('');
     const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
         const fetchMovies = async () => {
             try {
+                // Получение фильмов из базы данных
+                const localResponse = await fetch('/api/local-films');
+                const localMovies = await localResponse.json();
+
+                // Получение фильмов из внешнего API
                 const response = await fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&language=uk-UA&page=${page}&with_genres=${genre}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -28,7 +34,10 @@ const Movies = () => {
                 // Фильтрация фильмов, исключая мультфильмы
                 const filteredMovies = data.results.filter(movie => !movie.genre_ids.includes(16));
 
-                setMovies(filteredMovies);
+                // Объединение фильмов из базы данных и внешнего API
+                const combinedMovies = [...localMovies, ...filteredMovies];
+
+                setMovies(combinedMovies);
                 setTotalPages(data.total_pages);
                 setLoading(false);
             } catch (error) {
@@ -55,16 +64,19 @@ const Movies = () => {
             </Container>
         );
     }
-    const onFilterChange = (dataFilter)=>{
-        setMovies(dataFilter)
-    }
+
+    const onFilterChange = (dataFilter) => {
+        setMovies(dataFilter);
+    };
+
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
     return (
         <Container maxWidth="lg">
             <h1 className='textwhite'>Фільми</h1>
-            <Navigation onFilterChange={onFilterChange}/>
+            <Navigation onFilterChange={onFilterChange} />
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {movies.map(movie => (
@@ -76,7 +88,7 @@ const Movies = () => {
                 page={page}
                 onChange={handlePageChange}
                 color="primary"
-                style={{ marginTop: '40px', marginLeft:"auto" }}
+                style={{ marginTop: '40px', marginLeft: "auto" }}
             />
             <Box className="divider"></Box>
             <IconButton
@@ -84,11 +96,10 @@ const Movies = () => {
                 onClick={scrollToTop}
                 style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
             >
-            <ArrowUpwardIcon />
+                <ArrowUpwardIcon />
             </IconButton>
         </Container>
-
     );
-}
+};
 
 export default Movies;
