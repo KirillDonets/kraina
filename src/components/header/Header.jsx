@@ -1,11 +1,12 @@
-import {  AppBar,  Box,  Container,  IconButton,  Menu,  MenuItem,  Toolbar,  Tooltip,  Typography,} from "@mui/material";
-import React, { useState, useEffect } from "react";
+import {AppBar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography,} from "@mui/material";
+import React, {useState, useEffect} from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import HeaderIcons from "./HeaderIcons";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import krainaHD from './krainaHD.svg';
 import "./Header.css";
+import axios from "axios";
 
 const settings = [{name: "Профiль", link: "/profile"},];
 
@@ -13,6 +14,21 @@ const Header = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [user, setUser] = useState(null);
+    const [isUserLogged, setIsUserLogged] = useState(false)
+
+    const tokenAuth = localStorage.getItem('Auth');
+
+    function getUser() {
+        axios.get("http://localhost:8080/api/user/get", {
+            headers: {'Authorization': `Basic ${tokenAuth}`}
+        })
+            .then(resp => {
+                if (resp.request.responseURL === 'http://localhost:8080/api/user/get') {
+                    setIsUserLogged(true)
+                }
+            })
+
+    }
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -40,15 +56,16 @@ const Header = () => {
             setUser(userData);
         };
         fetchUser();
+        getUser()
     }, []);
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
                 <Container maxWidth="lg">
                     <Toolbar style={{padding: 0}}>
                         <NavLink to="/">
-                            <img src={krainaHD} alt="Логотип" className="krainaHD1" />
+                            <img src={krainaHD} alt="Логотип" className="krainaHD1"/>
                         </NavLink>
 
                         {/* Mobile menu */}
@@ -56,7 +73,7 @@ const Header = () => {
                             sx={{
                                 flexGrow: 0,
                                 marginLeft: "auto",
-                                display: { xs: "flex", md: "none" },
+                                display: {xs: "flex", md: "none"},
                             }}
                         >
                             <IconButton
@@ -67,7 +84,7 @@ const Header = () => {
                                 onClick={handleOpenNavMenu}
                                 color="inherit"
                             >
-                                <MenuIcon />
+                                <MenuIcon/>
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
@@ -84,7 +101,7 @@ const Header = () => {
                                 open={Boolean(anchorElNav)}
                                 onClose={handleCloseNavMenu}
                                 sx={{
-                                    display: { xs: "block", md: "none" },
+                                    display: {xs: "block", md: "none"},
                                 }}
                             >
                                 {user && user.role_id === 1 && (
@@ -92,6 +109,10 @@ const Header = () => {
                                         Admin
                                     </NavLink>
                                 )}
+                                {isUserLogged ? (<NavLink to="/homePage" className="menu-item-mobile">
+                                    Головна
+                                </NavLink>) : (<div></div>)}
+
                                 <NavLink to="/movies" className="menu-item-mobile">
                                     Фільми
                                 </NavLink>
@@ -118,14 +139,17 @@ const Header = () => {
                                 flexGrow: 0,
                                 marginLeft: "auto",
                                 alignItems: "center",
-                                display: { xs: "none", md: "flex" },
+                                display: {xs: "none", md: "flex"},
                             }}
                         >
-                            {user && user.role_id === 1 && (
+                            {isUserLogged ? (
                                 <NavLink to="/admin" className="menu-item">
                                     Admin
                                 </NavLink>
-                            )}
+                            ):(<div></div>)}
+                            {isUserLogged ? (<NavLink to="/homePage" className="menu-item-mobile">
+                                Головна
+                            </NavLink>) : (<div></div>)}
                             <NavLink to="/movies" className="menu-item">
                                 Фільми
                             </NavLink>
@@ -156,12 +180,12 @@ const Header = () => {
                             >
                                 |
                             </Typography>
-                            <HeaderIcons />
+                            <HeaderIcons/>
                         </Box>
 
-                        <Box sx={{ flexGrow: 0 }}>
+                        <Box sx={{flexGrow: 0}}>
                             <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                     <Typography
                                         component="div"
                                         sx={{
@@ -170,12 +194,12 @@ const Header = () => {
                                             color: "#FFC700",
                                         }}
                                     >
-                                        <PersonOutlineIcon />
+                                        <PersonOutlineIcon/>
                                     </Typography>
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: "45px" }}
+                                sx={{mt: "45px"}}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{

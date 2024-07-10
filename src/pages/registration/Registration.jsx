@@ -70,7 +70,7 @@ const Registration = () => {
             password: password,
         }).then(resp => {
             setAuthError('');  // Clear any previous authentication error
-            navigate('/login')
+            navigate('/')
         }).catch(error => {
             console.log(error)
             setAuthError("Виникла помилка. Будь ласка, спробуйте пізніше.");

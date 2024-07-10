@@ -14,11 +14,12 @@ const Movies = () => {
     const [genre, setGenre] = useState('');
     const [totalPages, setTotalPages] = useState(1);
 
+
     useEffect(() => {
         const fetchMovies = async () => {
             try {
                 // Получение фильмов из базы данных
-                const localResponse = await fetch('/api/local-films');
+                const localResponse = await fetch('http://localhost:8080/api/film/all');
                 const localMovies = await localResponse.json();
 
                 // Получение фильмов из внешнего API

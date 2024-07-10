@@ -225,7 +225,7 @@
 //                                     <Typography variant="body2">👎 30</Typography>
 //                                 </Box> 
 //             </Box>
-                                 
+
 //             <Box className="divider"></Box>            
 //             <Box display="flex" flexDirection={{xs: 'column', md: 'row'}} mt={2}>
 //                 <Box flex={1} color="#FFFFFF" pr={{md: 2}}>
@@ -354,6 +354,39 @@ const MovieDetails = () => {
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [open, setOpen] = useState(false);
 
+    const [film, setFilm] = useState()
+    const [trailer, setTrailer] = useState()
+    const [poster, setPoster] = useState()
+
+    function getTrailer(){
+        axios.get(`http://localhost:8080/api/file/film/${id}/trailer`)
+            .then(response => {
+                    setTrailer(response.config.url);
+                    console.log(response.config);
+                }
+            );
+    }
+
+    function getFilm(){
+        axios.get(`http://localhost:8080/api/file/film/${id}/film`, {
+            headers: {'Authorization': `Basic ${tokenAuth}`,'Range': 'bytes=0-520'},
+
+        })
+            .then(response => {
+                    setFilm(response.config.url);
+                    console.log(response.config);
+                }
+            );
+    }
+
+    function getPoster(){
+        axios.get(`http://localhost:8080/api/file/film/${id}/poster`)
+            .then(response => {
+                console.log(response.data);
+                setPoster(response.data);
+            })
+    }
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -406,11 +439,16 @@ const MovieDetails = () => {
     useEffect(() => {
         const fetchMovieDetails = async () => {
             try {
-                const dbMovieResponse = await axios.get(`http://localhost:8080/api/movie/${id}`);
+                const dbMovieResponse = await axios.get(`http://localhost:8080/api/film/get/${id}`);
                 const dbMovie = dbMovieResponse.data;
+
+                console.log(dbMovie)
 
                 if (dbMovie) {
                     setMovie(dbMovie);
+                    getTrailer()
+                    getFilm()
+                    getPoster()
                     setLoading(false);
                 } else {
                     const response = await fetch(`${baseUrl}/movie/${id}?api_key=${apiKey}&language=uk-UA&append_to_response=videos`, {
@@ -502,28 +540,18 @@ const MovieDetails = () => {
                           onClose={handleClose}></MessageModal>
             <Box className="trailer-section">
                 {playMovie ? (
-                    <CardMedia
-                        component="video"
-                        src={testVideo}
-                        autoPlay
-                        controls
-                        loop
-                        style={{width: '100%', height: 'auto', maxHeight: '500px'}}
-                    />
+                    <video controls src={film} height={501} width={"100%"} >
+
+                    </video>
                 ) : (
+
                     <Box position="relative" display="flex" alignItems="center" justifyContent="center">
-                        {videos.length > 0 ? (
-                            <CardMedia
-                                component="iframe"
-                                src={`https://www.youtube.com/embed/${videos[0].key}?autoplay=1&mute=1&loop=1&playlist=${videos[0].key}`}
-                                title="Трейлер фільму"
-                                allow="fullscreen"
-                                style={{width: '100%', height: '501px', border: 'none'}}
-                            />
+                        {trailer ? (
+                            <video controls src={trailer} autoPlay height={501} width={"100%"} ></video>
                         ) : (
                             <CardMedia
                                 component="img"
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                src={poster}
                                 title={movie.title}
                                 className="poster-overlay"
                             />
@@ -542,26 +570,26 @@ const MovieDetails = () => {
                 </Box>
                 <Box textAlign="center" color="#FFFFFF">
                     <ThumbUpIcon fontSize="large"/>
-                    <Typography variant="body2">👍 120</Typography>
+                    <Typography variant="body2">👍 {movie.likeVote}</Typography>
                 </Box>
                 <Box textAlign="center" color="#FFFFFF">
                     <ThumbDownIcon fontSize="large"/>
-                    <Typography variant="body2">👎 30</Typography>
+                    <Typography variant="body2">👎 {movie.dislikeVote}</Typography>
                 </Box>
             </Box>
             <Box className="divider"></Box>
             <Box display="flex" flexDirection={{xs: 'column', md: 'row'}} mt={2}>
                 <Box flex={1} color="#FFFFFF" pr={{md: 2}}>
                     <Typography variant="h4" gutterBottom>{movie.title}</Typography>
-                    <Typography variant="h6" gutterBottom>{movie.original_title}</Typography>
-                    <Typography variant="body1" gutterBottom>{movie.overview}</Typography>
+                    <Typography variant="h6" gutterBottom>{movie.originalTitle}</Typography>
+                    <Typography variant="body1" gutterBottom>{movie.description}</Typography>
                     <Box display="flex" flexDirection="column">
                         <Typography variant="body2"
-                                    gutterBottom>Рейтинги:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {movie.vote_average}
+                                    gutterBottom>Рейтинги:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {movie.voteAverage}
                             <img src={imdb} alt="IMDB Logo" className="imdb-logo"/></Typography>
-                        <Typography variant="body2" gutterBottom>Дата виходу:&nbsp;&nbsp;{movie.release_date}</Typography>
+                        <Typography variant="body2" gutterBottom>Дата виходу:&nbsp;&nbsp;{movie.releaseDate}</Typography>
                         <Typography variant="body2"
-                                    gutterBottom>Країна:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {movie.production_countries ? movie.production_countries.map(country => country.name).join(', ') : 'N/A'}</Typography>
+                                    gutterBottom>Країна:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {movie.countries ? movie.countries.map(country => country.name).join(', ') : 'N/A'}</Typography>
                         <Typography variant="body2"
                                     gutterBottom>Вік:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {movie.adult ? '18+' : 'Всі віки'}</Typography>
                         <Typography variant="body2"
