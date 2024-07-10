@@ -192,12 +192,14 @@ console.log(data);
               <ListItemText primary={country.english_name} />
             </MenuItem>
           ))}
-        </Select>
-        
+        </Select>        
       </FormControl>
-      <Button className='btnClear' variant="contained" onClick={handleClearFilters}>
-        Очистити
-      </Button>
+      <FormControl sx={{ m: 1, width: 300 }}>
+        <Button className='btnClear' variant="contained" onClick={handleClearFilters}>
+          Очистити
+        </Button>
+      </FormControl>
+      
 
 
 

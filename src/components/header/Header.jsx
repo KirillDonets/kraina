@@ -92,6 +92,9 @@ const Header = () => {
                                         Admin
                                     </NavLink>
                                 )}
+                                <NavLink to="/homePage" className="menu-item-mobile">
+                                    Головна
+                                </NavLink>
                                 <NavLink to="/movies" className="menu-item-mobile">
                                     Фільми
                                 </NavLink>
@@ -126,6 +129,9 @@ const Header = () => {
                                     Admin
                                 </NavLink>
                             )}
+                            <NavLink to="/homePage" className="menu-item">
+                                Головна
+                            </NavLink>
                             <NavLink to="/movies" className="menu-item">
                                 Фільми
                             </NavLink>
