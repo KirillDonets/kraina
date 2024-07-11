@@ -313,6 +313,7 @@
     color: white;
     background: #151E27;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .profile-nav ul .card-content * {

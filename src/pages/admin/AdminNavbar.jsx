@@ -5,10 +5,10 @@ import './AdminNavbar.css'
 
 const navItems = [
     { title: 'Управління користувачами', link: '/admin/users' },
-    { title: 'Управління фільмами', link: '/admin/films' },
-    { title: 'Додавання користувача', link: '/admin/user/add' },
+    { title: 'Управління фільмами', link: '/admin/films' },    
     { title: 'Додавання фільму', link: '/admin/filmsAdd' },
-    { title: '-', link: '#' }
+    { title: 'Додавання режисера', link: '/admin/directorsAdd' },
+    { title: 'Додавання актора', link: '/admin/actorsAdd' }
 ];
 
 export default function AdminNavbar({ active }) {
@@ -20,7 +20,7 @@ export default function AdminNavbar({ active }) {
                         <Link to={item.link}>
                             <div className="card-content">
                                 <h2>{item.title}</h2>
-                                <a href={item.link}>Оформи під себе</a>
+                                <a href={item.link}></a>
                             </div>
                         </Link>
                     </li>

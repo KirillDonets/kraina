@@ -15,10 +15,12 @@ import SearchResults from '../pages/searchResults/SearchResults';
 import Profile from "../pages/profile/Profile";
 import ProfilePayment from "../pages/profile/ProfilePayment";
 import AdminPanel from "../pages/admin/AdminPanel";
-import AdminNavbar from "../pages/admin/AdminNavbar"; // Убедитесь, что путь правильный
-import UserManagement from "../pages/admin/UserManagement"; // Убедитесь, что путь правильный
-import MovieManagement from "../pages/admin/MovieManagement"; // Убедитесь, что путь правильный
+import AdminNavbar from "../pages/admin/AdminNavbar";
+import UserManagement from "../pages/admin/UserManagement";
+import MovieManagement from "../pages/admin/MovieManagement";
 import AddMovieManagement from "../pages/admin/AddMovieManagement";
+import AddDirectorManagement from "../pages/admin/AddDirectorManagement";
+import AddActorManagement from "../pages/admin/AddActorManagement";
 import HomePage from "../pages/homePage/HomePage";
 
 export const router = createBrowserRouter([
@@ -48,9 +50,12 @@ export const router = createBrowserRouter([
       { path: '/profile', element: <Profile /> },
       { path: '/profile/payment', element: <ProfilePayment /> },
 
+
       {path: "/admin/films", element: <MovieManagement/>},
       {path: "/admin/users", element: <UserManagement/>},
       {path: "/admin/filmsAdd", element: <AddMovieManagement/>},
+      {path: "/admin/directorsAdd", element: <AddDirectorManagement/>},
+      {path: "/admin/actorsAdd", element: <AddActorManagement/>},
     ]
   },
 ]);

@@ -140,7 +140,8 @@ console.log(data);
           '&.MuiInputLabel-shrink': {
             color: '#FFC700'
       }
-    }} id="demo-multiple-checkbox-label">Рік</InputLabel>
+    }} 
+        id="demo-multiple-checkbox-label">Рік</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -183,7 +184,7 @@ console.log(data);
         >
           {genres.map((genre) => (
             <MenuItem key={genre.id} value={genre}>
-              <Checkbox checked={selectedGenres.some(g=>g.id==genre.id)}  />
+              <Checkbox checked={selectedGenres.some(g=>g.id==genre.id)} sx={{ color: '#FFC700' }}  />
               <ListItemText primary={genre.name} />
             </MenuItem>
           ))}
@@ -211,7 +212,7 @@ console.log(data);
           MenuProps={MenuProps}>
           {countries.map((country) => (
             <MenuItem key={country.iso_639_1} value={country}>
-              <Checkbox checked={selectedCountries.some(g=>g.iso_639_1==country.iso_639_1)}  />
+              <Checkbox checked={selectedCountries.some(g=>g.iso_639_1==country.iso_639_1)} sx={{ color: '#FFC700' }}  />
               <ListItemText primary={country.english_name} />
             </MenuItem>
           ))}
