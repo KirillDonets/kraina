@@ -46,6 +46,7 @@ export default function AddMovieManagement() {
         runtime: '',
         voteAverage: '',
         genres: [],
+        actors: [],
         dislikeVote: '',
         film_video_path: null,
         likeVote: '',
@@ -54,7 +55,8 @@ export default function AddMovieManagement() {
         trailer_path: null
     });
     const [genres, setGenres] = useState([]);
-    const [selectedGenres, setSelectedGenres] = useState([])
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [actors, setSelectedActors] = useState([]);
     const [countries, setCountries] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -135,6 +137,10 @@ export default function AddMovieManagement() {
         const {target: {value}} = event;
         setNewMovie({...newMovie, genres: value});
     };
+    const handleActorsChange = (event) => {
+        const {target: {value}} = event;
+        setNewMovie({...newMovie, actors: value});
+    };
 
     const handleAddMovie = () => {
         const formData = new FormData();
@@ -170,6 +176,7 @@ export default function AddMovieManagement() {
                 setNewMovie({
                     title: '',
                     genres: [],
+                    actors: [],
                     description: '',
                     adult: false,
                     originalTitle: '',
@@ -281,6 +288,28 @@ export default function AddMovieManagement() {
                                         <MenuItem key={genre.id} value={genre}>
                                             <Checkbox checked={newMovie.genres.indexOf(genre) > -1}/>
                                             <ListItemText primary={genre.name}/>
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="genre-label">Актори</InputLabel>
+                                <Select
+                                    labelId="genre-label"
+                                    id="actors"
+                                    multiple
+                                    value={newMovie.actors}
+                                    onChange={handleActorsChange}
+                                    input={<OutlinedInput label="Актори"/>}
+                                    renderValue={(selected) => selected.map(g => g.name).join(', ')}
+                                    MenuProps={MenuProps}
+                                >
+                                    {actors.map((actor) => (
+                                        <MenuItem key={actor.id} value={actor}>
+                                            <Checkbox checked={newMovie.actors.indexOf(actor) > -1}/>
+                                            <ListItemText primary={actor.name}/>
                                         </MenuItem>
                                     ))}
                                 </Select>

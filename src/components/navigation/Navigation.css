@@ -18,8 +18,9 @@
   .MuiSelect-root {
     border-radius: 15px;
     background-color: #D9D9D9;
+    
   }
-  /* .btnClear{
-    min-width: 100px !important;
-    height: 20px !important;
-  } */
+  .textColor{
+    color: #FFC700 !important;
+  }
+  

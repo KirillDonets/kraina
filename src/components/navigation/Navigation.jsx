@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, ListItemText, OutlinedInput } from '@mui/material';
-const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
-const baseUrl = 'https://api.themoviedb.org/3';
+import {apiKey, token, baseUrl} from '../../app/http';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -131,10 +129,18 @@ console.log(data);
   };
 
   return (
-    <Box sx={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+    <Box sx={{ display: 'flex', gap: '10px', marginBottom: '20px'}}>
      
-     <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">Рік</InputLabel>
+     <FormControl sx={{ m: 1, width: 300, border: '1px solid #FFC700', borderRadius: '5px'}}>
+        <InputLabel sx={{
+          color: '#FFC700',
+          '&.Mui-focused': {
+            color: '#FFC700'
+          },
+          '&.MuiInputLabel-shrink': {
+            color: '#FFC700'
+      }
+    }} id="demo-multiple-checkbox-label">Рік</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -144,18 +150,27 @@ console.log(data);
           input={<OutlinedInput label="Tag" />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
+          sx={{ borderColor: '#FFC700' }}
         >
           {years.map((year) => (
             <MenuItem key={year} value={year}>
-              <Checkbox checked={yearsForm.indexOf(year) > -1} />
+              <Checkbox checked={yearsForm.indexOf(year) > -1} sx={{ color: '#FFC700' }} />
               <ListItemText primary={year} />
             </MenuItem>
           ))}
         </Select>
       </FormControl>
 
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">Жанри</InputLabel>
+      <FormControl sx={{ m: 1, width: 300, border: '1px solid #FFC700', borderRadius: '5px'}}>
+        <InputLabel sx={{
+          color: '#FFC700',
+          '&.Mui-focused': {
+            color: '#FFC700'
+          },
+          '&.MuiInputLabel-shrink': {
+            color: '#FFC700'
+      }
+    }} id="demo-multiple-checkbox-label">Жанри</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -175,8 +190,16 @@ console.log(data);
         </Select>
       </FormControl>
 
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">Країни</InputLabel>
+      <FormControl sx={{ m: 1, width: 300, border: '1px solid #FFC700', borderRadius: '5px'}}>
+        <InputLabel sx={{
+          color: '#FFC700',
+          '&.Mui-focused': {
+            color: '#FFC700'
+          },
+          '&.MuiInputLabel-shrink': {
+            color: '#FFC700'
+      }
+    }} id="demo-multiple-checkbox-label">Країни</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
