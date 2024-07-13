@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField, Select, MenuItem, FormControl, InputLabel, Checkbox, ListItemText, OutlinedInput } from '@mui/material';
-import api, { apiKey, token, baseUrl } from '../../app/http';
+import api from '../../app/http';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -165,7 +165,7 @@ const Navigation = ({ onFilterChange }) => {
           {countries.map((country) => (
             <MenuItem key={country.iso_639_1} value={country}>
               <Checkbox checked={selectedCountries.some(g => g.iso_639_1 == country.iso_639_1)} sx={{ color: '#FFC700' }} />
-              <ListItemText primary={country.english_name} />
+              <ListItemText primary={country.name} />
             </MenuItem>
           ))}
         </Select>

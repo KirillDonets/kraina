@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Pagination, Box, IconButton } from '@mui/material';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Container, CircularProgress, Grid, Pagination, Box } from '@mui/material';
 import './Movies.css';
 import Movie from '../../components/movie/Movie';
 import api from '../../app/http';
 import Navigation from '../../components/navigation/Navigation';
 import ScrollTop from '../../components/scrollTop/scrollTop';
+
+const MOVIES_PER_PAGE = 30;
 
 const Movies = () => {
     const [movies, setMovies] = useState([]);
@@ -16,40 +17,48 @@ const Movies = () => {
     const [genreFilter, setGenreFilter] = useState([]);
     const [countryFilter, setCountryFilter] = useState([]);
 
-
-
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                // Получение фильмов из базы данных
                 const response = await api.get('film/all');
-                setMovies(response.data.filter(movie=>movie.type==='movies'));
-                // setTotalPages(data.total_pages);
+                const filteredMovies = response.data.filter(movie => movie.type === 'movies');
+                setMovies(filteredMovies);
+                setTotalPages(Math.ceil(filteredMovies.length / MOVIES_PER_PAGE));
                 setLoading(false);
             } catch (error) {
                 setLoading(false);
             }
         };
         fetchMovies();
-    }, [page]);
+    }, []);
 
     const handlePageChange = (event, value) => {
         setPage(value);
     };
 
+    const filteredMovie = (movie) => {
+        const releaseYear = new Date(movie.releaseDate).getFullYear();
+        const movieGenres = movie.genres.map(genre => genre.id);
+        const movieCountries = movie.countries.map(country => country.id);
 
-    const filteredMovie = (movie)=> {
-             return ( yearFilter.length>0 ? yearFilter.includes(+movie.releaseDate) : true) && 
-             ( genreFilter.length>0 ? genreFilter.includes(+movie.genre_id) : true) &&   //!!!!
-             ( countryFilter.length>0 ? countryFilter.includes(+movie.country_id) : true) // !!!!
-    }
-
-    const onFilterChange = ({selectedGenres, selectedCountries, selectedYears}) => {
-        setYearFilter(selectedYears)
-        setGenreFilter(selectedGenres)
-        setCountryFilter(selectedCountries)
+        return (
+            (yearFilter.length > 0 ? yearFilter.includes(releaseYear) : true) &&
+            (genreFilter.length > 0 ? genreFilter.some(genre => movieGenres.includes(genre)) : true) &&
+            (countryFilter.length > 0 ? countryFilter.some(country => movieCountries.includes(country)) : true)
+        );
     };
 
+    const onFilterChange = ({ selectedGenres, selectedCountries, selectedYears }) => {
+        setYearFilter(selectedYears);
+        setGenreFilter(selectedGenres.map(genre => genre.id));
+        setCountryFilter(selectedCountries.map(country => country.id));
+    };
+
+    const getCurrentPageMovies = () => {
+        const startIndex = (page - 1) * MOVIES_PER_PAGE;
+        const endIndex = startIndex + MOVIES_PER_PAGE;
+        return movies.filter(filteredMovie).slice(startIndex, endIndex);
+    };
 
     if (loading) {
         return (
@@ -65,7 +74,7 @@ const Movies = () => {
             <Navigation onFilterChange={onFilterChange} />
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
-                {movies.filter(filteredMovie).map(movie => (
+                {getCurrentPageMovies().map(movie => (
                     <Movie movie={movie} key={movie.id} />
                 ))}
             </Grid>
