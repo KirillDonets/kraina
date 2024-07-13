@@ -61,6 +61,7 @@ export default function AddMovieManagement() {
     const [directors, setDirectors] = useState([]);
     const [selectedDirectors, setSelectedDirectors] = useState([])
     const [countries, setCountries] = useState([]);
+    const [selectedCountries, setSelectedCountries] = useState([])
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -181,6 +182,17 @@ export default function AddMovieManagement() {
 
         setSelectedActors(value);
     };
+    const handleCountriesChange = (event) => {
+        const {target: {value}} = event;
+        console.log(value)
+        const countriesIds = value.map(country => country.id);
+        setNewMovie({...newMovie, countries: countriesIds});
+
+
+        console.log(countriesIds); // [1]
+
+        setSelectedCountries(value);
+    };
     const handleDirectorsChange = (event) => {
         const {target: {value}} = event;
         console.log(value)
@@ -196,7 +208,7 @@ export default function AddMovieManagement() {
     const handleAddMovie = () => {
         const formData = new FormData();
         Object.keys(newMovie).forEach(key => {
-            if (key === 'genres' || key === 'actors' || key === 'regisseurs') {
+            if (key === 'genres' || key === 'actors' || key === 'regisseurs' || key ==='countries') {
                 if (key === 'genres') {
                     // Добавляем каждый жанр отдельно
                     newMovie[key].forEach(genreId => {
@@ -212,6 +224,11 @@ export default function AddMovieManagement() {
                 if(key === 'regisseurs'){
                     newMovie[key].forEach(regisseurId => {
                         formData.append('regisseurs', regisseurId);
+                    });
+                }
+                if (key === 'countries'){
+                    newMovie[key].forEach(countryId => {
+                        formData.append('countries', countryId);
                     });
                 }
             } else {
@@ -437,6 +454,38 @@ export default function AddMovieManagement() {
                                             <Checkbox checked={directors.indexOf(director) > -1}
                                                       sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={director.name}/>
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>) : (null)}
+
+                        {countries ? (<Grid item xs={12}>
+                            <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
+                                <InputLabel id="genre-label" sx={{
+                                    color: '#FFC700',
+                                    '&.Mui-focused': {
+                                        color: '#FFC700'
+                                    },
+                                    '&.MuiInputLabel-shrink': {
+                                        color: '#FFC700'
+                                    }
+                                }}>Страны</InputLabel>
+                                <Select
+                                    labelId="genre-label"
+                                    id="countries"
+                                    multiple
+                                    value={selectedCountries}
+                                    onChange={handleCountriesChange}
+                                    input={<OutlinedInput label="Страны"/>}
+                                    renderValue={(selected) => selected.map(g => g.name).join(', ')}
+                                    MenuProps={MenuProps}
+                                >
+                                    {countries.map((country) => (
+                                        <MenuItem key={country.id} value={country}>
+                                            <Checkbox checked={countries.indexOf(country) > -1}
+                                                      sx={{color: '#FFC700'}}/>
+                                            <ListItemText primary={country.name}/>
                                         </MenuItem>
                                     ))}
                                 </Select>

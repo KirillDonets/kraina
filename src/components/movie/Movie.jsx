@@ -24,7 +24,8 @@ const Movie = ({ movie }) => {
                     margin: "auto",
                     boxShadow: "none"
                 }}>
-                    {poster ? (<CardMedia
+                    {poster}
+                    {true ? (<CardMedia
                         component="img"
                         height="300"
                         image={movie.poster_path}
