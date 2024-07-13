@@ -21,7 +21,7 @@ export default function AddDirectorManagement() {
     }, []);
 
     const fetchDirectors = () => {
-        axios.get('http://localhost:8080/api/director/all')
+        axios.get('http://localhost:8080/api/regisseur/all')
             .then(response => {
                 setDirectors(response.data);
             })
@@ -47,10 +47,10 @@ export default function AddDirectorManagement() {
             formData.append('photo', photo);
         }
 
-        axios.post('http://localhost:8080/api/director/create', formData, {
+        axios.post('http://localhost:8080/api/regisseur/create', formData, {
             headers: {
                 'Authorization': `Basic ${tokenAuth}`,
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             }
         })
             .then(response => {
@@ -58,6 +58,15 @@ export default function AddDirectorManagement() {
                 fetchDirectors();
                 setNewDirector({ name: '', photo_path: null });
                 setPhoto(null);
+
+                let id = response.data;
+
+                axios.post(`http://localhost:8080/api/file/regisseur/${id}/photo`, {file:photo}, {
+                    headers:{
+                        'Authorization': `Basic ${tokenAuth}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
             })
             .catch(error => {
                 setErrorMessage(`Помилка при додаванні режисера: ${error.response?.data?.message || error.message}`);

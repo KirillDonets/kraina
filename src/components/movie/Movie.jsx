@@ -27,7 +27,7 @@ const Movie = ({ movie }) => {
                     {poster ? (<CardMedia
                         component="img"
                         height="300"
-                        image={poster}
+                        image={movie.poster_path}
                         alt={movie.title}
                         className="poster"
                     />):(

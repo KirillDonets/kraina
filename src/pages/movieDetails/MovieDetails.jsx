@@ -358,7 +358,10 @@ const MovieDetails = () => {
     const [trailer, setTrailer] = useState()
     const [poster, setPoster] = useState()
 
-    function getTrailer(){
+    const [regisseurs, setRegisseurs] = useState([])
+    const [Actors, setActors] = useState([])
+
+    function getTrailer() {
         axios.get(`http://localhost:8080/api/file/film/${id}/trailer`)
             .then(response => {
                     setTrailer(response.config.url);
@@ -367,9 +370,9 @@ const MovieDetails = () => {
             );
     }
 
-    function getFilm(){
+    function getFilm() {
         axios.get(`http://localhost:8080/api/file/film/${id}/film`, {
-            headers: {'Authorization': `Basic ${tokenAuth}`,'Range': 'bytes=0-520'},
+            headers: {'Authorization': `Basic ${tokenAuth}`, 'Range': 'bytes=0-520'},
 
         })
             .then(response => {
@@ -379,12 +382,76 @@ const MovieDetails = () => {
             );
     }
 
-    function getPoster(){
+    function getPoster() {
         axios.get(`http://localhost:8080/api/file/film/${id}/poster`)
             .then(response => {
                 console.log(response.data);
                 setPoster(response.data);
             })
+    }
+
+    class Regisseur {
+        constructor(name, photo) {
+            this.name = name;
+            this.photo = photo;
+        }
+    }
+
+    function getRegisseurs() {
+        axios.get(`http://localhost:8080/api/regisseur/film/${id}`).then(response => {
+            const regisseurData = response.data;
+            console.log(regisseurData);
+
+            let regisseurPromises = regisseurData.map((regisseur) => {
+                return axios.get(`http://localhost:8080/api/file/regisseur/${regisseur.id}/photo`)
+                    .then(response => {
+                        const photo = response.config.url;
+                        return {...regisseur, photo};
+                    })
+                    .catch((err)=>{
+                        return {...regisseur, undefined}
+                    })
+                    ;
+            });
+
+            Promise.all(regisseurPromises).then(regisseursWithPhotos => {
+                setRegisseurs(regisseursWithPhotos);
+                console.log(regisseursWithPhotos);
+            }).catch(error => {
+                console.error('Error fetching regisseur photos:', error);
+            });
+        }).catch(error => {
+            console.error('Error fetching regisseurs:', error);
+        });
+    }
+
+    function getActors(){
+        axios.get(`http://localhost:8080/api/actor/film/${id}`).then(response => {
+            const actorData = response.data;
+            console.log(actorData);
+
+            let actorPromises = actorData.map((actor) => {
+                return axios.get(`http://localhost:8080/api/file/actor/${actor.id}/photo`)
+                    .then(response => {
+                        const photo = response.config.url;
+
+                        return {...actor, photo};
+                    })
+                    .catch(err => {
+                        return {...actor, undefined}
+                    })
+                    ;
+            });
+
+            Promise.all(actorPromises).then(actorsWithPhotos => {
+                setActors(actorsWithPhotos);
+                console.log(actorsWithPhotos);
+            }).catch(error => {
+                console.error('Error fetching regisseur photos:', error);
+            });
+        }).catch(error => {
+            console.error('Error fetching regisseurs:', error);
+        });
     }
 
     const handleOpen = () => {
@@ -399,10 +466,9 @@ const MovieDetails = () => {
         axios.get("http://localhost:8080/api/user/get", {
             headers: {'Authorization': `Basic ${tokenAuth}`}
         }).then(resp => {
-            if (resp.request.responseURL === 'http://localhost:8080/api/user/get'){
+            if (resp.request.responseURL === 'http://localhost:8080/api/user/get') {
                 setPlayMovie(true)
-            }
-            else{
+            } else {
                 handleOpen()
             }
         })
@@ -449,6 +515,8 @@ const MovieDetails = () => {
                     getTrailer()
                     getFilm()
                     getPoster()
+                    getRegisseurs()
+                    getActors()
                     setLoading(false);
                 } else {
                     const response = await fetch(`${baseUrl}/movie/${id}?api_key=${apiKey}&language=uk-UA&append_to_response=videos`, {
@@ -540,14 +608,14 @@ const MovieDetails = () => {
                           onClose={handleClose}></MessageModal>
             <Box className="trailer-section">
                 {playMovie ? (
-                    <video controls src={film} height={501} width={"100%"} >
+                    <video controls src={film} height={501} width={"100%"}>
 
                     </video>
                 ) : (
 
                     <Box position="relative" display="flex" alignItems="center" justifyContent="center">
                         {trailer ? (
-                            <video controls src={trailer} autoPlay height={501} width={"100%"} ></video>
+                            <video controls src={trailer} autoPlay height={501} width={"100%"}></video>
                         ) : (
                             <CardMedia
                                 component="img"
@@ -587,7 +655,8 @@ const MovieDetails = () => {
                         <Typography variant="body2"
                                     gutterBottom>Рейтинги:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {movie.voteAverage}
                             <img src={imdb} alt="IMDB Logo" className="imdb-logo"/></Typography>
-                        <Typography variant="body2" gutterBottom>Дата виходу:&nbsp;&nbsp;{movie.releaseDate}</Typography>
+                        <Typography variant="body2" gutterBottom>Дата
+                            виходу:&nbsp;&nbsp;{movie.releaseDate}</Typography>
                         <Typography variant="body2"
                                     gutterBottom>Країна:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {movie.countries ? movie.countries.map(country => country.name).join(', ') : 'N/A'}</Typography>
                         <Typography variant="body2"
@@ -601,39 +670,35 @@ const MovieDetails = () => {
                 <Box flex={1} color="#FFFFFF">
                     <Typography variant="h5" gutterBottom>Режисери:</Typography>
                     <Grid container spacing={2}>
-                        {director.map(person => (
+                        {regisseurs.map(person => (
                             <Grid item key={person.id} xs={6} sm={4} md={3} lg={2}>
-                                <Link to={`/person/${person.id}`} className="person-link">
-                                    <Box display="flex" flexDirection="column" alignItems="center">
-                                        <Avatar
-                                            src={person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
-                                            alt={person.name}
-                                            className="person-image"
-                                            sx={{width: 85, height: 85}}
-                                        />
-                                        <Typography variant="body2" align="center">{person.name}</Typography>
-                                    </Box>
-                                </Link>
+                                <Box display="flex" flexDirection="column" alignItems="center">
+                                    <Avatar
+                                        src={person.photo ? person.photo : (null)}
+                                        alt={person.name}
+                                        className="person-image"
+                                        sx={{width: 85, height: 85}}
+                                    />
+                                    <Typography variant="body2" align="center">{person.name}</Typography>
+                                </Box>
                             </Grid>
                         ))}
                     </Grid>
 
                     <Typography variant="h5" gutterBottom>У ролях:</Typography>
                     <Grid container spacing={2}>
-                        {sortedCast.slice(0, showAllCast ? sortedCast.length : 4).map(actor => (
+                        {Actors.map(actor => (
                             <Grid item key={actor.cast_id} xs={6} sm={4} md={3} lg={2}>
-                                <Link to={`/person/${actor.id}`} className="person-link">
                                     <Box display="flex" flexDirection="column" alignItems="center">
 
                                         <Avatar
-                                            src={actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
+                                            src={actor.photo ? actor.photo : 'https://via.placeholder.com/150x225?text=No+Image'}
                                             alt={actor.name}
                                             className="person-image"
                                             sx={{width: 85, height: 85}}
                                         />
                                         <Typography variant="body2" align="center">{actor.name}</Typography>
                                     </Box>
-                                </Link>
                             </Grid>
                         ))}
                     </Grid>

@@ -38,6 +38,7 @@ export default function AddActorManagement() {
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
         setPhoto(file);
+        console.log(file)
     };
 
     const handleAddActor = () => {
@@ -50,17 +51,30 @@ export default function AddActorManagement() {
         axios.post('http://localhost:8080/api/actor/create', formData, {
             headers: {
                 'Authorization': `Basic ${tokenAuth}`,
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             }
         })
             .then(response => {
-                setSuccessMessage('Режисер успішно додано!');
+                setSuccessMessage('Актор успішно додан!');
                 fetchActors();
                 setNewActor({ name: '', photo_path: null });
                 setPhoto(null);
+
+                let id = response.data;
+
+                console.log(response.data)
+
+                if (photo != null){
+                    axios.post(`http://localhost:8080/api/file/actor/${id}/photo`, {file:photo}, {
+                        headers:{
+                            'Authorization': `Basic ${tokenAuth}`,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                }
             })
             .catch(error => {
-                setErrorMessage(`Помилка при додаванні режисера: ${error.response?.data?.message || error.message}`);
+                setErrorMessage(`Помилка при додаванні актора: ${error.response?.data?.message || error.message}`);
             });
     };
 

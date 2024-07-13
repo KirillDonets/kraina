@@ -56,8 +56,10 @@ export default function AddMovieManagement() {
     });
     const [genres, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
-    const [actors, setSelectedActors] = useState([]);
-    const [directors, setSelectedDirectors] = useState([]);
+    const [actors, setActors] = useState([]);
+    const [selectedActors, setSelectedActors] = useState([])
+    const [directors, setDirectors] = useState([]);
+    const [selectedDirectors, setSelectedDirectors] = useState([])
     const [countries, setCountries] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -66,6 +68,8 @@ export default function AddMovieManagement() {
         fetchMovies();
         fetchGenres();
         fetchCountries();
+        fetchActors()
+        fetchDirectors()
     }, []);
 
     const fetchMovies = () => {
@@ -81,7 +85,7 @@ export default function AddMovieManagement() {
     const fetchGenres = async () => {
         axios.get(`http://localhost:8080/api/genre/all`)
             .then(response => {
-              console.log(response);
+                console.log(response);
                 setGenres(response.data || []);
             }).catch(error => {
             console.error('Error fetching genres:', error);
@@ -89,14 +93,34 @@ export default function AddMovieManagement() {
 
     };
 
+    function fetchActors() {
+        axios.get('http://localhost:8080/api/actor/all', {
+            headers: {'Authorization': `Basic ${tokenAuth}`}
+        })
+            .then(response => {
+                console.log(response.data)
+                setActors(response.data);
+            })
+    }
+
+    function fetchDirectors() {
+        axios.get('http://localhost:8080/api/regisseur/all', {
+            headers: {'Authorization': `Basic ${tokenAuth}`}
+        })
+            .then(response => {
+                console.log(response.data)
+                setDirectors(response.data);
+            })
+    }
+
     const fetchCountries = async () => {
-      axios.get(`http://localhost:8080/api/country/all`)
-          .then(response => {
-            setCountries(response.data || []);
-            console.log(response)
-          }).catch(error => {
-        console.error('Error fetching genres:', error);
-      })
+        axios.get(`http://localhost:8080/api/country/all`)
+            .then(response => {
+                setCountries(response.data || []);
+                console.log(response)
+            }).catch(error => {
+            console.error('Error fetching genres:', error);
+        })
     };
 
     const handleInputChange = (event) => {
@@ -104,23 +128,24 @@ export default function AddMovieManagement() {
         setNewMovie({...newMovie, [name]: value});
     };
 
-    const handlePosterChange = (event) =>{
+    const handlePosterChange = (event) => {
         const file = event.target.files[0];
         setPoster(file)
     }
 
-    const handleFilmChange = (event) =>{
+    const handleFilmChange = (event) => {
         const file = event.target.files[0];
         setFilm(file)
     }
 
-    const handleTrailerChange = (event) =>{
+    const handleTrailerChange = (event) => {
         const file = event.target.files[0];
         setTrailer(file)
     }
 
+
     const handleFileChange = (event) => {
-        const { name, files } = event.target;
+        const {name, files} = event.target;
         console.log(files)
         if (name === 'film_video_path') {
             setFilm(files[0]);
@@ -136,25 +161,59 @@ export default function AddMovieManagement() {
 
     const handleGenreChange = (event) => {
         const {target: {value}} = event;
-        setNewMovie({...newMovie, genres: value});
+        console.log(value)
+        const genreIds = value.map(genre => genre.id);
+        setNewMovie({...newMovie, genres: genreIds});
+
+
+        console.log(genreIds); // [1]
+
+        setSelectedGenres(value);
     };
     const handleActorsChange = (event) => {
         const {target: {value}} = event;
-        setNewMovie({...newMovie, actors: value});
+        console.log(value)
+        const actorsIds = value.map(actor => actor.id);
+        setNewMovie({...newMovie, actors: actorsIds});
+
+
+        console.log(actorsIds); // [1]
+
+        setSelectedActors(value);
     };
     const handleDirectorsChange = (event) => {
         const {target: {value}} = event;
-        setNewMovie({...newMovie, actors: value});
+        console.log(value)
+        const regisseurIds = value.map(regisseur => regisseur.id);
+        setNewMovie({...newMovie, regisseurs: regisseurIds});
+
+
+        console.log(regisseurIds); // [1]
+
+        setSelectedDirectors(value);
     };
 
     const handleAddMovie = () => {
         const formData = new FormData();
         Object.keys(newMovie).forEach(key => {
+            if (key === 'genres' || key === 'actors' || key === 'regisseurs') {
+                if (key === 'genres') {
+                    // Добавляем каждый жанр отдельно
+                    newMovie[key].forEach(genreId => {
+                        formData.append('genres', genreId);
+                    });
+                }
+                if (key === 'actors') {
+                    newMovie[key].forEach(actorId => {
+                        formData.append('actors', actorId);
+                    });
+                }
 
-            if (key === 'genres') {
-                newMovie[key].forEach(genre => {
-                    formData.append('genre', JSON.stringify(genre)); // Пример преобразования в строку JSON
-                });
+                if(key === 'regisseurs'){
+                    newMovie[key].forEach(regisseurId => {
+                        formData.append('regisseurs', regisseurId);
+                    });
+                }
             } else {
                 formData.append(key, newMovie[key]);
             }
@@ -163,7 +222,7 @@ export default function AddMovieManagement() {
 
 
         let filmId;
-      console.log("filmId" + filmId);
+        console.log("filmId" + filmId);
 
         axios.post('http://localhost:8080/api/film/create', formData, {
             headers: {
@@ -196,33 +255,38 @@ export default function AddMovieManagement() {
                 });
 
 
+                if (Film != null) {
+                    axios.post(`http://localhost:8080/api/file/film/${filmId}/film`, {
+                        file: Film
+                    }, {
+                        headers: {
+                            'Authorization': `Basic ${tokenAuth}`,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                }
 
-                axios.post(`http://localhost:8080/api/file/film/${filmId}/film`, {
-                    file: Film
-                }, {
-                    headers: {
-                        'Authorization': `Basic ${tokenAuth}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
+                if (trailer != null) {
 
-                axios.post(`http://localhost:8080/api/file/film/${filmId}/trailer`, {
-                    file: trailer
-                }, {
-                    headers: {
-                        'Authorization': `Basic ${tokenAuth}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-
-                axios.post(`http://localhost:8080/api/file/film/${filmId}/poster`, {
-                    file: poster
-                }, {
-                    headers: {
-                        'Authorization': `Basic ${tokenAuth}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
+                    axios.post(`http://localhost:8080/api/file/film/${filmId}/trailer`, {
+                        file: trailer
+                    }, {
+                        headers: {
+                            'Authorization': `Basic ${tokenAuth}`,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                }
+                if (poster != null) {
+                    axios.post(`http://localhost:8080/api/file/film/${filmId}/poster`, {
+                        file: poster
+                    }, {
+                        headers: {
+                            'Authorization': `Basic ${tokenAuth}`,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                }
 
 
             })
@@ -231,14 +295,13 @@ export default function AddMovieManagement() {
             });
 
 
-
     };
 
     const handleCloseSnackbar = () => {
         setSuccessMessage('');
         setErrorMessage('');
     };
-    
+
 
     return (
         <Container maxWidth={"lg"}>
@@ -259,57 +322,58 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
-                                <InputLabel  id="genre-label" sx={{
-                                        color: '#FFC700',
-                                        '&.Mui-focused': {
-                                            color: '#FFC700'
-                                        },
-                                        '&.MuiInputLabel-shrink': {
-                                            color: '#FFC700'
+                                <InputLabel id="genre-label" sx={{
+                                    color: '#FFC700',
+                                    '&.Mui-focused': {
+                                        color: '#FFC700'
+                                    },
+                                    '&.MuiInputLabel-shrink': {
+                                        color: '#FFC700'
                                     }
-                                    }} >Жанри</InputLabel>
+                                }}>Жанри</InputLabel>
                                 <Select
                                     labelId="genre-label"
                                     id="genres"
                                     multiple
-                                    value={newMovie.genres}
+                                    value={selectedGenres}
                                     onChange={handleGenreChange}
                                     input={<OutlinedInput label="Жанри"/>}
                                     renderValue={(selected) => selected.map(g => g.name).join(', ')}
                                     MenuProps={MenuProps}
-                                    
+
                                 >
                                     {genres.map((genre) => (
                                         <MenuItem key={genre.id} value={genre}>
-                                            <Checkbox checked={newMovie.genres.indexOf(genre) > -1} sx={{ color: '#FFC700' }}/>
+                                            <Checkbox checked={newMovie.genres.indexOf(genre) > -1}
+                                                      sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={genre.name}/>
                                         </MenuItem>
                                     ))}
@@ -317,21 +381,21 @@ export default function AddMovieManagement() {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                            <FormControl fullWidth  sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
+                            <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
                                 <InputLabel id="genre-label" sx={{
-                                        color: '#FFC700',
-                                        '&.Mui-focused': {
-                                            color: '#FFC700'
-                                        },
-                                        '&.MuiInputLabel-shrink': {
-                                            color: '#FFC700'
+                                    color: '#FFC700',
+                                    '&.Mui-focused': {
+                                        color: '#FFC700'
+                                    },
+                                    '&.MuiInputLabel-shrink': {
+                                        color: '#FFC700'
                                     }
-                                    }}>Актори</InputLabel>
+                                }}>Актори</InputLabel>
                                 <Select
                                     labelId="genre-label"
                                     id="actors"
                                     multiple
-                                    value={newMovie.actors}
+                                    value={selectedActors}
                                     onChange={handleActorsChange}
                                     input={<OutlinedInput label="Актори"/>}
                                     renderValue={(selected) => selected.map(g => g.name).join(', ')}
@@ -339,43 +403,46 @@ export default function AddMovieManagement() {
                                 >
                                     {actors.map((actor) => (
                                         <MenuItem key={actor.id} value={actor}>
-                                            <Checkbox checked={newMovie.actors.indexOf(actor) > -1} sx={{ color: '#FFC700'}}/>
+                                            <Checkbox checked={newMovie.actors.indexOf(actor) > -1}
+                                                      sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={actor.name}/>
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12}>
-                            <FormControl fullWidth  sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
+                        {directors ? (<Grid item xs={12}>
+                            <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
                                 <InputLabel id="genre-label" sx={{
-                                        color: '#FFC700',
-                                        '&.Mui-focused': {
-                                            color: '#FFC700'
-                                        },
-                                        '&.MuiInputLabel-shrink': {
-                                            color: '#FFC700'
+                                    color: '#FFC700',
+                                    '&.Mui-focused': {
+                                        color: '#FFC700'
+                                    },
+                                    '&.MuiInputLabel-shrink': {
+                                        color: '#FFC700'
                                     }
-                                    }}>Режисери</InputLabel>
+                                }}>Режисери</InputLabel>
                                 <Select
                                     labelId="genre-label"
-                                    id="directors"
+                                    id="regisseurs"
                                     multiple
-                                    value={newMovie.directors}
+                                    value={selectedDirectors}
                                     onChange={handleDirectorsChange}
                                     input={<OutlinedInput label="Режисери"/>}
                                     renderValue={(selected) => selected.map(g => g.name).join(', ')}
                                     MenuProps={MenuProps}
                                 >
-                                    {actors.map((director) => (
+                                    {directors.map((director) => (
                                         <MenuItem key={director.id} value={director}>
-                                            <Checkbox checked={newMovie.directors.indexOf(director) > -1} sx={{ color: '#FFC700'}}/>
+                                            <Checkbox checked={directors.indexOf(director) > -1}
+                                                      sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={director.name}/>
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
-                        </Grid>
+                        </Grid>) : (null)}
+
                         <Grid item xs={12}>
                             <TextField
                                 name="description"
@@ -385,30 +452,30 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -420,30 +487,30 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -455,30 +522,30 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -490,30 +557,30 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -525,30 +592,30 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -560,30 +627,30 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -595,30 +662,30 @@ export default function AddMovieManagement() {
                                 fullWidth
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
-                                      borderRadius: '5px',
-                                      '& fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки по умолчанию
-                                      },
-                                      '&:hover fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при наведении
-                                      },
-                                      '&.Mui-focused fieldset': {
-                                        borderColor: '#FFC700', // Цвет рамки при фокусе
-                                      },
+                                        borderRadius: '5px',
+                                        '& fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки по умолчанию
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при наведении
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#FFC700', // Цвет рамки при фокусе
+                                        },
                                     },
                                     '& .MuiInputLabel-root': {
-                                      color: '#FFC700', // Цвет текста по умолчанию
+                                        color: '#FFC700', // Цвет текста по умолчанию
                                     },
                                     '& .MuiInputLabel-root.Mui-focused': {
-                                      color: '#FFC700', // Цвет текста при фокусе
+                                        color: '#FFC700', // Цвет текста при фокусе
                                     },
                                     '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                                      color: '#FFC700', // Цвет текста при уменьшении (поднятии)
+                                        color: '#FFC700', // Цвет текста при уменьшении (поднятии)
                                     },
                                     '& .MuiInputBase-input': {
-                                      color: '#FFC700', // Цвет текста внутри поля
+                                        color: '#FFC700', // Цвет текста внутри поля
                                     },
-                                  }}
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -636,7 +703,7 @@ export default function AddMovieManagement() {
                                 </Button>
                             </label>
                         </Grid>
-                        
+
                         <Grid item xs={12}>
                             <input
                                 accept="image/*"
@@ -679,7 +746,7 @@ export default function AddMovieManagement() {
                         </Grid>
                     </Grid>
 
-                    
+
                 </div>
 
                 <Snackbar open={Boolean(successMessage)} autoHideDuration={6000} onClose={handleCloseSnackbar}>
