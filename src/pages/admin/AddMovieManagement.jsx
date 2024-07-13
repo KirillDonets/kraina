@@ -48,6 +48,8 @@ export default function AddMovieManagement() {
         voteAverage: '',
         genres: [],
         actors: [],
+        regisseurs: [],
+        countries:[],
         dislikeVote: '',
         film_video_path: null,
         likeVote: '',
@@ -65,7 +67,7 @@ export default function AddMovieManagement() {
     const [selectedCountries, setSelectedCountries] = useState([])
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [types, setTypes] = useState([{name: "amimatedSeries"}, {name: "cartoons"}, {name: "movies"}, {name:"series"}])
+    const [types, setTypes] = useState([{name: "amimatedSeries"}, {name: "cartoons"}, {name: "movies"}, {name: "series"}])
     const [selectedType, setSelectedType] = useState("")
 
     useEffect(() => {
@@ -133,10 +135,10 @@ export default function AddMovieManagement() {
     };
 
     const handleTypeChange = (event) => {
-        const selectedType = event.target.value;
-        console.log(selectedType);
-        setSelectedType(selectedType);
-        setNewMovie({...newMovie, type: selectedType});
+        const {name, value} = event.target;
+        console.log(value.name);
+        setSelectedType(value);
+        setNewMovie({...newMovie, type: value.name});
     };
 
     const handlePosterChange = (event) => {
@@ -218,7 +220,7 @@ export default function AddMovieManagement() {
     const handleAddMovie = () => {
         const formData = new FormData();
         Object.keys(newMovie).forEach(key => {
-            if (key === 'genres' || key === 'actors' || key === 'regisseurs' || key ==='countries' || key === 'type') {
+            if (key === 'genres' || key === 'actors' || key === 'regisseurs' || key === 'countries') {
                 if (key === 'genres') {
                     // Добавляем каждый жанр отдельно
                     newMovie[key].forEach(genreId => {
@@ -231,20 +233,17 @@ export default function AddMovieManagement() {
                     });
                 }
 
-                if(key === 'regisseurs'){
+                if (key === 'regisseurs') {
                     newMovie[key].forEach(regisseurId => {
                         formData.append('regisseurs[]', regisseurId);
                     });
                 }
-                if (key === 'countries'){
+                if (key === 'countries') {
                     newMovie[key].forEach(countryId => {
                         formData.append('countries[]', countryId);
                     });
                 }
 
-                if(key==='type'){
-                    newMovie[key] = newMovie[key];
-                }
             } else {
                 formData.append(key, newMovie[key]);
             }
@@ -272,6 +271,8 @@ export default function AddMovieManagement() {
                     title: '',
                     genres: [],
                     actors: [],
+                    regisseurs: [],
+                    countries:[],
                     description: '',
                     type: '',
                     adult: false,
@@ -380,38 +381,38 @@ export default function AddMovieManagement() {
                                 }}
                             />
                         </Grid>
-                        {/*<Grid item xs={12}>*/}
-                        {/*    <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>*/}
-                        {/*        <InputLabel id="type-label" sx={{*/}
-                        {/*            color: '#FFC700',*/}
-                        {/*            '&.Mui-focused': {*/}
-                        {/*                color: '#FFC700'*/}
-                        {/*            },*/}
-                        {/*            '&.MuiInputLabel-shrink': {*/}
-                        {/*                color: '#FFC700'*/}
-                        {/*            }*/}
-                        {/*        }}>Тип</InputLabel>*/}
-                        {/*        <Select*/}
-                        {/*            labelId="type-label"*/}
-                        {/*            id="types"*/}
-                        {/*            value={selectedType}*/}
-                        {/*            onChange={handleTypeChange}*/}
-                        {/*            input={<OutlinedInput label="Тип"/>}*/}
-                        {/*            renderValue={(selected) => selected ? selected.name : ''}*/}
-                        {/*            MenuProps={MenuProps}*/}
-                        {/*        >*/}
-                        {/*            {types.map((type) => (*/}
-                        {/*                <MenuItem key={type.id} value={type}>*/}
-                        {/*                    <Radio*/}
-                        {/*                        checked={selectedType && selectedType.id === type.id}*/}
-                        {/*                        sx={{color: '#FFC700'}}*/}
-                        {/*                    />*/}
-                        {/*                    <ListItemText primary={type.name}/>*/}
-                        {/*                </MenuItem>*/}
-                        {/*            ))}*/}
-                        {/*        </Select>*/}
-                        {/*    </FormControl>*/}
-                        {/*</Grid>*/}
+                        <Grid item xs={12}>
+                            <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
+                                <InputLabel id="type-label" sx={{
+                                    color: '#FFC700',
+                                    '&.Mui-focused': {
+                                        color: '#FFC700'
+                                    },
+                                    '&.MuiInputLabel-shrink': {
+                                        color: '#FFC700'
+                                    }
+                                }}>Тип</InputLabel>
+                                <Select
+                                    labelId="type-label"
+                                    id="types"
+                                    value={selectedType}
+                                    onChange={handleTypeChange}
+                                    input={<OutlinedInput label="Тип"/>}
+                                    renderValue={(selected) => selected ? selected.name : ''}
+                                    MenuProps={MenuProps}
+                                >
+                                    {types.map((type) => (
+                                        <MenuItem key={type.id} value={type}>
+                                            <Radio
+                                                checked={selectedType && selectedType.name === type.name}
+                                                sx={{color: '#FFC700'}}
+                                            />
+                                            <ListItemText primary={type.name}/>
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
                         <Grid item xs={12}>
                             <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
                                 <InputLabel id="genre-label" sx={{
@@ -434,13 +435,13 @@ export default function AddMovieManagement() {
                                     MenuProps={MenuProps}
 
                                 >
-                                    {/* {genres.map((genre) => (
+                                    {genres.map((genre) => (
                                         <MenuItem key={genre.id} value={genre}>
                                             <Checkbox checked={newMovie.genres.indexOf(genre) > -1}
                                                       sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={genre.name}/>
                                         </MenuItem>
-                                    ))} */}
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -465,13 +466,13 @@ export default function AddMovieManagement() {
                                     renderValue={(selected) => selected.map(g => g.name).join(', ')}
                                     MenuProps={MenuProps}
                                 >
-                                    {/* {actors.map((actor) => (
+                                    {actors.map((actor) => (
                                         <MenuItem key={actor.id} value={actor}>
                                             <Checkbox checked={newMovie.actors.indexOf(actor) > -1}
                                                       sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={actor.name}/>
                                         </MenuItem>
-                                    ))} */}
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
