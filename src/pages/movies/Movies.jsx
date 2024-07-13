@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, CircularProgress, Grid, Pagination, Box, IconButton } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import { Link } from 'react-router-dom';
 import './Movies.css';
 import Movie from '../../components/movie/Movie';
-import { apiKey, token, baseUrl } from '../../app/http';
+import api from '../../app/http';
 import Navigation from '../../components/navigation/Navigation';
 
 const Movies = () => {
@@ -19,34 +18,14 @@ const Movies = () => {
         const fetchMovies = async () => {
             try {
                 // Получение фильмов из базы данных
-                const localResponse = await fetch('http://localhost:8080/api/film/all');
-                const localMovies = await localResponse.json();
-
-                // Получение фильмов из внешнего API
-                const response = await fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&language=uk-UA&page=${page}&with_genres=${genre}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json;charset=utf-8'
-                    }
-                });
-                const data = await response.json();
-                console.log(data);  // Отладка
-
-                // Фильтрация фильмов, исключая мультфильмы
-                const filteredMovies = data.results.filter(movie => !movie.genre_ids.includes(16));
-
-                // Объединение фильмов из базы данных и внешнего API
-                const combinedMovies = [...localMovies, ...filteredMovies];
-
-                setMovies(combinedMovies);
-                setTotalPages(data.total_pages);
+                const response = await api.get('film/all');
+                setMovies(response.data);
+                // setTotalPages(data.total_pages);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching movies:', error);
                 setLoading(false);
             }
         };
-
         fetchMovies();
     }, [page, genre]);
 
@@ -58,14 +37,6 @@ const Movies = () => {
         setGenre(event.target.value);
     };
 
-    if (loading) {
-        return (
-            <Container maxWidth="lg">
-                <CircularProgress />
-            </Container>
-        );
-    }
-
     const onFilterChange = (dataFilter) => {
         setMovies(dataFilter);
     };
@@ -74,10 +45,18 @@ const Movies = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    if (loading) {
+        return (
+            <Container maxWidth="lg">
+                <CircularProgress />
+            </Container>
+        );
+    }
+
     return (
         <Container maxWidth="lg">
             <h1 className='textwhite'>Фільми</h1>
-            <Navigation onFilterChange={onFilterChange} />
+            {/* <Navigation onFilterChange={onFilterChange} /> */}
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {movies.map(movie => (
@@ -92,13 +71,7 @@ const Movies = () => {
                 style={{ marginTop: '40px', marginLeft: "auto" }}
             />
             <Box className="divider"></Box>
-            <IconButton
-                color="primary"
-                onClick={scrollToTop}
-                style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
-            >
-                <ArrowUpwardIcon />
-            </IconButton>
+            
         </Container>
     );
 };

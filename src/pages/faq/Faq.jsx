@@ -14,15 +14,6 @@ const Faq = () => {
 
     { question: "Як дізнатись швидкість свого інтернету?", answer: "Відкрийте браузер на пристрої, на якому виникають труднощі. Зайдіть на speedtest. Вимірювання швидкості почнеться автоматично впродовж 1-5 секунд. Через кілька секунд на екрані з’являться показники швидкості вашого інтернету-з’єднання. Для коректної роботи програми, показники мають бути такими: Вхідна швидкість - від 10 Мбіт/с.Вихідна швидкість - від 10 Мб/с. Ping - до 40" },
 
-    { question: "Question 1", answer: "Answer to question 1" },
-
-    { question: "Question 2", answer: "Answer to question 2" },
-
-    { question: "Question 3", answer: "Answer to question 3" },
-
-    { question: "Question 4", answer: "Answer to question 4" },
-
-    { question: "Question 4", answer: "Answer to question 4" },
   ];
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
