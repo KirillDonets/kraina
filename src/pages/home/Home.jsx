@@ -234,9 +234,6 @@ const Home = () => {
                                 <br/>
                                 2 <br/>
                                 < hr/>
-                                <span className="premaritalСolor">• Завантажити пристрої</span> <br/>
-                                2 <br/>
-                                < hr/>
                                 <span className="premaritalСolor">• Реклама</span> <br/>
                                 Кілька рекламних пауз <br/>
                             </Typography>
@@ -272,9 +269,6 @@ const Home = () => {
                                 < hr/>
                                 <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span>
                                 < br/>
-                                2 < br/>
-                                < hr/>
-                                <span className="premaritalСolor">• Завантажити пристрої</span> < br/>
                                 2 < br/>
                                 < hr/>
                                 <span className="premaritalСolor">• Реклама</span> < br/>
@@ -313,9 +307,6 @@ const Home = () => {
                                 <span className="premaritalСolor">• Кількість пристроїв, які можуть одночасно дивитися у вашій сім'ї</span>
                                 < br/>
                                 4 < br/>
-                                < hr/>
-                                <span className="premaritalСolor">• Завантажити пристрої</span> < br/>
-                                6 < br/>
                                 < hr/>
                                 <span className="premaritalСolor">• Реклама</span> < br/>
                                 Без реклами < br/>
