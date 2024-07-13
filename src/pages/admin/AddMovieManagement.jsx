@@ -434,13 +434,13 @@ export default function AddMovieManagement() {
                                     MenuProps={MenuProps}
 
                                 >
-                                    {/* {genres.map((genre) => (
+                                    {genres.map((genre) => (
                                         <MenuItem key={genre.id} value={genre}>
                                             <Checkbox checked={newMovie.genres.indexOf(genre) > -1}
                                                       sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={genre.name}/>
                                         </MenuItem>
-                                    ))} */}
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -465,13 +465,13 @@ export default function AddMovieManagement() {
                                     renderValue={(selected) => selected.map(g => g.name).join(', ')}
                                     MenuProps={MenuProps}
                                 >
-                                    {/* {actors.map((actor) => (
+                                    {actors.map((actor) => (
                                         <MenuItem key={actor.id} value={actor}>
                                             <Checkbox checked={newMovie.actors.indexOf(actor) > -1}
                                                       sx={{color: '#FFC700'}}/>
                                             <ListItemText primary={actor.name}/>
                                         </MenuItem>
-                                    ))} */}
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
