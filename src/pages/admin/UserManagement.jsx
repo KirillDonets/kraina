@@ -5,6 +5,8 @@ import {DataGrid} from '@mui/x-data-grid';
 import {Button, Container} from '@mui/material';
 import AdminNavbar from "./AdminNavbar";
 
+const tokenAuth = localStorage.getItem('Auth');
+
 export default function UserManagement() {
     const [users, setUsers] = useState([]);
 
@@ -13,9 +15,12 @@ export default function UserManagement() {
     }, []);
 
     function fetchUsers() {
-        axios.get('/api/admin/users')
+        axios.get('http://localhost:8080/api/user/all', {
+            headers: {'Authorization': `Basic ${tokenAuth}`}
+        })
             .then(response => {
                 setUsers(response.data);
+                console.log(response.data);
             })
             .catch(error => {
                 console.error('Error fetching users:', error);
@@ -23,10 +28,10 @@ export default function UserManagement() {
     }
 
     const columns = [
-        {field: 'id', headerName: 'ID', width: 90},
-        {field: 'name', headerName: 'Имя', width: 150},
-        {field: 'email', headerName: 'Email', width: 150},
-        {field: 'role', headerName: 'Роль', width: 130},
+        {field: 'userId', headerName: 'ID', flex: 0.2},
+        {field: 'userName', headerName: 'Username', flex: 0.2},
+        {field: 'email', headerName: 'Email', flex: 0.2},
+        {field: 'role', headerName: 'Роль', flex: 0.2},
         {
             field: 'actions',
             headerName: 'Действия',
@@ -48,9 +53,13 @@ export default function UserManagement() {
                     <AdminNavbar active={0}></AdminNavbar>
                 </nav>
                 <div className="user-management">
-
                     <div style={{height: 400, width: '100%'}}>
-                        <DataGrid rows={users} columns={columns} pageSize={5}/>
+                        <DataGrid
+                            rows={users}
+                            columns={columns}
+                            pageSize={5}
+                            getRowId={(row) => row.userId}
+                        />
                     </div>
                 </div>
             </div>

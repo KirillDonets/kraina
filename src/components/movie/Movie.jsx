@@ -13,8 +13,14 @@ const Movie = ({ movie }) => {
                     margin: "auto",
                     boxShadow: "none"
                 }}>
-                   
-                 <CardMedia
+                    {poster ? (<CardMedia
+                        component="img"
+                        height="300"
+                        image={poster}
+                        alt={movie.title}
+                        className="poster"
+                    />):(
+                        <CardMedia
                             component="img"
                             height="300"
                             image={movie.poster_path ? `${baseURL}/uploads/posters/{movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}
