@@ -6,6 +6,23 @@ import AdminNavbar from "./AdminNavbar";
 
 const tokenAuth = localStorage.getItem('Auth'); // Auth token
 
+function getUser() {
+    axios.get("http://localhost:8080/api/user/getUserRoles", {
+        headers: {'Authorization': `Basic ${tokenAuth}`}
+    })
+        .then(res => {
+            if (res.request.responseURL === 'http://localhost:8080/api/user/getUserRoles' && res.data.roleName === 'ROLE_ADMIN') {
+                console.log(res.data)
+            }
+            else {
+                window.location.replace('http://localhost:3000/registration')
+            }
+
+
+        })
+}
+
+
 export default function AddActorManagement() {
     const [actors, setActors] = useState([]);
     const [newActor, setNewActor] = useState({
@@ -17,6 +34,7 @@ export default function AddActorManagement() {
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
+        getUser()
         fetchActors();
     }, []);
 

@@ -55,6 +55,7 @@ const Navigation = ({ onFilterChange }) => {
   };
 
 
+
   const handleChangeYear = (event) => {
     const { target: { value } } = event;
     setSelectedYears(value);

@@ -33,6 +33,23 @@ const MenuProps = {
     },
 };
 
+
+function getUser() {
+    axios.get("http://localhost:8080/api/user/getUserRoles", {
+        headers: {'Authorization': `Basic ${tokenAuth}`}
+    })
+        .then(res => {
+            if (res.request.responseURL === 'http://localhost:8080/api/user/getUserRoles' && res.data.roleName === 'ROLE_ADMIN') {
+                console.log(res.data)
+            }
+            else {
+                window.location.replace('http://localhost:3000/registration')
+            }
+
+
+        })
+}
+
 export default function AddMovieManagement() {
     const [movies, setMovies] = useState([]);
     const [Film, setFilm] = useState();
@@ -71,6 +88,7 @@ export default function AddMovieManagement() {
     const [selectedType, setSelectedType] = useState("")
 
     useEffect(() => {
+        getUser()
         fetchMovies();
         fetchGenres();
         fetchCountries();

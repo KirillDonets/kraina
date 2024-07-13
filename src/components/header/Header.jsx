@@ -15,6 +15,7 @@ const Header = () => {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [user, setUser] = useState(null);
     const [isUserLogged, setIsUserLogged] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
 
     const tokenAuth = localStorage.getItem('Auth');
 
@@ -47,15 +48,25 @@ const Header = () => {
 
     // Симуляция получения данных о пользователе
     useEffect(() => {
-        const fetchUser = async () => {
-            // Здесь вы можете заменить на реальный запрос к API
-            const userData = {
-                user_name: "admin",
-                role_id: 1 // 1 означает, что пользователь администратор
-            };
-            setUser(userData);
-        };
-        fetchUser();
+        async function fetchUserRoles() {
+            try {
+                const response = await axios.get("http://localhost:8080/api/user/getUserRoles", {
+                    headers: { 'Authorization': `Basic ${tokenAuth}` }
+                });
+                const role = response.data; // assuming response.data.authorities is an array of roles
+                if (role && role.roleName === 'ROLE_ADMIN') {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
+                console.log("User roles:", role);
+            } catch (error) {
+                console.error("Error fetching user roles:", error);
+            }
+        }
+
+
+        fetchUserRoles();
         getUser()
     }, []);
 
@@ -104,11 +115,11 @@ const Header = () => {
                                     display: {xs: "block", md: "none"},
                                 }}
                             >
-                                {user && user.role_id === 1 && (
+                                {isAdmin ? (
                                     <NavLink to="/admin" className="menu-item-mobile">
                                         Admin
                                     </NavLink>
-                                )}
+                                ): (<></>)}
                                 {isUserLogged ? (<NavLink to="/homePage" className="menu-item-mobile">
                                     Головна
                                 </NavLink>) : (<div></div>)}
@@ -142,11 +153,11 @@ const Header = () => {
                                 display: {xs: "none", md: "flex"},
                             }}
                         >
-                            {isUserLogged ? (
-                                <NavLink to="/admin" className="menu-item">
+                            {isAdmin ? (
+                                <NavLink to="/admin" className="menu-item-mobile">
                                     Admin
                                 </NavLink>
-                            ):(<div></div>)}
+                            ): (<></>)}
                             {isUserLogged ? (<NavLink to="/homePage" className="menu-item-mobile">
                                 Головна
                             </NavLink>) : (<div></div>)}
