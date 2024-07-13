@@ -16,7 +16,7 @@ import {
     ListItemText,
     OutlinedInput,
     Snackbar,
-    Alert
+    Alert, Radio
 } from '@mui/material';
 import AdminNavbar from "./AdminNavbar";
 
@@ -44,6 +44,7 @@ export default function AddMovieManagement() {
         adult: false,
         originalTitle: '',
         runtime: '',
+        type: '',
         voteAverage: '',
         genres: [],
         actors: [],
@@ -64,6 +65,8 @@ export default function AddMovieManagement() {
     const [selectedCountries, setSelectedCountries] = useState([])
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [types, setTypes] = useState([{name: "amimatedSeries"}, {name: "cartoons"}, {name: "movies"}, {name:"series"}])
+    const [selectedType, setSelectedType] = useState("")
 
     useEffect(() => {
         fetchMovies();
@@ -129,6 +132,13 @@ export default function AddMovieManagement() {
         setNewMovie({...newMovie, [name]: value});
     };
 
+    const handleTypeChange = (event) => {
+        const selectedType = event.target.value;
+        console.log(selectedType);
+        setSelectedType(selectedType);
+        setNewMovie({...newMovie, type: selectedType});
+    };
+
     const handlePosterChange = (event) => {
         const file = event.target.files[0];
         setPoster(file)
@@ -189,7 +199,7 @@ export default function AddMovieManagement() {
         setNewMovie({...newMovie, countries: countriesIds});
 
 
-        console.log(countriesIds); // [1]
+        console.log({...newMovie, countries: countriesIds}); // [1]
 
         setSelectedCountries(value);
     };
@@ -208,28 +218,32 @@ export default function AddMovieManagement() {
     const handleAddMovie = () => {
         const formData = new FormData();
         Object.keys(newMovie).forEach(key => {
-            if (key === 'genres' || key === 'actors' || key === 'regisseurs' || key ==='countries') {
+            if (key === 'genres' || key === 'actors' || key === 'regisseurs' || key ==='countries' || key === 'type') {
                 if (key === 'genres') {
                     // Добавляем каждый жанр отдельно
                     newMovie[key].forEach(genreId => {
-                        formData.append('genres', genreId);
+                        formData.append('genres[]', genreId);
                     });
                 }
                 if (key === 'actors') {
                     newMovie[key].forEach(actorId => {
-                        formData.append('actors', actorId);
+                        formData.append('actors[]', actorId);
                     });
                 }
 
                 if(key === 'regisseurs'){
                     newMovie[key].forEach(regisseurId => {
-                        formData.append('regisseurs', regisseurId);
+                        formData.append('regisseurs[]', regisseurId);
                     });
                 }
                 if (key === 'countries'){
                     newMovie[key].forEach(countryId => {
-                        formData.append('countries', countryId);
+                        formData.append('countries[]', countryId);
                     });
+                }
+
+                if(key==='type'){
+                    newMovie[key] = newMovie[key];
                 }
             } else {
                 formData.append(key, newMovie[key]);
@@ -259,6 +273,7 @@ export default function AddMovieManagement() {
                     genres: [],
                     actors: [],
                     description: '',
+                    type: '',
                     adult: false,
                     originalTitle: '',
                     runtime: '',
@@ -365,6 +380,38 @@ export default function AddMovieManagement() {
                                 }}
                             />
                         </Grid>
+                        {/*<Grid item xs={12}>*/}
+                        {/*    <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>*/}
+                        {/*        <InputLabel id="type-label" sx={{*/}
+                        {/*            color: '#FFC700',*/}
+                        {/*            '&.Mui-focused': {*/}
+                        {/*                color: '#FFC700'*/}
+                        {/*            },*/}
+                        {/*            '&.MuiInputLabel-shrink': {*/}
+                        {/*                color: '#FFC700'*/}
+                        {/*            }*/}
+                        {/*        }}>Тип</InputLabel>*/}
+                        {/*        <Select*/}
+                        {/*            labelId="type-label"*/}
+                        {/*            id="types"*/}
+                        {/*            value={selectedType}*/}
+                        {/*            onChange={handleTypeChange}*/}
+                        {/*            input={<OutlinedInput label="Тип"/>}*/}
+                        {/*            renderValue={(selected) => selected ? selected.name : ''}*/}
+                        {/*            MenuProps={MenuProps}*/}
+                        {/*        >*/}
+                        {/*            {types.map((type) => (*/}
+                        {/*                <MenuItem key={type.id} value={type}>*/}
+                        {/*                    <Radio*/}
+                        {/*                        checked={selectedType && selectedType.id === type.id}*/}
+                        {/*                        sx={{color: '#FFC700'}}*/}
+                        {/*                    />*/}
+                        {/*                    <ListItemText primary={type.name}/>*/}
+                        {/*                </MenuItem>*/}
+                        {/*            ))}*/}
+                        {/*        </Select>*/}
+                        {/*    </FormControl>*/}
+                        {/*</Grid>*/}
                         <Grid item xs={12}>
                             <FormControl fullWidth sx={{border: '1px solid #FFC700', borderRadius: '5px'}}>
                                 <InputLabel id="genre-label" sx={{

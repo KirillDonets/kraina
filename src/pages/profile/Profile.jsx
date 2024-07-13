@@ -29,12 +29,24 @@ export default function Profile() {
 
         const tempFilmListPromises = filmIdList.map(filmId => {
             console.log(`Fetching movie with ID: ${filmId}`);  // Логируем каждый filmId
-            return axios.get(`https://api.themoviedb.org/3/movie/${filmId}?language=uk-UA`, {
+            return axios.get(`http://localhost:8080/api/film/get/${filmId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json;charset=utf-8'
                 }
-            }).then(resp => resp.data)
+            }).then(response => {
+                let poster;
+                axios.get(`http://localhost:8080/api/file/film/${filmId}/poster`)
+                    .then(resp =>{
+                        poster = resp.config.url;
+                        response.data.poster = poster;
+                        console.log("Фото" + poster)
+                    })
+                    .catch(err => {
+                        console.log(err.message)
+                    })
+                return(response.data)
+            })
                 .catch(error => {
                     console.error(`Error fetching movie with ID ${filmId}:`, error);
                     return null; // Возвращаем null, если произошла ошибка
