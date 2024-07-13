@@ -1,43 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import { Container, CircularProgress, Grid, Pagination, Box, IconButton } from '@mui/material';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Container, CircularProgress, Grid, Pagination, Box} from '@mui/material';
 import './Cartoons.css';
 import Movie from '../../components/movie/Movie';
-import {apiKey, token, baseUrl} from '../../app/http';
+import api from '../../app/http';
 import Navigation from '../../components/navigation/Navigation';
+import ScrollTop from '../../components/scrollTop/scrollTop';
+
+const MOVIES_PER_PAGE = 30;
 
 const Cartoons = () => {
-    const [cartoons, setCartoons] = useState([]);
+    const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    useEffect(() => {
-        const fetchCartoons = async () => {
-            try {
-                const response = await fetch(`${baseUrl}/discover/movie?api_key=${apiKey}&language=uk-UA&page=${page}&with_genres=16`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json;charset=utf-8'
-                    }
-                });
-                const data = await response.json();
-                console.log(data);
+    const [yearFilter, setYearFilter] = useState([]);
+    const [genreFilter, setGenreFilter] = useState([]);
+    const [countryFilter, setCountryFilter] = useState([]);
 
-                // Обновление состояния с данными мультфильмов
-                setCartoons(data.results);
-                setTotalPages(data.total_pages);
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                const response = await api.get('film/all');
+                const filteredMovies = response.data.filter(movie => movie.type === 'cartoons');
+                setMovies(filteredMovies);
+                setTotalPages(Math.ceil(filteredMovies.length / MOVIES_PER_PAGE));
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching cartoons:', error);
                 setLoading(false);
             }
         };
-
-        fetchCartoons();
-    }, [page]);
+        fetchMovies();
+    }, []);
 
     const handlePageChange = (event, value) => {
         setPage(value);
+    };
+
+    const filteredMovie = (movie) => {
+        const releaseYear = new Date(movie.releaseDate).getFullYear();
+        const movieGenres = movie.genres.map(genre => genre.id);
+        const movieCountries = movie.countries.map(country => country.id);
+
+        return (
+            (yearFilter.length > 0 ? yearFilter.includes(releaseYear) : true) &&
+            (genreFilter.length > 0 ? genreFilter.some(genre => movieGenres.includes(genre)) : true) &&
+            (countryFilter.length > 0 ? countryFilter.some(country => movieCountries.includes(country)) : true)
+        );
+    };
+
+    const onFilterChange = ({ selectedGenres, selectedCountries, selectedYears }) => {
+        setYearFilter(selectedYears);
+        setGenreFilter(selectedGenres.map(genre => genre.id));
+        setCountryFilter(selectedCountries.map(country => country.id));
+    };
+
+    const getCurrentPageMovies = () => {
+        const startIndex = (page - 1) * MOVIES_PER_PAGE;
+        const endIndex = startIndex + MOVIES_PER_PAGE;
+        return movies.filter(filteredMovie).slice(startIndex, endIndex);
     };
 
     if (loading) {
@@ -45,22 +65,16 @@ const Cartoons = () => {
             <Container maxWidth="lg">
                 <CircularProgress />
             </Container>
-        );        
+        );
     }
-    const onFilterChange = (dataFilter)=>{
-        console.log(dataFilter);
-    }
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
     return (
         <Container maxWidth="lg">
             <h1 className='textwhite'>Мультфільми</h1>
-            <Navigation onFilterChange={onFilterChange}/>
+            <Navigation onFilterChange={onFilterChange} />
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
-                {cartoons.map(cartoon => (
-                    <Movie movie={cartoon} key={cartoon.id} />
+                {getCurrentPageMovies().map(movie => (
+                    <Movie movie={movie} key={movie.id} />
                 ))}
             </Grid>
             <Pagination
@@ -68,16 +82,10 @@ const Cartoons = () => {
                 page={page}
                 onChange={handlePageChange}
                 color="primary"
-                style={{ marginTop: '40px', marginLeft:"auto" }}
+                style={{ marginTop: '40px', marginLeft: "auto" }}
             />
             <Box className="divider"></Box>
-            <IconButton
-                color="primary"
-                onClick={scrollToTop}
-                style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: '#FFFFFF' }}
-            >
-            <ArrowUpwardIcon />
-            </IconButton>
+            <ScrollTop />
         </Container>
     );
 }

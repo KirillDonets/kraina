@@ -15,11 +15,11 @@ const Movie = ({ movie }) => {
         })
             .then(response => {
                 console.log(response.data);
-                setPoster(response.data);
+                setPoster(response.config.url);
             })
     }
 
-    // useEffect(() => { getPoster() }, [movie])
+    useEffect(() => { getPoster() }, [movie])
 
     return (
         <Grid item key={movie.id} xs={6} sm={6} md={3} lg={2}>
@@ -29,11 +29,11 @@ const Movie = ({ movie }) => {
                     margin: "auto",
                     boxShadow: "none"
                 }}>
-                    {poster}
+                   
                     <CardMedia
                         component="img"
                         height="300"
-                        image={movie.poster_Path ? `${baseURL}/${movie.posterPath}` : 'https://via.placeholder.com/500x750?text=No+Image'}
+                        image={poster ? poster : 'https://via.placeholder.com/500x750?text=No+Image'}
                         alt={movie.title}
                         className="poster"
                     />
