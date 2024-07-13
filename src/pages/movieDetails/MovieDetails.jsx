@@ -30,6 +30,26 @@ const MovieDetails = () => {
     const [trailer, setTrailer] = useState()
     const [poster, setPoster] = useState()
 
+
+
+    useEffect(() => {
+        const fetchMovieDetails = async () => {
+            try {
+                const dbMovieResponse = await api.get(`/film/get/${id}`);
+                    setMovie(dbMovieResponse.data);
+                    // getTrailer()
+                    // getFilm()
+                    // getPoster()
+                    setLoading(false);
+               
+            } catch (error) {
+                setLoading(false);
+            }
+        };
+
+        fetchMovieDetails();
+    }, [id]);
+
     function getTrailer(){
         axios.get(`http://localhost:8080/api/file/film/${id}/trailer`)
             .then(response => {
@@ -39,10 +59,9 @@ const MovieDetails = () => {
             );
     }
 
-    function getFilm(){
-        axios.get(`http://localhost:8080/api/file/film/${id}/film`, {
+    const getFilm = async ()=>{
+        const response = api.get(`file/film/${id}/film`, {
             headers: {'Authorization': `Basic ${tokenAuth}`,'Range': 'bytes=0-520'},
-
         })
         setFilm(response.data.config.url);
     }
@@ -105,75 +124,14 @@ const MovieDetails = () => {
     }
 
 
-    useEffect(() => {
-        const fetchMovieDetails = async () => {
-            try {
-                const dbMovieResponse = await axios.get(`http://localhost:8080/api/film/get/${id}`);
-                const dbMovie = dbMovieResponse.data;
 
-                console.log(dbMovie)
-
-                if (dbMovie) {
-                    setMovie(dbMovie);
-                    getTrailer()
-                    getFilm()
-                    getPoster()
-                    setLoading(false);
-                } else {
-                    const response = await fetch(`${baseUrl}/movie/${id}?api_key=${apiKey}&language=uk-UA&append_to_response=videos`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-Type': 'application/json;charset=utf-8'
-                        }
-                    });
-                    const data = await response.json();
-
-                    const creditsResponse = await fetch(`${baseUrl}/movie/${id}/credits?api_key=${apiKey}&language=uk-UA`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-Type': 'application/json;charset=utf-8'
-                        }
-                    });
-                    const creditsData = await creditsResponse.json();
-
-                    setMovie(data);
-                    setCredits(creditsData);
-                    setLoading(false);
-
-                    const keywordResponse = await fetch(`${baseUrl}/movie/${id}/keywords?api_key=${apiKey}`);
-                    const keywordData = await keywordResponse.json();
-
-                    if (keywordData.keywords && keywordData.keywords.length > 0) {
-                        const firstKeyword = keywordData.keywords[0].id;
-                        const similarResponse = await fetch(`${baseUrl}/discover/movie?api_key=${apiKey}&with_keywords=${firstKeyword}&language=uk-UA`);
-                        const similarData = await similarResponse.json();
-                        setSimilarMovies(similarData.results);
-                    }
-                }
-            } catch (error) {
-                console.error('Ошибка при загрузке данных о фильме:', error);
-                setLoading(false);
-            }
-        };
-
-        fetchMovieDetails();
-    }, [id]);
 
     
 
-    const director = credits?.crew?.filter(person => person.job === 'Director') || [];
-    const castWithPhoto = credits?.cast?.filter(actor => actor.profile_path) || [];
-    const sortedCast = castWithPhoto;
+    // const director = credits?.crew?.filter(person => person.job === 'Director') || [];
+    // const castWithPhoto = credits?.cast?.filter(actor => actor.profile_path) || [];
+    // const sortedCast = castWithPhoto;
 
-    // const filterVideos = (videos) => {
-    //     const ukrainianVideos = videos.filter(video => video.iso_639_1 === 'uk');
-    //     if (ukrainianVideos.length > 0) return ukrainianVideos;
-
-    //     const nonRussianVideos = videos.filter(video => video.iso_639_1 !== 'ru');
-    //     return nonRussianVideos.length > 0 ? nonRussianVideos : videos;
-    // };
-
-    // const videos = movie?.videos?.results ? filterVideos(movie.videos.results) : [];
 
     const renderSimilarMovies = () => {
         return similarMovies.filter(m => m.id !== movie.id).slice(0, showMoreSimilar ? similarMovies.length : 6).map(similarMovie => (
@@ -203,15 +161,12 @@ const MovieDetails = () => {
 
     return (
         <Container maxWidth="lg">
-            <MessageModal message={"Для перегляду фільмів потрібна підписка"} open={open}
-                onClose={handleClose}></MessageModal>
-            <Box className="trailer-section">
+            <MessageModal message={"Для перегляду фільмів потрібна підписка"} open={open} onClose={handleClose}></MessageModal>
+
+            {/* <Box className="trailer-section">
                 {playMovie ? (
-                    <video controls src={film} height={501} width={"100%"}>
-
-                    </video>
+                    <video controls src={film} height={501} width={"100%"}></video>
                 ) : (
-
                     <Box position="relative" display="flex" alignItems="center" justifyContent="center">
                         {trailer ? (
                             <video controls src={trailer} autoPlay height={501} width={"100%"}></video>
@@ -225,8 +180,9 @@ const MovieDetails = () => {
                         )}
                     </Box>
                 )}
-            </Box>
-            <Box className="trailer-buttons">
+            </Box> */}
+
+            {/* <Box className="trailer-buttons">
                 <Button color="secondary" style={{ marginBottom: '10px' }} onClick={() => handleWatchClicked()}>
                     Дивитись
                 </Button>
@@ -243,7 +199,8 @@ const MovieDetails = () => {
                     <ThumbDownIcon fontSize="large" />
                     <Typography variant="body2">👎 {movie.dislikeVote}</Typography>
                 </Box>
-            </Box>
+            </Box> */}
+
             <Box className="divider"></Box>
 
             <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} mt={2}>
@@ -268,7 +225,7 @@ const MovieDetails = () => {
                 </Box>
 
 
-                <Box flex={1} color="#FFFFFF">
+                {/* <Box flex={1} color="#FFFFFF">
                     <Typography variant="h5" gutterBottom>Режисери:</Typography>
                     <Grid container spacing={2}>
                         {regisseurs.map(person => (
@@ -313,12 +270,12 @@ const MovieDetails = () => {
                             </Button>
                         </Box>
                     )}
-                </Box>
+                </Box> */}
                 
             </Box>
 
             <Box className="divider"></Box>
-            <Box mt={2} color="#FFFFFF">
+            {/* <Box mt={2} color="#FFFFFF">
                 <Typography variant="h5" gutterBottom>Схожі фільми:</Typography>
                 <Grid container spacing={2}>
                     {renderSimilarMovies()}
@@ -331,7 +288,7 @@ const MovieDetails = () => {
                         </Button>
                     </Box>
                 )}
-            </Box>
+            </Box> */}
             <Box className="divider"></Box>
             <ScrollTop />
         </Container>
