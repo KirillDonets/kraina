@@ -5,6 +5,7 @@ import api from '../../app/http';
 import Movie from '../../components/movie/Movie';
 import Navigation from '../../components/navigation/Navigation';
 import ScrollTop from '../../components/scrollTop/scrollTop';
+import { useLocation } from 'react-router-dom';
 
 const MOVIES_PER_PAGE = 30;
 
@@ -16,6 +17,8 @@ const Series = () => {
     const [yearFilter, setYearFilter] = useState([]);
     const [genreFilter, setGenreFilter] = useState([]);
     const [countryFilter, setCountryFilter] = useState([]);
+    const location = useLocation()
+
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -58,6 +61,7 @@ const Series = () => {
         const startIndex = (page - 1) * MOVIES_PER_PAGE;
         const endIndex = startIndex + MOVIES_PER_PAGE;
         return movies.filter(filteredMovie).slice(startIndex, endIndex);
+
     };
 
     if (loading) {
@@ -70,20 +74,21 @@ const Series = () => {
     return (
         <Container maxWidth="lg">
             <h1 className='textwhite'>Серіали</h1>
-            <Navigation onFilterChange={onFilterChange} />
+            {location.pathname !== '/homePage' && <Navigation onFilterChange={onFilterChange} />}
+
             <Box className="divider"></Box>
             <Grid container spacing={2} sx={{ rowGap: '50px' }}>
                 {getCurrentPageMovies().map(movie => (
                     <Movie movie={movie} key={movie.id} />
                 ))}
             </Grid>
-            <Pagination
+            {location.pathname !== '/homePage' &&<Pagination
                 count={totalPages}
                 page={page}
                 onChange={handlePageChange}
                 color="primary"
                 style={{ marginTop: '40px', marginLeft: "auto" }}
-            />
+            />}
             <Box className="divider"></Box>
             <ScrollTop />
         </Container>

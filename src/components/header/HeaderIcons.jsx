@@ -1,19 +1,41 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Typography, InputBase, Box, Popper, Paper, List, ListItem, ListItemText } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import { useNavigate } from "react-router-dom";
-
-const apiKey = '6354d9421b6c9d2510d1a693d1dc40b4';
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkMWE2OTNkMWRjNDBiNCIsInN1YiI6IjY2MWUwNzRiZDc1YmQ2MDE0OTMwYjkyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RgpHSSmlqPeSbkO8Tgkva_SbS937PRPTX_4nBKsFSHI';
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../app/http";
 
 const HeaderIcons = () => {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+        try {
+            const response = await api.get('film/all');
+            setMovies(response.data);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+        }
+    };
+    fetchMovies();
+    document.body.addEventListener('click', closeSearch)
+}, []);
+
+const closeSearch = (e)=>{
+  console.log('CLOSE', e.target);
+
+  if(e.target && e.target.closest('serach-1'))
+    console.log('CLOSE', e.target);
+}
 
   const handleSearchClick = () => {
     setSearchOpen(true);
@@ -24,14 +46,9 @@ const HeaderIcons = () => {
     setSearchQuery(query);
 
     if (query.length > 0) {
-      const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=uk-UA&query=${query}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json;charset=utf-8'
-        }
-      });
-      const data = await response.json();
-      setSearchResults(data.results.slice(0, 5));
+      const searchPattern = new RegExp(query, "gi")
+      const searchedMovies = movies.filter(movie=> searchPattern.test(movie.title))
+      setSearchResults(searchedMovies.slice(0, 5));
     } else {
       setSearchResults([]);
     }
@@ -52,14 +69,18 @@ const HeaderIcons = () => {
   };
 
   const handleBlur = (event) => {
+   /* console.log(event.relatedTarget);
+    if(event.currentTarget.closest('.search-1')){
+      console.log(1);
+    }*/
     if (!event.currentTarget.contains(event.relatedTarget)) {
-      setSearchResults([]);
-      setSearchOpen(false);
+     // setSearchResults([]);
+     // setSearchOpen(false);
     }
   };
 
   return (
-    <Box display="flex" alignItems="center" onBlur={handleBlur}>
+    <Box display="flex" className="search-1" alignItems="center" onBlur={handleBlur}>
       <Typography
         component="div"
         sx={{
@@ -104,7 +125,7 @@ const HeaderIcons = () => {
                   <List>
                     {searchResults.map((result) => (
                       <ListItem button key={result.id} onClick={() => handleResultClick(result.id)}>
-                        <ListItemText primary={result.title} />
+                        <Link to="/"> <ListItemText primary={result.title} /></Link>
                       </ListItem>
                     ))}
                   </List>

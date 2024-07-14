@@ -11,6 +11,8 @@ import axios from "axios";
 import MessageModal from "../../components/messageModal/MessageModal";
 import api, {baseUrl, baseURL} from '../../app/http';
 import ScrollTop from '../../components/scrollTop/scrollTop';
+import brandVideo from './test-video.mp4'
+import Movie from '../../components/movie/Movie';
 
 
 const MovieDetails = () => {
@@ -43,7 +45,6 @@ const MovieDetails = () => {
     function getRegisseurs() {
         axios.get(`http://localhost:8080/api/regisseur/film/${id}`).then(response => {
             const regisseurData = response.data;
-            console.log(regisseurData);
 
             let regisseurPromises = regisseurData.map((regisseur) => {
                 return axios.get(`http://localhost:8080/api/file/regisseur/${regisseur.id}/photo`)
@@ -59,7 +60,6 @@ const MovieDetails = () => {
 
             Promise.all(regisseurPromises).then(regisseursWithPhotos => {
                 setRegisseurs(regisseursWithPhotos);
-                console.log(regisseursWithPhotos);
             }).catch(error => {
                 console.error('Error fetching regisseur photos:', error);
             });
@@ -71,7 +71,6 @@ const MovieDetails = () => {
     function getActors() {
         axios.get(`http://localhost:8080/api/actor/film/${id}`).then(response => {
             const actorData = response.data;
-            console.log(actorData);
 
             let actorPromises = actorData.map((actor) => {
                 return axios.get(`http://localhost:8080/api/file/actor/${actor.id}/photo`)
@@ -88,7 +87,6 @@ const MovieDetails = () => {
 
             Promise.all(actorPromises).then(actorsWithPhotos => {
                 setActors(actorsWithPhotos);
-                console.log(actorsWithPhotos);
             }).catch(error => {
                 console.error('Error fetching regisseur photos:', error);
             });
@@ -96,6 +94,21 @@ const MovieDetails = () => {
             console.error('Error fetching regisseurs:', error);
         });
     }
+
+    const getSimilarMovies = async (movie) => {
+        try {
+            const currentGenres = movie.genres.map(g=>g.id)
+            const response = await api.get('film/all');
+
+            const filteredMovies = response.data.filter(m =>{
+                return  m.genres.some(g=>currentGenres.includes(g.id)&&m.id!=movie.id)
+            });
+            setSimilarMovies(filteredMovies);
+        } catch (error) {
+            console.log('ERROR');
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -108,14 +121,16 @@ const MovieDetails = () => {
                 getRegisseurs()
                 getActors()
                 setLoading(false);
-
+               getSimilarMovies(dbMovieResponse.data);
             } catch (error) {
                 setLoading(false);
             }
         };
 
         fetchMovieDetails();
+
     }, [id]);
+
 
     function getTrailer() {
         axios.get(`http://localhost:8080/api/file/film/${id}/trailer`)
@@ -132,7 +147,7 @@ const MovieDetails = () => {
         }).then(response => {
             console.log(baseURL + response.config.url)
             setFilm(baseURL + "/api" + response.config.url);
-        })
+        }).catch(()=>setFilm(brandVideo))
     }
 
     function getPoster() {
@@ -198,20 +213,9 @@ const MovieDetails = () => {
 
 
     const renderSimilarMovies = () => {
-        return similarMovies.filter(m => m.id !== movie.id).slice(0, showMoreSimilar ? similarMovies.length : 6).map(similarMovie => (
-            <Grid item key={similarMovie.id} xs={6} sm={4} md={3} lg={2}>
-                <Link to={`/movies/${similarMovie.id}`}>
-                    <Box display="flex" flexDirection="column" alignItems="left">
-                        <CardMedia
-                            component="img"
-                            height="300px"
-                            image={similarMovie.poster_path ? `https://image.tmdb.org/t/p/w185${similarMovie.poster_path}` : 'https://via.placeholder.com/150x225?text=No+Image'}
-                            title={similarMovie.title}
-                        />
-                        <Typography variant="body2" align="left" noWrap>{similarMovie.title}</Typography>
-                    </Box>
-                </Link>
-            </Grid>
+        console.log(similarMovies);
+        return similarMovies.slice(0, showMoreSimilar ? similarMovies.length : 6).map(similarMovie => (
+            <Movie movie={similarMovie} />
         ));
     };
 
@@ -230,11 +234,11 @@ const MovieDetails = () => {
 
             <Box className="trailer-section">
                 {playMovie ? (
-                    <video controls src={film} height={501} width={"100%"}></video>
+                     <video controls src={film} height={501} width={"100%"}></video> 
                 ) : (
                     <Box position="relative" display="flex" alignItems="center" justifyContent="center">
                         {trailer ? (
-                            <video controls src={trailer} autoPlay height={501} width={"100%"}></video>
+                            <video controls src={trailer} autoPlay height={501} width={"100%"} muted></video>
                         ) : (
                             <CardMedia
                                 component="img"
@@ -339,7 +343,7 @@ const MovieDetails = () => {
             </Box>
 
             <Box className="divider"></Box>
-            {/* <Box mt={2} color="#FFFFFF">
+            { <Box mt={2} color="#FFFFFF">
                 <Typography variant="h5" gutterBottom>Схожі фільми:</Typography>
                 <Grid container spacing={2}>
                     {renderSimilarMovies()}
@@ -352,7 +356,7 @@ const MovieDetails = () => {
                         </Button>
                     </Box>
                 )}
-            </Box> */}
+            </Box> }
             <Box className="divider"></Box>
             <ScrollTop/>
         </Container>
