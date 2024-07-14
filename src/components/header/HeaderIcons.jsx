@@ -27,15 +27,11 @@ const HeaderIcons = () => {
         }
     };
     fetchMovies();
-    document.body.addEventListener('click', closeSearch)
+   
+
 }, []);
 
-const closeSearch = (e)=>{
-  console.log('CLOSE', e.target);
 
-  if(e.target && e.target.closest('serach-1'))
-    console.log('CLOSE', e.target);
-}
 
   const handleSearchClick = () => {
     setSearchOpen(true);
@@ -64,19 +60,23 @@ const closeSearch = (e)=>{
   const handleSearchSubmit = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
+     setSearchOpen(false);
+     setSearchQuery("");
+     setSearchResults([]);
+
       navigate(`/search?query=${searchQuery}`);
     }
   };
 
   const handleBlur = (event) => {
-   /* console.log(event.relatedTarget);
-    if(event.currentTarget.closest('.search-1')){
-      console.log(1);
-    }*/
-    if (!event.currentTarget.contains(event.relatedTarget)) {
-     // setSearchResults([]);
-     // setSearchOpen(false);
-    }
+   
+    if (!event.currentTarget.contains(event.relatedTarget)) 
+    setTimeout(()=>{
+      setSearchResults([]);
+      setSearchOpen(false);
+    }, 1000);
+    
+    
   };
 
   return (
@@ -125,7 +125,7 @@ const closeSearch = (e)=>{
                   <List>
                     {searchResults.map((result) => (
                       <ListItem button key={result.id} onClick={() => handleResultClick(result.id)}>
-                        <Link to="/"> <ListItemText primary={result.title} /></Link>
+                        <ListItemText primary={result.title} />
                       </ListItem>
                     ))}
                   </List>
