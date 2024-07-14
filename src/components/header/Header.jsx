@@ -20,11 +20,11 @@ const Header = () => {
     const tokenAuth = localStorage.getItem('Auth');
 
     function getUser() {
-        axios.get("http://localhost:8080/api/user/get", {
+        axios.get("https://0099-217-199-237-96.ngrok-free.app/api/user/get", {
             headers: {'Authorization': `Basic ${tokenAuth}`}
         })
             .then(resp => {
-                if (resp.request.responseURL === 'http://localhost:8080/api/user/get') {
+                if (resp.request.responseURL === 'https://0099-217-199-237-96.ngrok-free.app/api/user/get') {
                     setIsUserLogged(true)
                 }
             })
@@ -50,7 +50,7 @@ const Header = () => {
     useEffect(() => {
         async function fetchUserRoles() {
             try {
-                const response = await axios.get("http://localhost:8080/api/user/getUserRoles", {
+                const response = await axios.get("https://0099-217-199-237-96.ngrok-free.app/api/user/getUserRoles", {
                     headers: { 'Authorization': `Basic ${tokenAuth}` }
                 });
                 const role = response.data; // assuming response.data.authorities is an array of roles

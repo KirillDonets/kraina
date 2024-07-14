@@ -5,9 +5,12 @@ export const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MzU0ZDk0MjFiNmM5ZDI1MTBkM
 export const baseUrl = 'https://api.themoviedb.org/3';
 
 
-export const baseURL = 'http://localhost:8080';
+export const baseURL = 'https://0099-217-199-237-96.ngrok-free.app';
 
 const api = axios.create({
-    baseURL: `${baseURL}/api`
+    baseURL: `${baseURL}/api`,
+    headers:{
+        "ngrok-skip-browser-warning": "69420"
+    }
 });
 export default api;

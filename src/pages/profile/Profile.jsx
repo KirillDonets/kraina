@@ -29,14 +29,14 @@ export default function Profile() {
 
         const tempFilmListPromises = filmIdList.map(filmId => {
             console.log(`Fetching movie with ID: ${filmId}`);  // Логируем каждый filmId
-            return axios.get(`http://localhost:8080/api/film/get/${filmId}`, {
+            return axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/film/get/${filmId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json;charset=utf-8'
                 }
             }).then(response => {
                 let poster;
-                axios.get(`http://localhost:8080/api/file/film/${filmId}/poster`)
+                axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/file/film/${filmId}/poster`)
                     .then(resp =>{
                         poster = resp.config.url;
                         response.data.poster = poster;
@@ -63,11 +63,11 @@ export default function Profile() {
 
 
     function getUser() {
-        axios.get("http://localhost:8080/api/user/get", {
+        axios.get("https://0099-217-199-237-96.ngrok-free.app/api/user/get", {
             headers: {'Authorization': `Basic ${tokenAuth}`}
         })
             .then(res => {
-                if (res.request.responseURL === 'http://localhost:8080/api/user/get') {
+                if (res.request.responseURL === 'https://0099-217-199-237-96.ngrok-free.app/api/user/get') {
                     console.log(res.data)
                     setUser(res.data)
                     setBalance(res.data.balance)
@@ -128,7 +128,7 @@ export default function Profile() {
         if (Object.keys(formErrors).length > 0) {
             setErrors(formErrors);
         } else {
-            axios.post("http://localhost:8080/api/user/update",
+            axios.post("https://0099-217-199-237-96.ngrok-free.app/api/user/update",
                 user,
                 {headers: {'Authorization': `Basic ${tokenAuth}`}})
                 .then(res => {
@@ -142,7 +142,7 @@ export default function Profile() {
     }
 
     function changeParentControlStatus() {
-        axios.post("http://localhost:8080/api/user/changeParentControlStatus", {}, {
+        axios.post("https://0099-217-199-237-96.ngrok-free.app/api/user/changeParentControlStatus", {}, {
             headers: {'Authorization': `Basic ${tokenAuth}`}
         })
             .then(res => {

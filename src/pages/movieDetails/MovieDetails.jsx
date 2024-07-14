@@ -43,11 +43,11 @@ const MovieDetails = () => {
     }
 
     function getRegisseurs() {
-        axios.get(`http://localhost:8080/api/regisseur/film/${id}`).then(response => {
+        axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/regisseur/film/${id}`).then(response => {
             const regisseurData = response.data;
 
             let regisseurPromises = regisseurData.map((regisseur) => {
-                return axios.get(`http://localhost:8080/api/file/regisseur/${regisseur.id}/photo`)
+                return axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/file/regisseur/${regisseur.id}/photo`)
                     .then(response => {
                         const photo = response.config.url;
                         return {...regisseur, photo};
@@ -69,11 +69,11 @@ const MovieDetails = () => {
     }
 
     function getActors() {
-        axios.get(`http://localhost:8080/api/actor/film/${id}`).then(response => {
+        axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/actor/film/${id}`).then(response => {
             const actorData = response.data;
 
             let actorPromises = actorData.map((actor) => {
-                return axios.get(`http://localhost:8080/api/file/actor/${actor.id}/photo`)
+                return axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/file/actor/${actor.id}/photo`)
                     .then(response => {
                         const photo = response.config.url;
 
@@ -133,7 +133,7 @@ const MovieDetails = () => {
 
 
     function getTrailer() {
-        axios.get(`http://localhost:8080/api/file/film/${id}/trailer`)
+        axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/file/film/${id}/trailer`)
             .then(response => {
                     setTrailer(response.config.url);
                     console.log(response.config);
@@ -151,7 +151,7 @@ const MovieDetails = () => {
     }
 
     function getPoster() {
-        axios.get(`http://localhost:8080/api/file/film/${id}/poster`)
+        axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/file/film/${id}/poster`)
             .then(response => {
                 console.log(response.data);
                 setPoster(response.data);
@@ -167,10 +167,10 @@ const MovieDetails = () => {
     };
 
     function handleWatchClicked() {
-        axios.get("http://localhost:8080/api/user/get", {
+        axios.get("https://0099-217-199-237-96.ngrok-free.app/api/user/get", {
             headers: {'Authorization': `Basic ${tokenAuth}`}
         }).then(resp => {
-            if (resp.request.responseURL === 'http://localhost:8080/api/user/get') {
+            if (resp.request.responseURL === 'https://0099-217-199-237-96.ngrok-free.app/api/user/get') {
                 setPlayMovie(true)
             } else {
                 handleOpen()
@@ -186,7 +186,7 @@ const MovieDetails = () => {
         console.log(`id ${id}`)
 
         if (isBookmarked) {
-            axios.post("http://localhost:8080/api/user/removeFilmIdFromUserList",
+            axios.post("https://0099-217-199-237-96.ngrok-free.app/api/user/removeFilmIdFromUserList",
                 {filmId: id}, {headers: {'Authorization': `Basic ${tokenAuth}`}})
                 .then(res => {
                     console.log("Film removed successfully");
@@ -195,7 +195,7 @@ const MovieDetails = () => {
                     console.error("Error removing film:", error);
                 });
         } else {
-            axios.post("http://localhost:8080/api/user/addFilmIdToUserList",
+            axios.post("https://0099-217-199-237-96.ngrok-free.app/api/user/addFilmIdToUserList",
                 {filmId: id}, {headers: {'Authorization': `Basic ${tokenAuth}`}})
                 .then(res => {
                     console.log("Film added successfully");

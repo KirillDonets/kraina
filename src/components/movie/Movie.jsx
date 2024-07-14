@@ -10,7 +10,7 @@ const Movie = ({ movie }) => {
     const tokenAuth = localStorage.getItem('Auth');
 
     function getPoster() {
-        axios.get(`http://localhost:8080/api/file/film/${movie.id}/poster`, {
+        axios.get(`https://0099-217-199-237-96.ngrok-free.app/api/file/film/${movie.id}/poster`, {
             headers: { 'Authorization': `Basic ${tokenAuth}`, 'Range': 'bytes=0-520' },
         })
             .then(response => {

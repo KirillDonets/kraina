@@ -92,13 +92,13 @@ const Home = () => {
     };
 
     function sevenDaysFree() {
-        axios.get("http://localhost:8080/api/user/get", {
+        axios.get("https://0099-217-199-237-96.ngrok-free.app/api/user/get", {
             headers: {'Authorization': `Basic ${tokenAuth}`}
         })
             .then(resp => {
-                    if (resp.request.responseURL === 'http://localhost:8080/api/user/get') {
+                    if (resp.request.responseURL === 'https://0099-217-199-237-96.ngrok-free.app/api/user/get') {
                         console.log(resp.data)
-                        axios.post("http://localhost:8080/api/user/getFreeSevenDaySubscribe", {}, {
+                        axios.post("https://0099-217-199-237-96.ngrok-free.app/api/user/getFreeSevenDaySubscribe", {}, {
                             headers: {'Authorization': `Basic ${tokenAuth}`}
                         })
                         setOpenSuccessful(true)

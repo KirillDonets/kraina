@@ -7,15 +7,15 @@ import AdminNavbar from "./AdminNavbar";
 const tokenAuth = localStorage.getItem('Auth'); // Auth token
 
 function getUser() {
-    axios.get("http://localhost:8080/api/user/getUserRoles", {
+    axios.get("https://0099-217-199-237-96.ngrok-free.app/api/user/getUserRoles", {
         headers: {'Authorization': `Basic ${tokenAuth}`}
     })
         .then(res => {
-            if (res.request.responseURL === 'http://localhost:8080/api/user/getUserRoles' && res.data.roleName === 'ROLE_ADMIN') {
+            if (res.request.responseURL === 'https://0099-217-199-237-96.ngrok-free.app/api/user/getUserRoles' && res.data.roleName === 'ROLE_ADMIN') {
                 console.log(res.data)
             }
             else {
-                window.location.replace('http://localhost:3000/registration')
+                window.location.replace('/registration')
             }
 
 
@@ -39,7 +39,7 @@ export default function AddActorManagement() {
     }, []);
 
     const fetchActors = () => {
-        axios.get('http://localhost:8080/api/actor/all')
+        axios.get('https://0099-217-199-237-96.ngrok-free.app/api/actor/all')
             .then(response => {
                 setActors(response.data);
             })
@@ -66,7 +66,7 @@ export default function AddActorManagement() {
             formData.append('photo', photo);
         }
 
-        axios.post('http://localhost:8080/api/actor/create', formData, {
+        axios.post('https://0099-217-199-237-96.ngrok-free.app/api/actor/create', formData, {
             headers: {
                 'Authorization': `Basic ${tokenAuth}`,
                 'Content-Type': 'application/json'
@@ -83,7 +83,7 @@ export default function AddActorManagement() {
                 console.log(response.data)
 
                 if (photo != null){
-                    axios.post(`http://localhost:8080/api/file/actor/${id}/photo`, {file:photo}, {
+                    axios.post(`https://0099-217-199-237-96.ngrok-free.app/api/file/actor/${id}/photo`, {file:photo}, {
                         headers:{
                             'Authorization': `Basic ${tokenAuth}`,
                             'Content-Type': 'multipart/form-data'

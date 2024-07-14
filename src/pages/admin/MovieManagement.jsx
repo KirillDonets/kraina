@@ -8,11 +8,11 @@ import AdminNavbar from "./AdminNavbar";
 const tokenAuth = localStorage.getItem('Auth');
 
 function getUser() {
-    axios.get("http://localhost:8080/api/user/getUserRoles", {
+    axios.get("https://0099-217-199-237-96.ngrok-free.app/api/user/getUserRoles", {
         headers: {'Authorization': `Basic ${tokenAuth}`}
     })
         .then(res => {
-            if (res.request.responseURL === 'http://localhost:8080/api/user/getUserRoles' && res.data.roleName === 'ROLE_ADMIN') {
+            if (res.request.responseURL === 'https://0099-217-199-237-96.ngrok-free.app/api/user/getUserRoles' && res.data.roleName === 'ROLE_ADMIN') {
                 console.log(res.data)
             }
             else {
@@ -32,7 +32,7 @@ export default function MovieManagement() {
     }, []);
 
     function fetchMovies() {
-        axios.get('http://localhost:8080/api/film/all')
+        axios.get('https://0099-217-199-237-96.ngrok-free.app/api/film/all')
             .then(response => {
                 console.log(response.data)
                 setMovies(response.data);
@@ -44,7 +44,7 @@ export default function MovieManagement() {
     }
 
     function deleteFilmById(id) {
-        axios.post(`http://localhost:8080/api/film/delete/${id}`, {}, {
+        axios.post(`https://0099-217-199-237-96.ngrok-free.app/api/film/delete/${id}`, {}, {
             headers: {'Authorization': `Basic ${tokenAuth}`}
         })
             .then(response => {
